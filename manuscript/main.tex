@@ -51,14 +51,14 @@
 
     \section{Introduction}
 
-    A pangenome models the full set of genomic elements in a given species or clade \citep{32453966}. Indeed, these
+    A pangenome models the full set of genomic elements in a given species or clade~\citep{32453966}. Indeed, these
     data structures encode the mutual relationships between all the genomes represented, in contrast to reference-based
     approaches which relate sequences only to a particular genome, chosen as reference. A class of methods to represent
-    pangenomes involves the \textit{sequence graphs} \citep{2488477}, where similar orthologous regions between genomes
+    pangenomes involves the \textit{sequence graphs}~\citep{2488477}, where similar orthologous regions between genomes
     collapse into a single representative sequence. In \textit{node-labeled} sequence graphs, nodes indicate DNA
     sequences, with edges connecting the nodes that are concatenated in the sequences represented in the graph. A
     \textit{bidirected} sequence graph represents both strands of DNA. On this model, \textit{variation graphs} add the
-    concept of \textit{path} to embed linear sequences (e.g., genomes or haplotypes) into the graph \citep{30125266}.
+    concept of \textit{path} to embed linear sequences (e.g., genomes or haplotypes) into the graph~\citep{30125266}.
     Paths provide a stable coordinate system, allowing graph annotations and interoperability between different graphs.
 
     Thanks to advances in sequencing technologies, new genome assemblies are produced at a high rate. This amount of
@@ -66,7 +66,7 @@
     represent and manipulate hundreds of genomes at a gigabase scale. Variation graphs compactly represent the full
     genetic variation across a population, but graph-based data structures present computational overheads: in addition
     to the sequences, they must also represent the graph topology. Several genome data structures were developed to
-    address these challenges \citep{33040146}. Memory-efficient representations do not allow dynamic updates to the
+    address these challenges~\citep{33040146}. Memory-efficient representations do not allow dynamic updates to the
     graph, such as adding new genomes or simplifying the graph topology. Furthermore, dynamic updates must perform
     efficiently on the complex graphs generated from whole-genome alignment of vertebrates. Highly repetitive regions,
     such as centromeres, segmental duplications, and acrocentric chromosomes lead to graphs which present paths with
@@ -75,8 +75,8 @@
     nodes they cross.
 
     To overcome this limitation, we have developed an Optimized Dynamic Genome/Graph Implementation (ODGI). Each tool
-    loads graphs into the succinct dynamic HandleGraph model \citep{33040146} and applies methods based on the
-    HandleGraph API. Several algorithms are shared with the VG toolkit (VG) \citep{30125266}, the state-of-the-art
+    loads graphs into the succinct dynamic HandleGraph model~\citep{33040146} and applies methods based on the
+    HandleGraph API. Several algorithms are shared with the VG toolkit (VG)~\citep{30125266}, the state-of-the-art
     toolkit for working with pangenome graphs. However, although similar in scope to VG, ODGI importantly differs in
     its design to support highly complex pangenome graphs. The majority of the ODGI tools are implemented in an
     index-free manner, avoiding the burning task needed to create an index structure. Indeed, index-constrained
@@ -91,8 +91,8 @@
         \section{Methods}
 
         ODGI is designed to build and modify paths in parallel, keeping its representation in memory efficient. It
-        applies concepts first introduced in the dynamic version of the Graph BWT \citep{31406990}, a scalable
-        implementation of the graph extension of the positional Burrows-Wheeler transform \citep{28702075}. Specifically,
+        applies concepts first introduced in the dynamic version of the Graph BWT~\citep{31406990}, a scalable
+        implementation of the graph extension of the positional Burrows-Wheeler transform~\citep{28702075}. Specifically,
         we build a \textit{node-local} model of the graph, where the graph is stored in a vector of node structures.
         The identifier of each node is its offset in this vector plus 1. Each structure contains the sequence of the
         node, its edges in both directions (forward and backward), and a vector of \textit{path steps} that describes
@@ -255,7 +255,7 @@
             visualization of 8 haploid, phased human genome assemblies plus the chm13 and GRCh38 reference genomes.
             Graph nodes’ are arranged from left to right. The colored bars represent the linearized renderings of the
             embedded paths versus the nodes in a binary matrix. The black lines under the paths are the links, which
-            represent the graph topology. B) Bandage \citep{26099265} representation of the graph topology of a
+            represent the graph topology. B) Bandage~\citep{26099265} representation of the graph topology of a
             consensus MHC pangenome graph representing only variations bigger than 100 bps. Gene labels were applied
             exploiting \texttt{odgi position} to liftover gene coordinates from the full graph into the consensus
             graph.
