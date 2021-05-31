@@ -220,16 +220,19 @@
     Availability), plus the chm13 and GRCh38 reference genomes, for a total of 90 haplotypes. All commands are provided
     in the Supplementary Material.
 
+    %TODO to repeat on a bigger machine to avoid vg crashing
     \begin{table}[!t]
         \processtable{Centromeres extraction comparison using \odgi\ and VG
         \label{tab:02}} {
             \begin{tabular}{@{}lllll@{}}
-                \toprule Operation & Tool & Runtime (mm:ss) & Memory (GB) & Output size (GB) \\
+                \toprule Operation & Tool & Runtime (mm:ss) & Memory (GB) & Output size (GB)    \\
                 \midrule
-                row1               & row1 & row1            & row1        & row1             \\
-                row2               & row2 & row2            & row2        & row2             \\
-                row3               & row3 & row3            & row3        & row3             \\
-                row4               & row4 & row4            & row4        & row4             \\
+                Format conversion                           &       &       &                   \\
+                                    & \cmd{odgi build}      & 1:35  & 10.39 & 5.4               \\
+                                    & \cmd{vg convert}      & 8:14  & 28.43 & 6.1               \\
+                Subgraph extraction                         &       &       &                   \\
+                                    & \cmd{odgi extract}    & 1:15  & 9.43  & 2.7               \\
+                                    & \cmd{vg chunk}        & 21:09 & 59.33 & 1.7               \\
                 \botrule
             \end{tabular}}
 
