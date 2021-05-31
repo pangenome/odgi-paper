@@ -147,21 +147,25 @@
     validating that paths respect the graph's topology.
 
     \topic{odgi viz, sort, draw \& layout} pangenome visualization
-    provides convenient insight into genomic variation (see
-    Fig.~\ref{fig:1}). \cmd{odgi viz} generates a linearized
-    representation of the pangenome and is capable of handling full
-    length human chromosomes (Fig.~\ref{fig:1}a). \cmd{odgi sort}
-    reorganises node order and simplifies the graph by applying
-    several algorithms, including the novel `Path-Guided Stochastic Gradient Descent`
-    algorithm. \cmd{odgi layout} and \cmd{odgi draw} bring the
-    visualization in 2D. (Fig.~\ref{fig:1}b).
+    provides convenient insight into genomic variation. \cmd{odgi viz}
+    generates a linearized representation of the pangenome and is
+    capable of handling full length human chromosomes
+    (Fig.~\ref{fig:1}a). \cmd{odgi sort} reorganises node order and
+    simplifies the graph by applying several algorithms, including the
+    novel `Path-Guided Stochastic Gradient Descent' algorithm.
+    \cmd{odgi layout} generates a file with the X-Y coordinates for
+    all nodes and \cmd{odgi draw} draws the actual layout of the graph
+    (Fig.~\ref{fig:1}b).
 
-    \topic{odgi stats, bin, depth \& degree} pangenome statistics allow exploring genome complexity at different
-    levels of abstraction. \cmd{odgi stats} returns the number of nodes, edges, paths, and graph length, while
-    \cmd{odgi bin} summarizes the path information into bins of specified size, enabling a summarized view of
-    gigabase scale graphs. \cmd{odgi depth} and \cmd{odgi degree} return the node depth and degree, respectively, as
-    defined by query criteria, allowing users to detect complex regions due to sequences with highly identical
-    repeats, or problems in the pangenome graph.
+    \topic{odgi stats, bin, depth \& degree} pangenome numerical
+    counts provide insight into genome complexity in other
+    ways. E.g., \cmd{odgi stats} returns the number of nodes,
+    edges, paths, and graph length. \cmd{odgi bin} summarizes path
+    information into bins of a specified size, thereby enabling a
+    summarized view of gigabase scale graphs. \cmd{odgi depth} and
+    \cmd{odgi degree} return the node depth and degree as defined by
+    user provided criteria. These methods allow detection of complex
+    genomic regions.
 
     \topic{odgi break, groom, chop \& unchop} \odgi\ allows edit operations on the graphs. Cycles in the graph
     complicate downstream analyses: \cmd{odgi break} removes the cycles, reducing the complexity of the graph topology.
