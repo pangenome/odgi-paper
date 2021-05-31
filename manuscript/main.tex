@@ -199,7 +199,8 @@
     %TODO to repeat on a bigger machine to avoid vg crashing
     \begin{table}[!t]
         \processtable{Centromeres extraction comparison using \odgi\ and VG
-        \label{tab:02}} {
+          \label{tab:02}} {
+          \resizebox{.99\columnwidth}{!}{
             \begin{tabular}{@{}lllll@{}}
                 \toprule Operation & Tool & Runtime (mm:ss) & Memory (GB) & Output size (GB)    \\
                 \midrule
@@ -210,7 +211,7 @@
                                     & \cmd{odgi extract}    & 1:15  & 9.43  & 2.7               \\
                                     & \cmd{vg chunk}        & 21:09 & 59.33 & 1.7               \\
                 \botrule
-            \end{tabular}}
+            \end{tabular}}}
 
     \end{table}
 
