@@ -5,6 +5,8 @@
 
 \newcommand{\odgi}{ODGI}
 \newcommand{\cmd}[1]{{\texttt{#1}}}
+\newcommand{\cmdbf}[1]{{\textbf{#1}}}
+\newcommand{\topic}[1]{{\cmdbf{#1}}:}
 \newcommand{\Rplus}{\protect\hspace{-.1em}\protect\raisebox{.35ex}{\smaller{\smaller\textbf{+}}}}
 \newcommand{\pp}{\Rplus\Rplus}
 \newcommand{\Cpp}{\mbox{C\Rplus\Rplus}\xspace}
@@ -196,23 +198,31 @@
     piping the output of one tool into the next, thereby preventing the creation of intermediate files, and reducing
     the number of IO operations.
 
-    \subsection{Functionalities}
+    \subsection{Features}
 
-    Variation graphs are commonly represented by a subset of version 1 of the Graphical Fragment Assembly format
-    (\citep{GFAv1}): \texttt{odgi build} and \texttt{odgi view} allow to convert graphs from GFA to ODGI format and
-    vice versa, respectively.
+    \odgi\ has a wide range of commands. Important features are
 
-    In the variation graph model, paths have to respect the graph's topology: this can be verified with
-    \texttt{odgi validate}, to ensure no errors in the input or edited graphs.
+    \topic{odgi build, view \& validate} pangenome graphs are commonly
+    represented by a subset of Graphical Fragment Assembly (GFAv1)
+    format\citep{GFAv1}.  \cmd{odgi build} and \cmd{odgi view} allow
+    to convert graphs from GFA to ODGI format and vice versa.  In the
+    variation graph model, paths have to respect the graph's topology:
+    this can be verified with \texttt{odgi validate}, to ensure no
+    errors in the input or edited graphs.
 
-    \cmd{odgi viz}: by visualizing pangenome graphs, we can gain insight into the relationship between genomes. \texttt{odgi viz}
-    applies binding and direct rendering to a raster image to generate a 1D representation able to scale up to gigabase
-    pangenome graphs (Figure~1.A\vphantom{\ref{fig:01}}). However, pangenome graphs may present complex structures to
-    visualize: \texttt{odgi sort} finds the best node order to simplify 1D graph visualization by applying several
-    cutting-edge sorting algorithms. \texttt{odgi drawn} extends the visualization in 2D, taking in input the layouts
-    built by \texttt{odgi layout}.
+    \topic{odgi viz, sort, drawn \& layout} by visualizing pangenome
+    graphs, we can gain insight into the relationship between
+    genomes. \cmd{odgi viz} applies binding and direct rendering to
+    a raster image to generate a 1D representation able to scale up to
+    gigabase pangenome graphs
+    (Figure~1.A\vphantom{\ref{fig:01}}). However, pangenome graphs may
+    present complex structures to visualize: \cmd{odgi sort} finds
+    the best node order to simplify 1D graph visualization by applying
+    several cutting-edge sorting algorithms. \cmd{odgi drawn}
+    extends the visualization in 2D, taking in input the layouts built
+    by \cmd{odgi layout}.
 
-    Applying \texttt{odgi stats}, users can retrieve metrics describing the graph properties, such as the number of
+    \topic{odgi stats} users can retrieve metrics describing the graph properties, such as the number of
     nodes, edges, paths, and graph length. ODGI also offers more advanced tools for interrogating the graphs.
     \texttt{odgi bin} summarizes the path information into bins of specified size, enabling a summarized view of
     gigabase scale graphs. \texttt{odgi depth} returns the node depth as defined by query criteria, allowing users to
