@@ -1,4 +1,15 @@
 \documentclass{bioinfo}
+
+\usepackage{relsize} % for Cpp
+\usepackage{xspace} % for Cpp
+
+\newcommand{\odgi}{ODGI}
+\newcommand{\cmd}[1]{{\texttt{#1}}}
+\newcommand{\Rplus}{\protect\hspace{-.1em}\protect\raisebox{.35ex}{\smaller{\smaller\textbf{+}}}}
+\newcommand{\pp}{\Rplus\Rplus}
+\newcommand{\Cpp}{\mbox{C\Rplus\Rplus}\xspace}
+
+
 \copyrightyear{2021} \pubyear{2021}
 
 \access{Advance Access Publication Date: Day Month Year}
@@ -9,17 +20,17 @@
 
     \subtitle{Genome Analysis}
 
-    \title[short Title]{ODGI: scalable tools for working with pangenome graphs}
+    \title[short Title]{ODGI: scalable tools for pangenome graphs}
     \author[Sample \textit{et~al}.]{
         Andrea Guarracino\,$^{\text{\sfb 1,}*}$,
         Simon Heumos\,$^{\text{\sfb 2}}$,
-        XXXXX,
-        Pjotr Prins\,$^{\text{\sfb 3}}$ and
-        Erik Garrison\,$^{\text{\sfb 3,}*}$
+        % XXXXX,
+        Pjotr~Prins\,$^{\text{\sfb 3}}$ and
+        Erik~Garrison\,$^{\text{\sfb 3,}*}$
     }
     \address{$^{\text{\sf 1}}$Department, Institution, City, Post Code, Country \\
         $^{\text{\sf 2}}$Department, Institution, City, Post Code, Country \\
-        $^{\text{\sf 3}}$Department, Institution, City, Post Code, Country
+        $^{\text{\sf 3}}$Genetics Genomics \& Informatics, UTHSC, Memphis, TN, USA
     }
 
     \corresp{$^\ast$To whom correspondence should be addressed.}
@@ -28,24 +39,29 @@
 
     \editor{Associate Editor: XXXXXXX}
 
-    \abstract{
-        \textbf{Motivation:}
-        Pangenome graphs provide a complete representation of the mutual alignment of
-        collections of genomes. These models, therefore, offer the opportunity to study the entire genetic diversity of
-        a population, bringing new challenges to how to analyze hundreds of genomes on a gigabase scale. In addition,
-        vertebrate genomes present highly repetitive regions which increase the complexity of the analysis.
-        Efficient and flexible tools are therefore required to work on pangenome graphs of any complexity and scale.\\
-        \textbf{Results:} Here we present ODGI, a new suite of tools to analyze and manipulate pangenome graphs
-        structured in the variation graph model. ODGI supports graphs in the Graphical Fragment Assembly format version
-        1 (GFAv1). The tools scale efficiently to large collections of eukaryotic genomes, allowing users to work easily
-        with pangenome graphs of tens to thousands of large genomes while maintaining fast execution runtime and low
-        memory overhead.\\
-        \textbf{Availability:} ODGI is written in C++. Source code and user manual are freely available at
-        \href{https://github.com/pangenome/odgi}{https://github.com/pangenome/odgi}.\\
+    \abstract{ \textbf{Motivation:} Pangenome graphs provide a
+      complete and `lossless' representation of genomic information
+      that allows for complex population-sized analysis of genomes
+      without introducing reference genome bias. Here we present a
+      range of novel tools that makes use of the \odgi\ efficient
+      in-memory representation of DNA/RNA graphs. \odgi\ can handle
+      thousands of large genomes while maintaining fast execution
+      runtime and low memory overhead. \odgi\ includes tools for
+      detecting complex regions, extracting loci, exploratory
+      analysis, sorting, removing artifacts and visualisation.
+      %
+      \\
+      \textbf{Availability:} \odgi\ is software written in the \Cpp\
+      programming language and published under the libre MIT license. Source
+      code and user manual can be downloaded from
+      \href{https://github.com/pangenome/odgi}{https://github.com/pangenome/odgi}.\\
+      %
         \textbf{Contact:}
         \href{andreaguarracino@outlook.com}{andreaguarracino@outlook.com},
-        \href{erik.garrison@gmail.com}{erik.garrison@gmail.com}\\
-        \textbf{Supplementary information:} Supplementary data are available at \textit{Bioinformatics} online.}
+        \href{erik.garrison@gmail.com}{erik.garrison@gmail.com}\\ \textbf{Supplementary
+          information:} Supplementary data are available at
+        \textit{Bioinformatics} online.}
+
     \maketitle
 
 
