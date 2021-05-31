@@ -103,10 +103,18 @@
     format) in parallel, which is one of the major bottlenecks when working with very large and deep variation graphs,
     efficiently scaling up to hundreds of large vertebrate genomes.
 
-%\enlargethispage{12pt}
+    ODGI is entirely focused on "first-order" operations on the graph
+    (Table~\ref{tab:01}), providing, unlike VG, no method to construct
+    graphs from raw sequences, map reads, or call variants. It
+    supports interrogation of the graph for basic dimensional
+    properties, positional and path-related queries, and visualization
+    in one-dimension (1D) and two-dimensions (2D). ODGI also supports
+    operations on the graph such as subset, subdivide, break, combine,
+    normalize, or order its components, nodes, and paths. Most of the
+    tools are designed to be applied together, piping the output of
+    one tool into the next, thereby preventing the creation of
+    intermediate files, and reducing the number of IO operations.
 
-    \begin{methods}
-        \section{Methods}
 
         ODGI is designed to build and modify paths in parallel, keeping its representation in memory efficient. It
         applies concepts first introduced in the dynamic version of the Graph BWT~\citep{31406990}, a scalable
@@ -123,82 +131,8 @@
         \textit{\textasciitilde log\textsubscript{2}(N)}. Finally, to allow operating on path steps in parallel, each node structure includes a
         byte-width mutex lock.
 
-%        Text Text Text Text Text Text Text Text Text Text Text Text Text
-%        Text Text Text Text Text Text Text Text. Figure~\ref{fig:01}
-%        shows that the above method Text Text Text Text Text Text Text
-%        Text Text Text Text Text.  \citep{Bag01} wants to know about
-%            {\ldots}{\ldots} text follows.
-%        \begin{equation}
-%            \sum \text{\it x}+ \text{\it y} =\text{\it Z}\label{eq:01}\vspace*{-10pt}
-%        \end{equation}
-%
-%        Text Text Text Text Text Text Text Text Text Text Text Text Text
-%        Text Text Text Text Text Text Text Text.
-%        Figure~2\vphantom{\ref{fig:02}} shows that the above method Text
-%        Text Text Text Text Text Text Text Text Text Text Text.
-%        \citealp{Boffelli03} might want to know about text text text text
-%        Text Text Text Text Text Text Text Text Text Text Text Text Text
-%        Text Text Text Text Text Text Text Text.
-%        Figure~2\vphantom{\ref{fig:02}} shows that the above method Text
-%        Text Text Text Text Text Text Text Text Text Text Text.
-%        \citealp{Boffelli03} might want to know about text text text text
-%        Text Text Text Text Text Text Text Text Text Text Text Text Text
-%        Text Text Text Text Text Text Text Text.
-%        Figure~2\vphantom{\ref{fig:02}} shows that the above method Text
-%        Text Text Text Text Text Text Text Text Text Text Text.
-%        \citealp{Boffelli03} might want to know about text text text
-%        text\vspace*{1pt}
-%
-%        \begin{itemize}
-%            \item for bulleted list, use itemize
-%            \item for bulleted list, use itemize
-%            \item for bulleted list, use itemize\vspace*{1pt}
-%        \end{itemize}
-%
-%        \begin{enumerate}
-%            \item this is item, use enumerate
-%            \item this is item, use enumerate
-%            \item this is item, use enumerate
-%        \end{enumerate}
-%
-%        \subsection{This is subheading}
-%
-%        Text Text Text Text Text Text Text Text Text Text Text Text Text
-%        Text Text Text Text Text Text Text Text.
-%        Figure~2\vphantom{\ref{fig:02}} shows that the above method Text
-%        Text Text Text Text Text Text Text Text Text Text Text.
-%        \citealp{Boffelli03} might want to know about text text text text
-%        Text Text Text Text Text Text Text Text Text Text Text Text Text
-%        Text Text Text Text Text Text Text Text.
-%
-%
-%        \enlargethispage{6pt}
-%
-%        \begin{table}[!t]
-%            \processtable{This is table caption\label{Tab:01}} {\begin{tabular}{@{}llll@{}}
-%                                                                    \toprule head1 &
-%                                                                    head2 & head3 & head4 \\\midrule
-%                                                                    row1 & row1 & row1 & row1 \\
-%                                                                    row2 & row2 & row2 & row2 \\
-%                                                                    row3 & row3 & row3 & row3 \\
-%                                                                    row4 & row4 & row4 & row4 \\\botrule
-%            \end{tabular}}{This is a footnote}
-%        \end{table}
-
-    \end{methods}
-
 
     \section{Results}
-
-    ODGI is entirely focused on "first-order" operations on the graph (Table~\ref{tab:01}), providing, unlike VG, no
-    method to construct graphs from raw sequences, map reads, or call variants. It supports interrogation of the graph
-    for basic dimensional properties, positional and path-related queries, and visualization in one-dimension (1D) and
-    two-dimensions (2D). ODGI also supports operations on the graph such as subset, subdivide, break, combine,
-    normalize, or order its components, nodes, and paths. Most of the tools are designed to be applied together,
-    piping the output of one tool into the next, thereby preventing the creation of intermediate files, and reducing
-    the number of IO operations.
-
-    \subsection{Features}
 
     \odgi\ has a wide range of commands. Important features are
 
