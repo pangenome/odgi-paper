@@ -26,7 +26,7 @@
     \author[Sample \textit{et~al}.]{
         Andrea Guarracino\,$^{\text{\sfb 1,}*}$,
         Simon Heumos\,$^{\text{\sfb 2}}$,
-        % XXXXX,
+    % XXXXX,
         Pjotr~Prins\,$^{\text{\sfb 3}}$ and
         Erik~Garrison\,$^{\text{\sfb 3,}*}$
     }
@@ -41,28 +41,27 @@
 
     \editor{Associate Editor: XXXXXXX}
 
-    \abstract{ \textbf{Motivation:} Pangenome graphs provide a
-      complete and `lossless' representation of genomic information
-      that allows for complex population-sized analysis of genomes
-      without introducing reference genome bias. Here we present a
-      range of novel tools that makes use of the \odgi\ efficient
-      in-memory representation of DNA/RNA graphs. \odgi\ can handle
-      thousands of large genomes while maintaining fast execution
-      runtime and low memory overhead. \odgi\ includes tools for
-      detecting complex regions, extracting loci, exploratory
-      analysis, sorting, removing artifacts and visualisation.
-      %
-      \\
-      \textbf{Availability:} \odgi\ is software written in the \Cpp\
-      programming language and published under the libre MIT license. Source
-      code and user manual can be downloaded from
-      \href{https://github.com/pangenome/odgi}{https://github.com/pangenome/odgi}.\\
-      %
+    \abstract{
+        \textbf{Motivation:} Pangenome graphs provide a complete representation of
+        genomic information that allows for complex population-sized analysis of genomes
+        without introducing reference genome bias.
+        %
+        \\
+        \textbf{Results:} Here we present \odgi\, a novel range of tools that makes use of an efficient
+        in-memory representation of DNA graphs structured in the variation graph model. \odgi\ can
+        handle hundreds of large genomes while maintaining fast execution runtime and low memory overhead.
+        \odgi\ includes tools for detecting complex regions, extracting \textit{loci}, exploratory analysis,
+        sorting, removing artifacts, and graphs manipulation and visualisation.
+        %
+        \\
+        \textbf{Availability:} \odgi\ is software written in the \Cpp\ programming language and
+        published under the libre MIT license. Source code and user manual can be downloaded from
+        \href{https://github.com/pangenome/odgi}{https://github.com/pangenome/odgi}.\\
+        %
         \textbf{Contact:}
         \href{andreaguarracino@outlook.com}{andreaguarracino@outlook.com},
-        \href{erik.garrison@gmail.com}{erik.garrison@gmail.com}\\ \textbf{Supplementary
-          information:} Supplementary data are available at
-        \textit{Bioinformatics} online.}
+        \href{erik.garrison@gmail.com}{erik.garrison@gmail.com}\\
+        \\textbf{Supplementary information:} Supplementary data are available at \textit{Bioinformatics} online.}
 
     \maketitle
 
@@ -116,20 +115,20 @@
     intermediate files, and reducing the number of IO operations.
 
 
-        ODGI is designed to build and modify paths in parallel, keeping its representation in memory efficient. It
-        applies concepts first introduced in the dynamic version of the Graph BWT~\citep{31406990}, a scalable
-        implementation of the graph extension of the positional Burrows-Wheeler transform~\citep{28702075}. Specifically,
-        we build a \textit{node-local} model of the graph, where the graph is stored in a vector of node structures.
-        The identifier of each node is its offset in this vector plus 1. Each structure contains the sequence of the
-        node, its edges in both directions (forward and backward), and a vector of \textit{path steps} that describes
-        how the embedded paths walk across the node. Each step records the path identifier and the previous and next
-        path steps on the same path. To reduce the encoding, we encode path steps using a local alphabet that maps the
-        \textit{N} neighbors of the node into the range \textit{1..N}. To further save space, \textit{node deltas},
-        rather than IDs, are stored in this alphabet. The delta between two nodes is defined as their distance in the
-        graph vector (i.e., the difference between the node offsets). The path step vector, of length \textit{n}, is
-        stored using a dynamic succinct integer vector that requires \textit{O(5nw)} bits, where \textit{w} is
-        \textit{\textasciitilde log\textsubscript{2}(N)}. Finally, to allow operating on path steps in parallel, each node structure includes a
-        byte-width mutex lock.
+    ODGI is designed to build and modify paths in parallel, keeping its representation in memory efficient. It
+    applies concepts first introduced in the dynamic version of the Graph BWT~\citep{31406990}, a scalable
+    implementation of the graph extension of the positional Burrows-Wheeler transform~\citep{28702075}. Specifically,
+    we build a \textit{node-local} model of the graph, where the graph is stored in a vector of node structures.
+    The identifier of each node is its offset in this vector plus 1. Each structure contains the sequence of the
+    node, its edges in both directions (forward and backward), and a vector of \textit{path steps} that describes
+    how the embedded paths walk across the node. Each step records the path identifier and the previous and next
+    path steps on the same path. To reduce the encoding, we encode path steps using a local alphabet that maps the
+    \textit{N} neighbors of the node into the range \textit{1..N}. To further save space, \textit{node deltas},
+    rather than IDs, are stored in this alphabet. The delta between two nodes is defined as their distance in the
+    graph vector (i.e., the difference between the node offsets). The path step vector, of length \textit{n}, is
+    stored using a dynamic succinct integer vector that requires \textit{O(5nw)} bits, where \textit{w} is
+    \textit{\textasciitilde log\textsubscript{2}(N)}. Finally, to allow operating on path steps in parallel, each node structure includes a
+    byte-width mutex lock.
 
 
     \section{Results}
@@ -139,7 +138,7 @@
     \topic{odgi build, view \& validate} pangenome graphs are commonly
     represented by a subset of Graphical Fragment Assembly (GFAv1)
     format\citep{GFAv1}.  \cmd{odgi build} and \cmd{odgi view} allow
-    to convert graphs from GFA to ODGI format and vice versa.  In the
+    to convert graphs from GFA to ODGI format and vice versa. In the
     variation graph model, paths have to respect the graph's topology:
     this can be verified with \texttt{odgi validate}, to ensure no
     errors in the input or edited graphs.
@@ -188,30 +187,30 @@
 
 
     \begin{figure}
-      \begin{minipage}[b]{0.48\textwidth}
-        \includegraphics[width=\linewidth]{fig/mhc-align.eps}
-        \caption{(a) alignment}
-        \label{fig:1}
-      \end{minipage}
+        \begin{minipage}[b]{0.48\textwidth}
+            \includegraphics[width=\linewidth]{fig/mhc-align.eps}
+            \caption{(a) alignment}
+            \label{fig:1}
+        \end{minipage}
 
-      \begin{minipage}[b]{0.48\textwidth}
-        \includegraphics[width=\linewidth]{fig/mhc-pangenome.eps}
-        \caption{(b) Visualizing the Major Histocompatibility Complex
-          (MHC) \textit{locus} pangenome. A) odgi viz 1D visualization
-          of 8 haploid, phased human genome assemblies plus the chm13
-          and GRCh38 reference genomes.  Graph nodes’ are arranged
-          from left to right. The colored bars represent the
-          linearized renderings of the embedded paths versus the nodes
-          in a binary matrix. The black lines under the paths are the
-          links, which represent the graph topology. B)
-          Bandage~\citep{26099265} representation of the graph
-          topology of a consensus MHC pangenome graph representing
-          only variations bigger than 100 bps. Gene labels were
-          applied exploiting \texttt{odgi position} to liftover gene
-          coordinates from the full graph into the consensus graph.  }
+        \begin{minipage}[b]{0.48\textwidth}
+            \includegraphics[width=\linewidth]{fig/mhc-pangenome.eps}
+            \caption{(b) Visualizing the Major Histocompatibility Complex
+                (MHC) \textit{locus} pangenome. A) odgi viz 1D visualization
+                of 8 haploid, phased human genome assemblies plus the chm13
+                and GRCh38 reference genomes. Graph nodes’ are arranged
+                from left to right. The colored bars represent the
+                linearized renderings of the embedded paths versus the nodes
+                in a binary matrix. The black lines under the paths are the
+                links, which represent the graph topology. B)
+                Bandage~\citep{26099265} representation of the graph
+                topology of a consensus MHC pangenome graph representing
+                only variations bigger than 100 bps. Gene labels were
+                applied exploiting \texttt{odgi position} to liftover gene
+                coordinates from the full graph into the consensus graph.  }
 
-        \label{fig:2}
-      \end{minipage}
+            \label{fig:2}
+        \end{minipage}
     \end{figure}
 
     \subsection{Performance on human data}
