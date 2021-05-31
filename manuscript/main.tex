@@ -71,9 +71,9 @@
 
     \section{Introduction}
 
-    A pangenome models the full set of genomic elements in a given species or clade~\citep{32453966}. Indeed, these
-    data structures encode the mutual relationships between all the genomes represented, in contrast to reference-based
-    approaches which relate sequences only to a particular genome, chosen as reference. A class of methods to represent
+    A pangenome models the full set of genomic elements in a population~\citep{32453966}. Indeed, these data structures
+    encode the mutual relationships between all the genomes represented, in contrast to reference-based approaches
+    which relate sequences only to a particular genome, chosen as reference. A class of methods to represent
     pangenomes involves the \textit{sequence graphs}~\citep{2488477}, where similar orthologous regions between genomes
     collapse into a single representative sequence. In \textit{node-labeled} sequence graphs, nodes indicate DNA
     sequences, with edges connecting the nodes that are concatenated in the sequences represented in the graph. A
@@ -87,23 +87,22 @@
     genetic variation across a population, but graph-based data structures present computational overheads: in addition
     to the sequences, they must also represent the graph topology. Several genome data structures were developed to
     address these challenges~\citep{33040146}. Memory-efficient representations do not allow dynamic updates to the
-    graph, such as adding new genomes or simplifying the graph topology. Furthermore, dynamic updates must perform
-    efficiently on the complex graphs generated from whole-genome alignment of vertebrates. Highly repetitive regions,
-    such as centromeres, segmental duplications, and acrocentric chromosomes lead to graphs which present paths with
-    very high-depth nodes. The node depth is defined as the number of times in which the node is crossed by all the
-    paths embedded in the graph. High depth increases the complexity of the operations performed on the paths and the
-    nodes they cross.
+    graph. Furthermore, the changes must perform efficiently on the complex graphs generated from whole-genome
+    alignment of vertebrates. Highly repetitive regions, such as centromeres, segmental duplications, and acrocentric
+    chromosomes lead to graphs which present very high-depth nodes. The node depth is defined as the
+    number of times in which the node is crossed by all the paths embedded in the graph. High depth increases the
+    complexity of the operations performed on the paths and the nodes they cross.
 
     To overcome this limitation, we have developed an Optimized Dynamic Genome/Graph Implementation (ODGI). Each tool
     loads graphs into the succinct dynamic HandleGraph model~\citep{33040146} and applies methods based on the
     HandleGraph API. Several algorithms are shared with the VG toolkit (VG)~\citep{30125266}, the state-of-the-art
     toolkit for working with pangenome graphs. However, although similar in scope to VG, \odgi\ importantly differs in
     its design to support highly complex pangenome graphs. The majority of the \odgi\ tools are implemented in an
-    index-free manner, avoiding the burning task needed to create an index structure. Indeed, index-constrained
-    implementations would require building indexes also for single or little operations on the graphs. Moreover,
+    index-free manner, avoiding the burning task to create an index structure. Indeed, index-constrained
+    implementations require building indexes also for single or little operations on the graphs. Moreover,
     thanks to its efficient path representation, \odgi\ tools can build the internal graph representation (the \odgi\
-    format) in parallel, which is one of the major bottlenecks when working with very large and deep variation graphs,
-    efficiently scaling up to hundreds of large vertebrate genomes.
+    format) in parallel, which is one of the major bottlenecks when working with very large and deep graphs,
+    scaling up to hundreds of large vertebrate genomes.
 
 
     \odgi\ is entirely focused on "first-order" operations on the graph
