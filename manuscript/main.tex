@@ -94,20 +94,20 @@
     To overcome this limitation, we have developed an Optimized Dynamic Genome/Graph Implementation (ODGI). Each tool
     loads graphs into the succinct dynamic HandleGraph model~\citep{33040146} and applies methods based on the
     HandleGraph API. Several algorithms are shared with the VG toolkit (VG)~\citep{30125266}, the state-of-the-art
-    toolkit for working with pangenome graphs. However, although similar in scope to VG, ODGI importantly differs in
-    its design to support highly complex pangenome graphs. The majority of the ODGI tools are implemented in an
+    toolkit for working with pangenome graphs. However, although similar in scope to VG, \odgi\ importantly differs in
+    its design to support highly complex pangenome graphs. The majority of the \odgi\ tools are implemented in an
     index-free manner, avoiding the burning task needed to create an index structure. Indeed, index-constrained
     implementations would require building indexes also for single or little operations on the graphs. Moreover,
-    thanks to its efficient path representation, ODGI tools can build the internal graph representation (the ODGI
+    thanks to its efficient path representation, \odgi\ tools can build the internal graph representation (the \odgi\
     format) in parallel, which is one of the major bottlenecks when working with very large and deep variation graphs,
     efficiently scaling up to hundreds of large vertebrate genomes.
 
-    ODGI is entirely focused on "first-order" operations on the graph
+    \odgi\ is entirely focused on "first-order" operations on the graph
     (Table~\ref{tab:01}), providing, unlike VG, no method to construct
     graphs from raw sequences, map reads, or call variants. It
     supports interrogation of the graph for basic dimensional
     properties, positional and path-related queries, and visualization
-    in one-dimension (1D) and two-dimensions (2D). ODGI also supports
+    in one-dimension (1D) and two-dimensions (2D). \odgi\ also supports
     operations on the graph such as subset, subdivide, break, combine,
     normalize, or order its components, nodes, and paths. Most of the
     tools are designed to be applied together, piping the output of
@@ -115,7 +115,7 @@
     intermediate files, and reducing the number of IO operations.
 
 
-    ODGI is designed to build and modify paths in parallel, keeping its representation in memory efficient. It
+    \odgi\ is designed to build and modify paths in parallel, keeping its representation in memory efficient. It
     applies concepts first introduced in the dynamic version of the Graph BWT~\citep{31406990}, a scalable
     implementation of the graph extension of the positional Burrows-Wheeler transform~\citep{28702075}. Specifically,
     we build a \textit{node-local} model of the graph, where the graph is stored in a vector of node structures.
@@ -156,7 +156,7 @@
     by \cmd{odgi layout}.
 
     \topic{odgi stats} users can retrieve metrics describing the graph properties, such as the number of
-    nodes, edges, paths, and graph length. ODGI also offers more advanced tools for interrogating the graphs.
+    nodes, edges, paths, and graph length. \odgi\ also offers more advanced tools for interrogating the graphs.
     \texttt{odgi bin} summarizes the path information into bins of specified size, enabling a summarized view of
     gigabase scale graphs. \texttt{odgi depth} returns the node depth as defined by query criteria, allowing users to
     detect the complex regions in the graph due to sequences with highly identical repeats. Complex motifs can be also
@@ -165,7 +165,7 @@
     process as well.
 
 
-    ODGI allows edit operations on the graphs. Cycles in the graph complicate downstream analyses: \texttt{odgi break}
+    \odgi\ allows edit operations on the graphs. Cycles in the graph complicate downstream analyses: \texttt{odgi break}
     removes the cycles, reducing the complexity of the graph topology. \texttt{odgi groom} removes spurious inverting
     links by exploring the graph from the orientation supported by most paths. To enable efficient sequence alignment
     against the graph, long nodes can be divided into shorter nodes at a maximum requested size using
@@ -176,7 +176,7 @@
 
     Pangenome graphs can embed multiple chromosomes as separated connected components (inter-chromosomal structural
     variants would join the components into bigger ones). \texttt{odgi explode} separates the connected components in
-    different ODGI format files, while \texttt{odgi squeeze} allows merging multiple graphs into the same ODGI format
+    different \odgi\ format files, while \texttt{odgi squeeze} allows merging multiple graphs into the same \odgi\ format
     file, preventing node ID collisions. \texttt{odgi extract} allows extracting specific subregions of the graph as
     defined by query criteria, thereby simplifying the downstream analyses and reducing the resources to work only
     with the extracted region.
@@ -196,7 +196,7 @@
         \begin{minipage}[b]{0.48\textwidth}
             \includegraphics[width=\linewidth]{fig/mhc-pangenome.eps}
             \caption{(b) Visualizing the Major Histocompatibility Complex
-                (MHC) \textit{locus} pangenome. A) odgi viz 1D visualization
+                (MHC) \textit{locus} pangenome. A) \texttt{odgi viz} 1D visualization
                 of 8 haploid, phased human genome assemblies plus the chm13
                 and GRCh38 reference genomes. Graph nodes’ are arranged
                 from left to right. The colored bars represent the
@@ -215,14 +215,14 @@
 
     \subsection{Performance on human data}
 
-    Table~\ref{tab:02} shows a comparison of the operations necessary to extract a subgraph using ODGI and VG. The
+    Table~\ref{tab:02} shows a comparison of the operations necessary to extract a subgraph using \odgi\ and VG. The
     example consists in extracting the centromeres from a pangenome graph made from 88 haploid, phased human genome
     assemblies from 44 individuals from the Human Pangenome Reference Consortium year 1 assembly (see Data
     Availability), plus the chm13 and GRCh38 reference genomes, for a total of 90 haplotypes. All commands are provided
     in the Supplementary Material.
 
     \begin{table}[!t]
-        \processtable{Centromeres extraction comparison using ODGI and VG
+        \processtable{Centromeres extraction comparison using \odgi\ and VG
         \label{tab:02}} {
             \begin{tabular}{@{}lllll@{}}
                 \toprule Operation & Tool & Runtime (mm:ss) & Memory (GB) & Output size (GB) \\
@@ -236,19 +236,19 @@
 
     \end{table}
 
-    To work with ODGI and VG it is first necessary to convert the graph from GFA to ODGI and VG format, respectively.
-    Thanks to the ODGI format's path implementation, \texttt{odgi build} embeds the paths in parallel, outperforming
+    To work with \odgi\ and VG it is first necessary to convert the graph from GFA to \odgi\ and VG format, respectively.
+    Thanks to the \odgi\ format's path implementation, \texttt{odgi build} embeds the paths in parallel, outperforming
     \texttt{vg convert} in the same task. For the same reason, \texttt{odgi extract} results 20 times faster than
     \texttt{vg chunk} in extracting a portion from the full graph.
 
 
     \section{Discussion}
-    We implemented a tool suite, ODGI, which is simple to work with to analyse and manipulate pangenome graphs at a
-    population scale. ODGI's path implementation allows working with graphs of any complexity, without particular
-    limitations. We have demonstrated that ODGI tools efficiently perform with pangenome graphs embedding full human
-    chromosomes. ODGI is not only a tool suite but also a library, already used in pangenome graphs building
+    We implemented a tool suite, \odgi\, which is simple to work with to analyse and manipulate pangenome graphs at a
+    population scale. \odgi\'s path implementation allows working with graphs of any complexity, without particular
+    limitations. We have demonstrated that \odgi\ tools efficiently perform with pangenome graphs embedding full human
+    chromosomes. \odgi\ is not only a tool suite but also a library, already used in pangenome graphs building
     (\citep{pggb}) and normalization (\citep{smoothxg}). Furthermore, users can add new tools, exploiting ODGI as a
-    framework where to implement algorithms working on variation graphs. Therefore, ODGI offers an efficient and
+    framework where to implement algorithms working on variation graphs. Therefore, \odgi\ offers an efficient and
     extendable suite of tools ready for the upcoming challenges in the analyses of hundreds of genomes at a gigabase
     scale that characterize the pangenomic era.
 
