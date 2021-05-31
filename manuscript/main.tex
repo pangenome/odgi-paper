@@ -114,6 +114,7 @@
     one tool into the next, thereby preventing the creation of
     intermediate files, and reducing the number of IO operations.
 
+    \section{Methods}
 
     \odgi\ is designed to build and modify paths in parallel, keeping its representation in memory efficient. It
     applies concepts first introduced in the dynamic version of the Graph BWT~\citep{31406990}, a scalable
@@ -127,8 +128,8 @@
     rather than IDs, are stored in this alphabet. The delta between two nodes is defined as their distance in the
     graph vector (i.e., the difference between the node offsets). The path step vector, of length \textit{n}, is
     stored using a dynamic succinct integer vector that requires \textit{O(5nw)} bits, where \textit{w} is
-    \textit{\textasciitilde log\textsubscript{2}(N)}. Finally, to allow operating on path steps in parallel, each node structure includes a
-    byte-width mutex lock.
+    \textit{\textasciitilde log\textsubscript{2}(N)}. Finally, to allow operating on path steps in parallel, each node
+    structure includes a byte-width mutex lock.
 
 
     \section{Results}
