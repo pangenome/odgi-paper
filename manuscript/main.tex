@@ -175,11 +175,9 @@
     embedded sequences, obtaining an equivalent, but more compact, representation of the graph.
 
     \topic{odgi explode, squeeze \& extract} pangenome graphs can embed multiple chromosomes as separated connected
-    components (inter-chromosomal structural variants would join the components into bigger ones).
-    \cmd{odgi explode} separates the connected components in different \odgi\ format files, while \cmd{odgi squeeze}
-    allows merging multiple graphs into the same \odgi\ format file, preventing node ID collisions. \cmd{odgi extract}
-    allows extracting specific subregions of the graph as defined by query criteria, thereby simplifying the downstream
-    analyses and reducing the resources to work only with the extracted region.
+    components. \cmd{odgi explode} separates them in different files, while \cmd{odgi squeeze} merges
+    multiple graphs into the same file, preventing node ID collisions. \cmd{odgi extract} extracts regions of the graph
+    as defined by query criteria, thereby reducing the resources to work only with the subgraph.
 
     \topic{odgi position} in variation graphs the coordinates are provided by the embedded path sequences. Indeed, the node
     IDs are not meant to be stable. \cmd{odgi position} finds, translates, and liftovers graph and path positions between
