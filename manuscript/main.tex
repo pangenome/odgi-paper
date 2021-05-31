@@ -186,26 +186,32 @@
     meant to be stable. \texttt{odgi position} finds, translates, and liftovers graph and path positions between
     different graphs by exploiting their shared path sequences (Figure~1.B\vphantom{\ref{fig:01}}).
 
-    \begin{figure}[!tpb]%figure1
-        \fboxsep=0pt\colorbox{gray}{
-            \begin{minipage}[t]{235pt}
-                \vbox to 100pt{
-                    \vfill\hbox to
-                    235pt{\hfill\fontsize{24pt}{24pt}\selectfont FPO\hfill}
-                    \vfill
-                }
-            \end{minipage}}
-%\centerline{\includegraphics{fig01.eps}}
-        \caption{
-            Visualizing the Major Histocompatibility Complex (MHC) \textit{locus} pangenome. A) odgi viz 1D
-            visualization of 8 haploid, phased human genome assemblies plus the chm13 and GRCh38 reference genomes.
-            Graph nodes’ are arranged from left to right. The colored bars represent the linearized renderings of the
-            embedded paths versus the nodes in a binary matrix. The black lines under the paths are the links, which
-            represent the graph topology. B) Bandage~\citep{26099265} representation of the graph topology of a
-            consensus MHC pangenome graph representing only variations bigger than 100 bps. Gene labels were applied
-            exploiting \texttt{odgi position} to liftover gene coordinates from the full graph into the consensus
-            graph.
-        }\label{fig:01}
+
+    \begin{figure}
+      \begin{minipage}[b]{0.48\textwidth}
+        \includegraphics[width=\linewidth]{fig/mhc-align.eps}
+        \caption{(a) alignment}
+        \label{fig:1}
+      \end{minipage}
+
+      \begin{minipage}[b]{0.48\textwidth}
+        \includegraphics[width=\linewidth]{fig/mhc-pangenome.eps}
+        \caption{(b) Visualizing the Major Histocompatibility Complex
+          (MHC) \textit{locus} pangenome. A) odgi viz 1D visualization
+          of 8 haploid, phased human genome assemblies plus the chm13
+          and GRCh38 reference genomes.  Graph nodes’ are arranged
+          from left to right. The colored bars represent the
+          linearized renderings of the embedded paths versus the nodes
+          in a binary matrix. The black lines under the paths are the
+          links, which represent the graph topology. B)
+          Bandage~\citep{26099265} representation of the graph
+          topology of a consensus MHC pangenome graph representing
+          only variations bigger than 100 bps. Gene labels were
+          applied exploiting \texttt{odgi position} to liftover gene
+          coordinates from the full graph into the consensus graph.  }
+
+        \label{fig:2}
+      \end{minipage}
     \end{figure}
 
     \subsection{Performance on human data}
