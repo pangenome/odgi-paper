@@ -66,6 +66,7 @@
 
     \maketitle
 
+    \input{figure_p}
 
     \section{Introduction}
 
@@ -102,6 +103,7 @@
     thanks to its efficient path representation, \odgi\ tools can build the internal graph representation (the \odgi\
     format) in parallel, which is one of the major bottlenecks when working with very large and deep variation graphs,
     efficiently scaling up to hundreds of large vertebrate genomes.
+
 
     \odgi\ is entirely focused on "first-order" operations on the graph
     (Table~\ref{tab:01}), providing, unlike VG, no method to construct
@@ -185,8 +187,6 @@
     \topic{odgi position} in variation graphs the coordinates are provided by the embedded path sequences. Indeed, the node
     IDs are not meant to be stable. \cmd{odgi position} finds, translates, and liftovers graph and path positions between
     different graphs by exploiting their shared path sequences (Figure~2\vphantom{\ref{fig:2}}).
-
-    \input{figure_p}
 
     \subsection{Performance on human data}
 
