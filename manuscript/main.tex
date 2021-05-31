@@ -156,14 +156,12 @@
     algorithm. \cmd{odgi layout} and \cmd{odgi draw} bring the
     visualization in 2D. (Fig.~\ref{fig:1}b).
 
-    \topic{odgi stats, bin, depth \& degree} users can retrieve metrics describing the graph properties, such as the number of
-    nodes, edges, paths, and graph length. \odgi\ also offers more advanced tools for interrogating the graphs.
+    \topic{odgi stats, bin, depth \& degree} pangenome statistics allow exploring genome complexity at different
+    levels of abstraction. \cmd{odgi stats} returns the number of nodes, edges, paths, and graph length, while
     \cmd{odgi bin} summarizes the path information into bins of specified size, enabling a summarized view of
-    gigabase scale graphs. \cmd{odgi depth} returns the node depth as defined by query criteria, allowing users to
-    detect the complex regions in the graph due to sequences with highly identical repeats. Complex motifs can be also
-    detected with \cmd{odgi degree}, which returns the node degree as defined by query criteria. High degree nodes
-    are the mirror of misassemblies or problems in the pangenome building, making the tool useful for debugging the
-    process as well.
+    gigabase scale graphs. \cmd{odgi depth} and \cmd{odgi degree} return the node depth and degree, respectively, as
+    defined by query criteria, allowing users to detect complex regions due to sequences with highly identical
+    repeats, or problems in the pangenome graph.
 
     \topic{odgi break, groom, chop \& unchop} \odgi\ allows edit operations on the graphs. Cycles in the graph
     complicate downstream analyses: \cmd{odgi break} removes the cycles, reducing the complexity of the graph topology.
