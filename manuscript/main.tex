@@ -146,15 +146,11 @@
     \cmd{odgi validate} ascertains the graph data is correct, such as
     validating that paths respect the graph's topology.
 
-    \topic{odgi viz, sort, drawn \& layout} by visualizing pangenome
-    graphs, we can gain insight into the relationship between
-    genomes. \cmd{odgi viz} applies binding and direct rendering to
-    a raster image to generate a 1D representation able to scale up to
-    gigabase pangenome graphs (Figure~1\vphantom{\ref{fig:1}}).
-    However, pangenome graphs may present complex structures to
-    visualize: \cmd{odgi sort} finds the best node order to simplify
-    1D graph visualization by applying several cutting-edge sorting
-    algorithms. \cmd{odgi drawn} extends the visualization in 2D,
+    \topic{odgi viz, sort, drawn \& layout} pangenome visualization is important to gain insight
+    into the relationship between the embedded genomes. \cmd{odgi viz} generates a 1D representation
+    able to scale up to gigabase pangenome graphs (Figure~1\vphantom{\ref{fig:1}}).
+    \cmd{odgi sort} finds the best node order to simplify the graph visualization by applying several
+    cutting-edge sorting algorithms. \cmd{odgi drawn} extends the visualization in 2D,
     taking in input the layouts built by \cmd{odgi layout}.
 
     \topic{odgi stats, bin, depth \& degree} users can retrieve metrics describing the graph properties, such as the number of
