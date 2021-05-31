@@ -167,15 +167,12 @@
     user provided criteria. These methods allow detection of complex
     genomic regions.
 
-    \topic{odgi break, groom, chop \& unchop} \odgi\ allows edit operations on the graphs. Cycles in the graph
-    complicate downstream analyses: \cmd{odgi break} removes the cycles, reducing the complexity of the graph topology.
-    \cmd{odgi groom} removes spurious inverting links by exploring the graph from the orientation supported by most
-    paths. To enable efficient sequence alignment against the graph, long nodes can be divided into shorter nodes
-    at a maximum requested size using \cmd{odgi chop}. Partial order alignment, which consists of aligning sequences
-    against a directed acyclic graph (DAG), is frequently used in pangenome building pipelines, but the current
-    implementations return DAGs with 1-bp long nodes; \cmd{odgi unchop} allows joining nodes that can be merged
-    without changing the graph topology, nor the embedded sequences, obtaining an equivalent, but more compact,
-    representation of the graph.
+    \topic{odgi break, groom, chop \& unchop} \odgi\ pangenome graphs are dynamic structures in \odgi\.
+    \cmd{odgi break} removes cycles in the graph, reducing its topology complexity. \cmd{odgi groom}
+    removes spurious inverting links by exploring the graph from the orientation supported by most paths. \cmd{odgi chop}
+    divides long nodes into shorter ones at a maximum requested size, simplifying downstream analysis.
+    \cmd{odgi unchop} allows joining nodes that can be merged without changing the graph topology, nor the
+    embedded sequences, obtaining an equivalent, but more compact, representation of the graph.
 
     \topic{odgi explode, squeeze \& extract} pangenome graphs can embed multiple chromosomes as separated connected
     components (inter-chromosomal structural variants would join the components into bigger ones).
