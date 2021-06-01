@@ -49,8 +49,8 @@
     \editor{Associate Editor: XXXXXXX}
 
     \abstract{ \textbf{Motivation:} Pangenomes address the
-      shortcomings of mainline genomics workflows, in particular with
-      regard to reference genome bias and the identifation of complex
+      shortcomings of mainline genomics workflows, in particular
+      concerning reference genome bias and identification of complex
       structural variants.
         %
         \\ \textbf{Results:} Here we present \odgi\, a novel range of
@@ -59,7 +59,7 @@
         large genomes at the same time while maintaining fast
         execution runtime and low memory overheads.  \odgi\ includes
         tools for detecting complex regions, extracting \textit{loci},
-        exploratory analysis, sorting, removing artifacts, and graphs
+        exploratory analysis, sorting, removing artifacts, and graph
         manipulation and visualisation.
         %
         \\
@@ -70,7 +70,7 @@
         \textbf{Contact:}
         % \href{andreaguarracino@outlook.com}{andreaguarracino@outlook.com},
         egarris5@uthcs.edu\\
-        \textbf{Supplementary information:} Supplementary data are available at \textit{Bioinformatics} online.}
+        \textbf{Supplementary information:} Supplementary data are available at \textit{Bioinformatics} online. \FIXME}
 
     \maketitle
 
@@ -82,28 +82,29 @@
     assemblies are produced at a high rate, including the human
     pangenome reference consortium (HPRC) and telomere-to-telemere
     efforts, e.g.~\citep{Miga:2020}.  A pangenome models the full set
-    of genomic elements in a given species or clade. Pangenomics thus
-    stands in contrast to reference-based genomic approaches which
+    of genomic elements in a given species or clade. Pangenomics
+    therefore contrasts with reference genome based approaches which
     relate sequences to a particular consensus model of the
     genome~\citep{Eizenga:2020}. A pangenome can elegantly be
     represented by a graph data structure incorporating sequences as
-    nodes and their connections as edges. These nodes can be shared
-    for homologs and orthologs.  A `bidirected' graph represents both
-    strands of DNA and so-called paths represent contigs that run
-    through the nodes. A path can represent a chromosome or part
-    thereof.
+    nodes and their connections as edges. These nodes are shared for
+    homologs, paralogs and orthologs.  A `bidirected' graph represents
+    both strands of DNA and so-called paths represent contigs that run
+    through the nodes. A path can represent an individual chromosome
+    or part thereof. Such a graph-based approach is particularly
+    relevant for highly repetitive regions. Segmental duplications,
+    and acrocentric chromosomes lead to graphs which present very high
+    node depths which greatly increases processing complexity.
 
-    A major challenge is writing software that can deal with the size
-    of these graphs. vgtools pioneered graph
+    A major challenge is writing software that can deal with the sheer
+    size of these graphs representing hundreds, and soon thousands, of
+    human genomes. The \vg\ toolkit pioneered graph
     processing~\citep{vgtools,Eizenga:2020b}, but was not designed for
-    processing large data (see Table~\ref{tab:02}). With \odgi\ we
+    large data (see Table~\ref{tab:02}). With \odgi\ we
     wrote a new toolset and API in \Cpp\ named Optimized Dynamic
-    Genome/Graph Implementation (ODGI).  that implements is a memory
-    efficient graph structure that can be dynamically updated using
-    multiple CPUs. This is particularly relevant for highly repetitive
-    regions. Segmental duplications, and acrocentric chromosomes lead
-    to graphs which present very high node depths which greatly
-    increases processing complexity.
+    Genome/Graph Implementation (ODGI). \odgi\ implements a efficient
+    graph structure in RAM that can be dynamically updated using
+    multiple CPUs.
 
     Note that \odgi\ is focused on `first-order' graph
     operations.  Other tools are required to construct graphs from raw
@@ -121,9 +122,9 @@
     applies concepts first introduced in the dynamic version of the
     graph extension of the positional Burrows-Wheeler
     transform~\citep{Siren:2020}. For implementation details see the
-    \odgi\ online documentation. \odgi\ includes the following tools
+    \odgi\ online documentation. \odgi\ includes the following tools:
 
-    \topic{odgi build, view \& validate} pangenome graphs can be
+    \indent \topic{odgi build, view \& validate} pangenome graphs can be
     stored in the textual Graphical Fragment Assembly
     (GFAv1) format\citep{GFA}; \cmd{odgi build} and \cmd{odgi view}
     convert graphs from GFA to the \odgi\ format and \textit{vice versa}.
