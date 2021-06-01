@@ -5,6 +5,7 @@
 \usepackage{subfigure}
 
 \newcommand{\odgi}{ODGI}
+\newcommand{\FIXME}{\textbf{!!FIXME!!}}
 \newcommand{\cmd}[1]{{\scriptsize\textrm{#1}}}
 \newcommand{\cmdbf}[1]{{\textbf{#1}}}
 \newcommand{\topic}[1]{{\cmdbf{#1}}:}
@@ -193,15 +194,19 @@
 
     \subsection{Performance on human data}
 
-    Table~\ref{tab:02} shows a comparison of the operations necessary to extract a subgraph using \odgi\ and VG. The
-    example consists in extracting the centromeres from a pangenome graph made from 88 haploid, phased human genome
-    assemblies from 44 individuals from the Human Pangenome Reference Consortium year 1 assembly (see Data
-    Availability), plus the chm13 and GRCh38 reference genomes, for a total of 90 haplotypes. All commands are provided
-    in the Supplementary Material.
+    Table~\ref{tab:02} shows a comparison of the operations necessary to extract a subgraph using \odgi\ and VG.
 
     %TODO to repeat on a bigger machine to avoid vg crashing
     \begin{table}[!t]
-        \processtable{Centromeres extraction comparison using \odgi\ and VG
+      \processtable{Example of performance improvement between
+        \cmd{odgi extract} and \cmd{VG something}. Centromere region
+        is extracted from CHR ?? of the HPRC year 1
+        assembly\citep{HPRC}, i.e., 88 haploid, phased human genome
+        assemblies from 44 individuals plus the chm13 and GRCh38
+        reference genomes stored in 100GB(?) GFA format. All timings
+        were performed on a server class machine on SSD MODEL with X
+        GB of RAM and 48 CPU cores (Y x 12 core AMD Opteron) Processor
+        MODEL @ 3.3 GHz with 8MB L2 Cache.\FIXME
           \label{tab:02}} {
           \resizebox{.99\columnwidth}{!}{
             \begin{tabular}{@{}lllll@{}}
