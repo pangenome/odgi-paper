@@ -4,6 +4,8 @@
 \usepackage{xspace} % for Cpp
 \usepackage{subfigure}
 
+\usepackage{natbib}
+
 \newcommand{\odgi}{ODGI}
 \newcommand{\FIXME}{\textbf{!!FIXME!!}}
 \newcommand{\cmd}[1]{{\scriptsize\textrm{#1}}}
@@ -138,13 +140,53 @@
     structure includes a byte-width mutex lock.
 
 
+    Table~\ref{tab:02} shows a comparison of the operations necessary to extract a subgraph using \odgi\ and VG.
+
+    %TODO to repeat on a bigger machine to avoid vg crashing
+    \begin{table}[!t]
+      \processtable{Example of performance improvement between
+        \cmd{odgi} and \cmd{VG} equivalent commands with output file
+        sizes. The centromere region was extracted from CHR 6 of the
+        HPRC year one assembly\citep{HPRC}, i.e., 88 haploid, phased
+        human genome assemblies from 44 individuals plus the chm13
+        cell line and GRCh38 reference genomes stored in 4.3GB GFA
+        format\citep{GFA}.
+        %
+        First GFS was converted from GFA to \odgi\ and \cmd{vg}
+        formats, respectively.  \odgi's path implementation can
+        process paths in parallel, outperforming \cmd{vg}. For the
+        same reason \cmd{odgi extract} is $20\times$ faster than
+        \cmd{vg chunk} extracting a portion from the full
+        graph. \FIXME: vg never finished.
+        %
+        All timings were performed on a server class machine
+        on SSD MODEL with X GB of RAM and 48 CPU cores (Y x 12 core
+        AMD Opteron) Processor MODEL @ 3.3 GHz with 8MB L2
+        Cache.\FIXME
+          \label{tab:02}} {
+          \resizebox{.99\columnwidth}{!}{
+            \begin{tabular}{@{}lllll@{}}
+                \toprule Operation & Tool & Runtime (mm:ss) & Memory (GB) & Output size (GB)    \\
+                \midrule
+                Format conversion                           &       &       &                   \\
+                                    & \cmd{odgi build}      & 1:35  & 10.39 & 5.4               \\
+                                    & \cmd{vg convert}      & 8:14  & 28.43 & 6.1               \\
+                Subgraph extraction                         &       &       &                   \\
+                                    & \cmd{odgi extract}    & 1:15  & 9.43  & 2.7               \\
+                                    & \cmd{vg chunk}        & 21:09 & 59.33 & 1.7               \\
+                \botrule
+            \end{tabular}}}
+
+    \end{table}
+
+
     \section{Features}
 
     \odgi\ has a wide range of commands.
 
     \topic{odgi build, view \& validate} pangenome graphs can be
     stored in the textual Graphical Fragment Assembly
-    (GFAv1) format\citep{GFAv1}; \cmd{odgi build} and \cmd{odgi view}
+    (GFAv1) format\citep{GFA}; \cmd{odgi build} and \cmd{odgi view}
     convert graphs from GFA to the \odgi\ format and \textit{vice versa}.
     \cmd{odgi validate} ascertains the graph data is correct, such as
     validating that paths respect the graph's topology.
@@ -197,46 +239,6 @@
 
 
 
-    Table~\ref{tab:02} shows a comparison of the operations necessary to extract a subgraph using \odgi\ and VG.
-
-    %TODO to repeat on a bigger machine to avoid vg crashing
-    \begin{table}[!t]
-      \processtable{Example of performance improvement between
-        \cmd{odgi} and \cmd{VG} equivalent commands with output file
-        sizes. The centromere region was extracted from CHR 6 of the
-        HPRC year one assembly\citep{HPRC}, i.e., 88 haploid, phased
-        human genome assemblies from 44 individuals plus the chm13
-        cell line and GRCh38 reference genomes stored in 4.3GB GFA
-        format.
-        %
-        First GFS was converted from GFA to \odgi\ and \cmd{vg}
-        formats, respectively.  \odgi's path implementation can
-        process paths in parallel, outperforming \cmd{vg}. For the
-        same reason \cmd{odgi extract} is $20\times$ faster than
-        \cmd{vg chunk} extracting a portion from the full
-        graph. \FIXME: vg never finished.
-        %
-        All timings were performed on a server class machine
-        on SSD MODEL with X GB of RAM and 48 CPU cores (Y x 12 core
-        AMD Opteron) Processor MODEL @ 3.3 GHz with 8MB L2
-        Cache.\FIXME
-          \label{tab:02}} {
-          \resizebox{.99\columnwidth}{!}{
-            \begin{tabular}{@{}lllll@{}}
-                \toprule Operation & Tool & Runtime (mm:ss) & Memory (GB) & Output size (GB)    \\
-                \midrule
-                Format conversion                           &       &       &                   \\
-                                    & \cmd{odgi build}      & 1:35  & 10.39 & 5.4               \\
-                                    & \cmd{vg convert}      & 8:14  & 28.43 & 6.1               \\
-                Subgraph extraction                         &       &       &                   \\
-                                    & \cmd{odgi extract}    & 1:15  & 9.43  & 2.7               \\
-                                    & \cmd{vg chunk}        & 21:09 & 59.33 & 1.7               \\
-                \botrule
-            \end{tabular}}}
-
-    \end{table}
-
-
     \section{Discussion}
     We implemented a tool suite, \odgi\, which is simple to work with to analyse and manipulate pangenome graphs at a
     population scale. ODGI's path implementation allows working with graphs of any complexity, without particular
@@ -280,7 +282,7 @@
 
 %    \vspace*{-12pt}
 
-%\bibliographystyle{natbib}
+\bibliographystyle{natbib}
 %\bibliographystyle{achemnat}
 %\bibliographystyle{plainnat}
 %\bibliographystyle{abbrv}
@@ -290,39 +292,6 @@
 %
 %\bibliography{Document}
 
-    %ToDo
-    \begin{thebibliography}{}
+\bibliography{bibliography}
 
-        \bibitem[Bofelli {\it et~al}., 2000]{Boffelli03}
-        Bofelli,F., Name2, Name3 (2003) Article title, {\it Journal Name}, {\bf 199}, 133-154.
-
-        \bibitem[Bag {\it et~al}., 2001]{Bag01}
-        Bag,M., Name2, Name3 (2001) Article title, {\it Journal Name}, {\bf 99}, 33-54.
-
-        \bibitem[Yoo \textit{et~al}., 2003]{Yoo03}
-        Yoo,M.S. \textit{et~al}. (2003) Oxidative stress regulated genes
-        in nigral dopaminergic neurnol cell: correlation with the known
-        pathology in Parkinson's disease. \textit{Brain Res. Mol. Brain
-        Res.}, \textbf{110}(Suppl. 1), 76--84.
-
-        \bibitem[Lehmann, 1986]{Leh86}
-        Lehmann,E.L. (1986) Chapter title. \textit{Book Title}. Vol.~1, 2nd edn. Springer-Verlag, New York.
-
-        \bibitem[Crenshaw and Jones, 2003]{Cre03}
-        Crenshaw, B.,III, and Jones, W.B.,Jr (2003) The future of clinical
-        cancer management: one tumor, one chip. \textit{Bioinformatics},
-        doi:10.1093/bioinformatics/btn000.
-
-        \bibitem[Auhtor \textit{et~al}. (2000)]{Aut00}
-        Auhtor,A.B. \textit{et~al}. (2000) Chapter title. In Smith, A.C.
-        (ed.), \textit{Book Title}, 2nd edn. Publisher, Location, Vol. 1, pp.
-        ???--???.
-
-        \bibitem[Bardet, 1920]{Bar20}
-        Bardet, G. (1920) Sur un syndrome d'obesite infantile avec
-        polydactylie et retinite pigmentaire (contribution a l'etude des
-        formes cliniques de l'obesite hypophysaire). PhD Thesis, name of
-        institution, Paris, France.
-
-    \end{thebibliography}
 \end{document}
