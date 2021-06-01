@@ -7,6 +7,8 @@
 \usepackage{natbib}
 
 \newcommand{\odgi}{ODGI}
+\newcommand{\vg}{VG}
+
 \newcommand{\FIXME}{\textbf{!!FIXME!!}}
 \newcommand{\cmd}[1]{{\scriptsize\textrm{#1}}}
 \newcommand{\cmdbf}[1]{{\textbf{#1}}}
@@ -76,113 +78,50 @@
 
     \section{Introduction}
 
-    A pangenome models the full set of genomic elements in a population~\citep{32453966}. Indeed, these data structures
-    encode the mutual relationships between all the genomes represented, in contrast to reference-based approaches
-    which relate sequences only to a particular genome, chosen as reference. A class of methods to represent
-    pangenomes involves the \textit{sequence graphs}~\citep{2488477}, where similar orthologous regions between genomes
-    collapse into a single representative sequence. In \textit{node-labeled} sequence graphs, nodes indicate DNA
-    sequences, with edges connecting the nodes that are concatenated in the sequences represented in the graph. A
-    \textit{bidirected} sequence graph represents both strands of DNA. On this model, \textit{variation graphs} add the
-    concept of \textit{path} to embed linear sequences (e.g., genomes or haplotypes) into the graph~\citep{30125266}.
-    Paths provide a stable coordinate system, allowing graph annotations and interoperability between different graphs.
+    Thanks to advances in sequencing technologies, new genome
+    assemblies are produced at a high rate, including the human
+    pangenome reference consortium (HPRC) and telomere-to-telemere
+    efforts, e.g.~\citep{Miga:2020}.  A pangenome models the full set
+    of genomic elements in a given species or clade. Pangenomics thus
+    stands in contrast to reference-based genomic approaches which
+    relate sequences to a particular consensus model of the
+    genome~\citep{Eizenga:2020}. A pangenome can elegantly be
+    represented by a graph data structure incorporating sequences as
+    nodes and their connections as edges. These nodes can be shared
+    for homologs and orthologs.  A `bidirected' graph represents both
+    strands of DNA and so-called paths represent contigs that run
+    through the nodes. A path can represent a chromosome or part
+    thereof.
 
-    Thanks to advances in sequencing technologies, new genome assemblies are produced at a high rate. This amount of
-    data offers the opportunity to study genomic variation as never before, but it also brings challenges in how to
-    represent and manipulate hundreds of genomes at a gigabase scale. Variation graphs compactly represent the full
-    genetic variation across a population, but graph-based data structures present computational overheads: in addition
-    to the sequences, they must also represent the graph topology. Several genome data structures were developed to
-    address these challenges~\citep{33040146}. Memory-efficient representations do not allow dynamic updates to the
-    graph. Furthermore, the changes must perform efficiently on the complex graphs generated from whole-genome
-    alignment of vertebrates. Highly repetitive regions, such as centromeres, segmental duplications, and acrocentric
-    chromosomes lead to graphs which present very high-depth nodes. The node depth is defined as the
-    number of times in which the node is crossed by all the paths embedded in the graph. High depth increases the
-    complexity of the operations performed on the paths and the nodes they cross.
+    A major challenge is writing software that can deal with the size
+    of these graphs. vgtools pioneered graph
+    processing~\citep{vgtools,Eizenga:2020b}, but was not designed for
+    processing large data (see Table~\ref{tab:02}). With \odgi\ we
+    wrote a new toolset and API in \Cpp\ named Optimized Dynamic
+    Genome/Graph Implementation (ODGI).  that implements is a memory
+    efficient graph structure that can be dynamically updated using
+    multiple CPUs. This is particularly relevant for highly repetitive
+    regions. Segmental duplications, and acrocentric chromosomes lead
+    to graphs which present very high node depths which greatly
+    increases processing complexity.
 
-    To overcome this limitation, we have developed an Optimized Dynamic Genome/Graph Implementation (ODGI). Each tool
-    loads graphs into the succinct dynamic HandleGraph model~\citep{33040146} and applies methods based on the
-    HandleGraph API. Several algorithms are shared with the VG toolkit (VG)~\citep{30125266}, the state-of-the-art
-    toolkit for working with pangenome graphs. However, although similar in scope to VG, \odgi\ importantly differs in
-    its design to support highly complex pangenome graphs. The majority of the \odgi\ tools are implemented in an
-    index-free manner, avoiding the burning task to create an index structure. Indeed, index-constrained
-    implementations require building indexes also for single or little operations on the graphs. Moreover,
-    thanks to its efficient path representation, \odgi\ tools can build the internal graph representation (the \odgi\
-    format) in parallel, which is one of the major bottlenecks when working with very large and deep graphs,
-    scaling up to hundreds of large vertebrate genomes.
+    Note that \odgi\ is focused on `first-order' graph
+    operations.  Other tools are required to construct graphs from raw
+    sequences, map reads, or call variants.  \odgi\ provides
+    operations on an existing graph, such as subset, subdivide, break,
+    combine, normalize and order its components, nodes, and
+    paths. Most of the tools are designed to be applied together,
+    piping the output of one tool into the next.
 
+    \vspace{-0.1in}
 
-    \odgi\ is entirely focused on "first-order" operations on the graph
-    (Table~\ref{tab:01}), providing, unlike VG, no method to construct
-    graphs from raw sequences, map reads, or call variants. It
-    supports interrogation of the graph for basic dimensional
-    properties, positional and path-related queries, and visualisation
-    in one-dimension (1D) and two-dimensions (2D). \odgi\ also supports
-    operations on the graph such as subset, subdivide, break, combine,
-    normalize, or order its components, nodes, and paths. Most of the
-    tools are designed to be applied together, piping the output of
-    one tool into the next, thereby preventing the creation of
-    intermediate files, and reducing the number of IO operations.
+    \section{Results}
 
-    \section{Methods}
-
-    \odgi\ is designed to build and modify paths in parallel, keeping its representation in memory efficient. It
-    applies concepts first introduced in the dynamic version of the Graph BWT~\citep{31406990}, a scalable
-    implementation of the graph extension of the positional Burrows-Wheeler transform~\citep{28702075}. Specifically,
-    we build a \textit{node-local} model of the graph, where the graph is stored in a vector of node structures.
-    The identifier of each node is its offset in this vector plus 1. Each structure contains the sequence of the
-    node, its edges in both directions (forward and backward), and a vector of \textit{path steps} that describes
-    how the embedded paths walk across the node. Each step records the path identifier and the previous and next
-    path steps on the same path. To reduce the encoding, we encode path steps using a local alphabet that maps the
-    \textit{N} neighbors of the node into the range \textit{1..N}. To further save space, \textit{node deltas},
-    rather than IDs, are stored in this alphabet. The delta between two nodes is defined as their distance in the
-    graph vector (i.e., the difference between the node offsets). The path step vector, of length \textit{n}, is
-    stored using a dynamic succinct integer vector that requires \textit{O(5nw)} bits, where \textit{w} is
-    \textit{\textasciitilde log\textsubscript{2}(N)}. Finally, to allow operating on path steps in parallel, each node
-    structure includes a byte-width mutex lock.
-
-
-    Table~\ref{tab:02} shows a comparison of the operations necessary to extract a subgraph using \odgi\ and VG.
-
-    %TODO to repeat on a bigger machine to avoid vg crashing
-    \begin{table}[!t]
-      \processtable{Example of performance improvement between
-        \cmd{odgi} and \cmd{VG} equivalent commands with output file
-        sizes. The centromere region was extracted from CHR 6 of the
-        HPRC year one assembly\citep{HPRC}, i.e., 88 haploid, phased
-        human genome assemblies from 44 individuals plus the chm13
-        cell line and GRCh38 reference genomes stored in 4.3GB GFA
-        format\citep{GFA}.
-        %
-        First GFS was converted from GFA to \odgi\ and \cmd{vg}
-        formats, respectively.  \odgi's path implementation can
-        process paths in parallel, outperforming \cmd{vg}. For the
-        same reason \cmd{odgi extract} is $20\times$ faster than
-        \cmd{vg chunk} extracting a portion from the full
-        graph. \FIXME: vg never finished.
-        %
-        All timings were performed on a server class machine
-        on SSD MODEL with X GB of RAM and 48 CPU cores (Y x 12 core
-        AMD Opteron) Processor MODEL @ 3.3 GHz with 8MB L2
-        Cache.\FIXME
-          \label{tab:02}} {
-          \resizebox{.99\columnwidth}{!}{
-            \begin{tabular}{@{}lllll@{}}
-                \toprule Operation & Tool & Runtime (mm:ss) & Memory (GB) & Output size (GB)    \\
-                \midrule
-                Format conversion                           &       &       &                   \\
-                                    & \cmd{odgi build}      & 1:35  & 10.39 & 5.4               \\
-                                    & \cmd{vg convert}      & 8:14  & 28.43 & 6.1               \\
-                Subgraph extraction                         &       &       &                   \\
-                                    & \cmd{odgi extract}    & 1:15  & 9.43  & 2.7               \\
-                                    & \cmd{vg chunk}        & 21:09 & 59.33 & 1.7               \\
-                \botrule
-            \end{tabular}}}
-
-    \end{table}
-
-
-    \section{Features}
-
-    \odgi\ has a wide range of commands.
+    \odgi\ is designed to build and modify paths in parallel. It
+    applies concepts first introduced in the dynamic version of the
+    graph extension of the positional Burrows-Wheeler
+    transform~\citep{Siren:2020}. For implementation details see the
+    \odgi\ online documentation. \odgi\ includes the following tools
 
     \topic{odgi build, view \& validate} pangenome graphs can be
     stored in the textual Graphical Fragment Assembly
@@ -237,17 +176,57 @@
     Fig.~\ref{fig:1b}.
 
 
-
-
     \section{Discussion}
-    We implemented a tool suite, \odgi\, which is simple to work with to analyse and manipulate pangenome graphs at a
-    population scale. ODGI's path implementation allows working with graphs of any complexity, without particular
-    limitations. We have demonstrated that \odgi\ tools efficiently perform with pangenome graphs embedding full human
-    chromosomes. \odgi\ is not only a tool suite but also a library, already used in pangenome graphs building
-    (\citep{pggb}) and normalization (\citep{smoothxg}). Furthermore, users can add new tools, exploiting ODGI as a
-    framework where to implement algorithms working on variation graphs. Therefore, \odgi\ offers an efficient and
-    extendable suite of tools ready for the upcoming challenges in the analyses of hundreds of genomes at a gigabase
-    scale that characterize the pangenomic era.
+
+    Pangenome graphs stand to become a ubiquitous tool in
+    genomics\citep{Eizenga:2020}.  With \odgi\ we implemented a
+    state-of-the-art tool suite, that can transform, analyse and
+    visualise pangenome graphs at scale.  \odgi\ also exposes an API
+    that is used by other tools for pangenome graph building and
+    normalization. Future work will add support for RNA and protein
+    sequences and expand on metadata capabilities of large pangenome
+    graphs.
+
+    %TODO to repeat on a bigger machine to avoid vg crashing
+    \begin{table}[th]
+      \processtable{\small
+        Example of performance improvement between
+        \cmd{odgi} and \cmd{vg}~\citep{vgtools} equivalent commands with output file
+        sizes. The centromere region was extracted from CHR 6 of the
+        HPRC year one assembly, i.e., 88~haploid, phased
+        human genome assemblies from 44~individuals plus the chm13
+        cell line and GRCh38 reference genomes stored in 4.3GB~GFA
+        format\citep{GFA}.
+        %
+        First GFS was converted from GFA to \odgi\ and \vg\
+        formats, respectively.  \odgi's path implementation can
+        process paths in parallel, outperforming \vg. For the
+        same reason \cmd{odgi extract} is $20\times$ faster than
+        \cmd{vg chunk} extracting a portion from the full
+        graph. \FIXME: vg never finished.
+        %
+        All timings were performed on a server class machine
+        on SSD MODEL with X GB of RAM and 48 CPU cores (Y x 12 core
+        AMD Opteron) Processor MODEL @ 3.3 GHz with 8MB L2
+        Cache.\FIXME
+        % \vspace{0.5in}
+        \label{tab:02}}
+                   {
+                     % \resizebox{.8\textwidth}{!}{
+            \begin{tabular*}{.5\textwidth}{@{}lllll@{}}
+                \toprule Operation & Tool & Runtime (mm:ss) & Memory (GB) & Output size (GB)    \\
+                \midrule
+                Format conversion                           &       &       &                   \\
+                                    & \cmd{odgi build}      & 1:35  & 10.39 & 5.4               \\
+                                    & \cmd{vg convert}      & 8:14  & 28.43 & 6.1               \\
+                Subgraph extraction                         &       &       &                   \\
+                                    & \cmd{odgi extract}    & 1:15  & 9.43  & 2.7               \\
+                                    & \cmd{vg chunk}        & 21:09 & 59.33 & 1.7               \\
+                \botrule
+            \end{tabular*}} %}
+
+    \end{table}
+
 
 %\begin{figure}[!tpb]%figure2
 %%\centerline{\includegraphics{fig02.eps}}
@@ -265,7 +244,7 @@
     % \textit{Financial Support}: none declared.
 
     \textit{Conflict of Interest}: none declared.
-    \vspace*{+12pt}
+    % \vspace*{+12pt}
 
     % \section*{Data availability}
 
