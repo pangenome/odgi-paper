@@ -17,7 +17,7 @@
 \copyrightyear{2021} \pubyear{2021}
 
 \access{Advance Access Publication Date: Day Month Year}
-\appnotes{Manuscript Category}
+\appnotes{Application Note}
 
 \begin{document}
     \firstpage{1}
@@ -44,26 +44,28 @@
 
     \editor{Associate Editor: XXXXXXX}
 
-    \abstract{
-        \textbf{Motivation:} Pangenome graphs provide a complete representation of
-        genomic information that allows for complex population-sized analysis of genomes
-        without introducing reference genome bias.
+    \abstract{ \textbf{Motivation:} Pangenomes address the
+      shortcomings of mainline genomics workflows, in particular with
+      regard to reference genome bias and the identifation of complex
+      structural variants.
         %
-        \\
-        \textbf{Results:} Here we present \odgi\, a novel range of tools that makes use of an efficient
-        in-memory representation of DNA graphs structured in the variation graph model. \odgi\ can
-        handle hundreds of large genomes while maintaining fast execution runtime and low memory overhead.
-        \odgi\ includes tools for detecting complex regions, extracting \textit{loci}, exploratory analysis,
-        sorting, removing artifacts, and graphs manipulation and visualisation.
+        \\ \textbf{Results:} Here we present \odgi\, a novel range of
+        scalable tools that makes use of an efficient in-memory
+        representation of DNA graphs. \odgi\ can handle hundreds of
+        large genomes at the same time while maintaining fast
+        execution runtime and low memory overheads.  \odgi\ includes
+        tools for detecting complex regions, extracting \textit{loci},
+        exploratory analysis, sorting, removing artifacts, and graphs
+        manipulation and visualisation.
         %
         \\
         \textbf{Availability:} \odgi\ is software written in the \Cpp\ programming language and
-        published under the libre MIT license. Source code and user manual can be downloaded from
+        published under the permissive MIT license. Source code and user manual can be downloaded from
         \href{https://github.com/pangenome/odgi}{https://github.com/pangenome/odgi}.\\
         %
         \textbf{Contact:}
         % \href{andreaguarracino@outlook.com}{andreaguarracino@outlook.com},
-        \href{erik.garrison@gmail.com}{erik.garrison@gmail.com}\\
+        egarris5@uthcs.edu\\
         \textbf{Supplementary information:} Supplementary data are available at \textit{Bioinformatics} online.}
 
     \maketitle
@@ -192,21 +194,32 @@
     --- to display coordiates and other localised features, as is shown in
     Fig.~\ref{fig:1b}.
 
-    \subsection{Performance on human data}
+
+
 
     Table~\ref{tab:02} shows a comparison of the operations necessary to extract a subgraph using \odgi\ and VG.
 
     %TODO to repeat on a bigger machine to avoid vg crashing
     \begin{table}[!t]
       \processtable{Example of performance improvement between
-        \cmd{odgi extract} and \cmd{VG something}. Centromere region
-        is extracted from CHR 6 of the HPRC year 1
-        assembly\citep{HPRC}, i.e., 88 haploid, phased human genome
-        assemblies from 44 individuals plus the chm13 and GRCh38
-        reference genomes stored in 4.3GB GFA format. All timings
-        were performed on a server class machine on SSD MODEL with X
-        GB of RAM and 48 CPU cores (Y x 12 core AMD Opteron) Processor
-        MODEL @ 3.3 GHz with 8MB L2 Cache.\FIXME
+        \cmd{odgi} and \cmd{VG} equivalent commands with output file
+        sizes. The centromere region was extracted from CHR 6 of the
+        HPRC year one assembly\citep{HPRC}, i.e., 88 haploid, phased
+        human genome assemblies from 44 individuals plus the chm13
+        cell line and GRCh38 reference genomes stored in 4.3GB GFA
+        format.
+        %
+        First GFS was converted from GFA to \odgi\ and \cmd{vg}
+        formats, respectively.  \odgi's path implementation can
+        process paths in parallel, outperforming \cmd{vg}. For the
+        same reason \cmd{odgi extract} is $20\times$ faster than
+        \cmd{vg chunk} extracting a portion from the full
+        graph. \FIXME: vg never finished.
+        %
+        All timings were performed on a server class machine
+        on SSD MODEL with X GB of RAM and 48 CPU cores (Y x 12 core
+        AMD Opteron) Processor MODEL @ 3.3 GHz with 8MB L2
+        Cache.\FIXME
           \label{tab:02}} {
           \resizebox{.99\columnwidth}{!}{
             \begin{tabular}{@{}lllll@{}}
@@ -222,11 +235,6 @@
             \end{tabular}}}
 
     \end{table}
-
-    To work with \odgi\ and VG it is first necessary to convert the graph from GFA to \odgi\ and VG format, respectively.
-    Thanks to the \odgi\ format's path implementation, \cmd{odgi build} embeds the paths in parallel, outperforming
-    \cmd{vg convert} in the same task. For the same reason, \cmd{odgi extract} results 20 times faster than
-    \cmd{vg chunk} in extracting a portion from the full graph.
 
 
     \section{Discussion}
