@@ -78,8 +78,8 @@
     \section{Introduction}
 
     Thanks to advances in sequencing technology, new full-length
-    genome assemblies are produced at a high rate, including
-    efforts from the Human Pangenome Reference Consortium (HPRC) and
+    genome assemblies are produced at a high rate, including efforts
+    from the Human Pangenome Reference Consortium (HPRC) and
     telomere-to-telemere projects, e.g.~\citep{Miga:2020}. In
     principle, a pangenome can model a full set of genomic elements of
     individuals in a given species or clade. Pangenomics contrasts
@@ -87,23 +87,25 @@
     single consensus model of the genome~\citep{Eizenga:2020}. A
     pangenome can elegantly be represented by a graph data structure
     incorporating sequences as nodes and their connections as
-    edges. These nodes are shared for homologs, paralogs and
-    orthologs. So-called paths can represent reads, contigs, haplotypes,
-    individual chromosomes or part thereof, that run through the
-    nodes. A bi-directed graph can even contain both strands of DNA
-    as paths. A graph-based approach is particularly relevant for
-    exploring complex variation and highly repetitive regions present
-    which characterises the vertebrate genomes.
+    edges. These nodes are shared for identical sequences, such as
+    homologs, paralogs and orthologs. So-called paths can represent
+    reads, contigs, haplotypes, individual chromosomes or part
+    thereof, that run through the nodes. A bi-directed graph can even
+    contain both strands of DNA as paths. A graph-based approach is
+    particularly relevant for exploring complex variation and highly
+    repetitive regions present which characterises the vertebrate
+    genomes.
 
     A major challenge is writing software that can deal with the sheer
     size of these graphs representing hundreds, and soon thousands, of
     human genomes. The \vg\ toolkit pioneered graph
-    processing~\citep{vgtools,Eizenga:2020b}, but does not scale for
-    large data (see Table~\ref{tab:02}). We
-    wrote a new toolset and Application Programming Interface (API)
-    in \Cpp\ named Optimized Dynamic Genome/Graph Implementation (ODGI).
+    processing~\citep{vgtools,Eizenga:2020b}, but we found it does not
+    necessarily scale for large data (see Table~\ref{tab:02}). We
+    wrote a new toolset and Application Programming Interface (API) in
+    \Cpp\ named Optimized Dynamic Genome/Graph Implementation (ODGI).
     \odgi\ implements a efficient graph structure in computer memory
-    that can be dynamically updated using multiple CPU cores in parallel.
+    that can be dynamically updated using multiple CPU cores in
+    parallel.
 
     Note that \odgi\ is focused on `first-order' graph
     operations. Other tools are required to construct graphs from raw
@@ -113,10 +115,10 @@
     paths. Most of the tools are designed to be applied together,
     piping the output from one tool into the next.
 
-    % \vspace{-0.1in}
 
     \input{figure_p}
 
+    \vspace{-0.1in}
 
     \section{Results}
 
@@ -124,36 +126,35 @@
     applies concepts first introduced in the dynamic version of the
     graph extension of the positional Burrows-Wheeler
     transform~\citep{Siren:2020}. For implementation details see the
-    \odgi\ online documentation. \odgi\ currently comes with over 30
-    tools, including:
+    \odgi\ online documentation. \odgi\ currently comes with more than 30
+    tools and here we present a subset of functionality:
 
     \indent \topic{odgi build, view \& validate} pangenome graphs can be
     stored in the textual Graphical Fragment Assembly
-    (GFAv1) format\citep{GFA}. \cmd{odgi build} and \cmd{odgi view}
+    format~\citep{GFA}. \cmd{odgi build} and \cmd{odgi view}
     convert graphs from GFA to the \odgi\ format and \textit{vice versa}.
     \cmd{odgi validate} ascertains the graph data is correct, e.g.,
-    it validates paths with respect the graph topology.
+    it validates paths with respect to the graph topology.
 
     \topic{odgi viz, sort, draw \& layout} pangenome visualisation
     provides convenient insight into genomic variation. \cmd{odgi viz}
     generates a linearized representation of the pangenome (see Fig.~\ref{fig:1}a)
     and is capable of handling full length human chromosomes. \cmd{odgi sort}
     reorganises node order and simplifies the graph by applying several
-    algorithms, including the novel 'path-guided stochastic gradient descent'
+    algorithms, including our novel 'path-guided stochastic gradient descent'
     algorithm. \cmd{odgi layout} generates a layout file with the X-Y
     coordinates for all nodes and \cmd{odgi draw} draws it, bringing
     the pangenome representation in two dimensions.
 
     \topic{odgi stats, bin, depth \& degree} pangenome numerical
-    counts provide insight into genome complexity in other
+    counts provide insight into complexity in other
     ways. \cmd{odgi stats} returns the number of nodes,
     edges, paths, and graph length. \cmd{odgi bin} summarises path
     information into bins of a specified size, thereby enabling a
     summarised view of large genomes. \cmd{odgi depth} and
     \cmd{odgi degree} return the node depth and degree as defined by
     user provided criteria. These methods allow the detection of complex
-    genomic regions generated by highly repetitive sequences present in
-    centromeres, segmental duplications, and acrocentric chromosomes.
+    genomic regions generated by highly repetitive sequences.
 
     \topic{odgi break, groom, chop \& unchop} pangenome graphs can be
     reorganised. \cmd{odgi break} removes circular structures in the
