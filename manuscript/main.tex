@@ -10,7 +10,7 @@
 \newcommand{\vg}{VG}
 
 \newcommand{\FIXME}{\textbf{!!FIXME!!}}
-\newcommand{\cmd}[1]{{\scriptsize\textrm{#1}}}
+\newcommand{\cmd}[1]{\textbf{\textrm{#1}}}
 \newcommand{\cmdbf}[1]{{\textbf{#1}}}
 \newcommand{\topic}[1]{{\cmdbf{#1}}:}
 \newcommand{\Rplus}{\protect\hspace{-.1em}\protect\raisebox{.35ex}{\smaller{\smaller\textbf{+}}}}
@@ -30,80 +30,80 @@
 
     \title[ODGI: scalable tools for pangenome graphs]{ODGI: scalable tools for pangenome graphs}
     \author[Guarracino, Heumos \textit{et~al}.]{
-        Andrea Guarracino\,$^{\text{\sfb 1,}\dagger,*}$,
-        Simon Heumos\,$^{\text{\sfb 2,}\dagger}$,
+        Andrea Guarracino\,$^{\text{\sfb 1,}*}$,
+        Simon Heumos\,$^{\text{\sfb 2,}*}$,
     % XXXXX,
         Pjotr~Prins\,$^{\text{\sfb 3}}$ and
-        Erik~Garrison\,$^{\text{\sfb 3,}*}$
+        Erik~Garrison\,$^{\text{\sfb 3,}\dagger}$
+        \footnote{The authors wish it to be known that the first two authors should be regarded as joint first authors.}
     }
     \address{$^{\text{\sf 1}}$Biology, University of Tor Vergata, Rome, 00133, Italy \\
         $^{\text{\sf 2}}$QBiC, University of Tübingen, Tübingen, XXXXXXXXXX, Germany \\
-        $^{\text{\sf 3}}$Genetics Genomics \& Informatics, UTHSC, Memphis, TN, USA
+        $^{\text{\sf 3}}$Dept. Genetics Genomics \& Informatics, UTHSC, Memphis, TN, USA
     }
 
     \corresp{$^\ast$To whom correspondence should be addressed.}
-    \corresp{$^\dagger$The authors wish it to be known that the first two authors should be regarded as joint First Authors.}
 
     \history{Received on XXXXX; revised on XXXXX; accepted on XXXXX}
 
     \editor{Associate Editor: XXXXXXX}
 
-    \abstract{ \textbf{Motivation:} Pangenomes address the
-      shortcomings of mainline genomics workflows, in particular
-      concerning reference genome bias and identification of complex
+    \abstract{ \textbf{Motivation:} Pangenomes graphs address some of the
+      shortcomings of mainline genomics, in particular
+      with regard to reference genome bias and identification of complex
       structural variants.
         %
         \\ \textbf{Results:} Here we present \odgi\, a novel range of
-        scalable tools that makes use of an efficient in-memory
+        scalable tools that implements new algorithms and has an efficient in-memory
         representation of DNA graphs. \odgi\ can handle hundreds of
-        large genomes at the same time while maintaining fast
-        execution runtime and low memory overheads.  \odgi\ includes
+        large genomes in memory with fast
+        parallel execution.  \odgi\ includes
         tools for detecting complex regions, extracting \textit{loci},
         exploratory analysis, sorting, removing artifacts, and graph
-        manipulation and visualisation.
+        manipulation and visualisation. \odgi\ also provides an API that allows
+        for writing new tool.
         %
         \\
         \textbf{Availability:} \odgi\ is software written in the \Cpp\ programming language and
-        published under the permissive MIT license. Source code and user manual can be downloaded from
+        published under the permissive MIT license. Source code and documentation can be downloaded from
         \href{https://github.com/pangenome/odgi}{https://github.com/pangenome/odgi}.\\
         %
         \textbf{Contact:}
         % \href{andreaguarracino@outlook.com}{andreaguarracino@outlook.com},
-        egarris5@uthcs.edu\\
-        \textbf{Supplementary information:} Supplementary data are available at \textit{Bioinformatics} online. \FIXME}
-
+        egarris5@uthcs.edu
+        % \textbf{Supplementary information:} Supplementary data are available at \textit{Bioinformatics} online. \FIXME
+        }
     \maketitle
 
 
     \section{Introduction}
 
-    Thanks to advances in sequencing technologies, new genome
-    assemblies are produced at a high rate, including the human
-    pangenome reference consortium (HPRC) and telomere-to-telemere
-    efforts, e.g.~\citep{Miga:2020}.  A pangenome models the full set
-    of genomic elements in a given species or clade. Pangenomics
-    therefore contrasts with reference genome based approaches which
-    relate sequences to a particular consensus model of the
-    genome~\citep{Eizenga:2020}. A pangenome can elegantly be
-    represented by a graph data structure incorporating sequences as
-    nodes and their connections as edges. These nodes are shared for
-    homologs, paralogs and orthologs.  A `bidirected' graph represents
-    both strands of DNA and so-called paths represent contigs that run
-    through the nodes. A path can represent an individual chromosome
-    or part thereof. Such a graph-based approach is particularly
-    relevant for highly repetitive regions. Segmental duplications,
-    and acrocentric chromosomes lead to graphs which present very high
-    node depths which greatly increases processing complexity.
+    Thanks to advances in sequencing technology, new full-length
+    genome assemblies are being produced at a high rate, including
+    efforts from the Human Pangenome Reference Consortium (HPRC) and
+    telomere-to-telemere projects, e.g.~\citep{Miga:2020}.  In
+    principle, a pangenome can model a full set of genomic elements of
+    individuals in a given species or clade. Pangenomics contrasts
+    with reference genome based approaches which relate sequences to a
+    single consensus model of the genome~\citep{Eizenga:2020}. A
+    pangenome can elegantly be represented by a graph data structure
+    incorporating sequences as nodes and their connections as
+    edges. These nodes are shared for homologs, paralogs and
+    orthologs. So-called paths represent contigs that run through the
+    nodes. A path can represent an individual chromosome or part
+    thereof.  A bi-directed graph can even contain both strands of DNA
+    as paths. A graph-based approach is particularly relevant for
+    exploring complex variation and highly repetitive regions.
 
     A major challenge is writing software that can deal with the sheer
     size of these graphs representing hundreds, and soon thousands, of
     human genomes. The \vg\ toolkit pioneered graph
     processing~\citep{vgtools,Eizenga:2020b}, but was not designed for
-    large data (see Table~\ref{tab:02}). With \odgi\ we
+    large data (see Table~\ref{tab:02}). We
     wrote a new toolset and API in \Cpp\ named Optimized Dynamic
     Genome/Graph Implementation (ODGI). \odgi\ implements a efficient
-    graph structure in RAM that can be dynamically updated using
-    multiple CPUs.
+    graph structure in computer memory (RAM) that can be dynamically updated using
+    multiple CPU cores in parallel.
 
     Note that \odgi\ is focused on `first-order' graph
     operations.  Other tools are required to construct graphs from raw
@@ -111,9 +111,9 @@
     operations on an existing graph, such as subset, subdivide, break,
     combine, normalize and order its components, nodes, and
     paths. Most of the tools are designed to be applied together,
-    piping the output of one tool into the next.
+    piping the output from one tool into the next.
 
-    \vspace{-0.1in}
+    % \vspace{-0.1in}
 
     \input{figure_p}
 
@@ -130,16 +130,16 @@
     stored in the textual Graphical Fragment Assembly
     (GFAv1) format\citep{GFA}; \cmd{odgi build} and \cmd{odgi view}
     convert graphs from GFA to the \odgi\ format and \textit{vice versa}.
-    \cmd{odgi validate} ascertains the graph data is correct, such as
-    validating that paths respect the graph's topology.
+    \cmd{odgi validate} ascertains the graph data is correct, e.g.,
+    validate paths respect the graph topology.
 
     \topic{odgi viz, sort, draw \& layout} pangenome visualisation
     provides convenient insight into genomic variation. \cmd{odgi viz}
     generates a linearized representation of the pangenome and is
     capable of handling full length human chromosomes
-    (Fig.~\ref{fig:1}a). \cmd{odgi sort} reorganises node order and
+    (see Fig.~\ref{fig:1}a). \cmd{odgi sort} reorganises node order and
     simplifies the graph by applying several algorithms, including the
-    novel `Path-Guided Stochastic Gradient Descent' algorithm.
+    novel `path-guided stochastic gradient descent' algorithm.
     \cmd{odgi layout} generates a file with the X-Y coordinates for
     all nodes and \cmd{odgi draw} draws a layout of the graph
     (Fig.~\ref{fig:1}b).
@@ -175,8 +175,41 @@
     \topic{odgi position} pangenome graphs are flexible when it comes
     to coordinate systems. \cmd{odgi position} can use the coordinate
     system from a contained reference genome --- a dynamic liftover
-    --- to display coordiates and other localised features, as is shown in
-    Fig.~\ref{fig:1b}.
+    --- to display coordinates and other localised features, as is shown in
+    Fig.~\ref{fig:1b}. Note that multiple reference genomes can be contained
+    in the graph and any contained path can be a reference.
+
+
+
+    \section{Discussion}
+
+    Pangenome graphs stand to become a ubiquitous tool in
+    genomics~\citep{Eizenga:2020}.  With \odgi\ we implemented a
+    state-of-the-art tool suite, that can transform, analyse and
+    visualise pangenome graphs at scale.  \odgi\ also exposes an API
+    that can be used by other tools, e.g., for genotyping, pangenome
+    graph building and normalization. Future work will add support for
+    RNA and protein sequences and expand on metadata capabilities of
+    large pangenome graphs.
+
+
+%\begin{figure}[!tpb]%figure2
+%%\centerline{\includegraphics{fig02.eps}}
+%\caption{Caption, caption.}\label{fig:02}
+%\end{figure}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%     please remove the " % " symbol from \centerline{\includegraphics{fig01.eps}}
+%     as it may ignore the figures.
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+    % \vspace*{+12pt}
+    % \textit{Financial Support}: none declared.
+
+    \textit{Conflict of Interest}: none declared.
+    \vspace*{+24pt}
 
 
         %TODO to repeat on a bigger machine to avoid vg crashing
@@ -187,7 +220,7 @@
             extracted from CHR 6 of the HPRC year one assembly, i.e.,
             88~haploid, phased human genome assemblies from
             44~individuals plus the chm13 cell line and GRCh38
-            reference genomes stored in 4.3GB~GFA format\citep{GFA}.
+            reference genomes stored in 4.3GB~GFA format~\citep{GFA}.
             %
             First GFS was converted from GFA to \odgi\ and
             \vg\ formats, respectively.  \odgi's path implementation
@@ -216,38 +249,6 @@
         \label{tab:02}
 
     \end{table}
-
-
-
-    \section{Discussion}
-
-    Pangenome graphs stand to become a ubiquitous tool in
-    genomics\citep{Eizenga:2020}.  With \odgi\ we implemented a
-    state-of-the-art tool suite, that can transform, analyse and
-    visualise pangenome graphs at scale.  \odgi\ also exposes an API
-    that is used by other tools for pangenome graph building and
-    normalization. Future work will add support for RNA and protein
-    sequences and expand on metadata capabilities of large pangenome
-    graphs.
-
-
-%\begin{figure}[!tpb]%figure2
-%%\centerline{\includegraphics{fig02.eps}}
-%\caption{Caption, caption.}\label{fig:02}
-%\end{figure}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-%     please remove the " % " symbol from \centerline{\includegraphics{fig01.eps}}
-%     as it may ignore the figures.
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-    % \vspace*{+12pt}
-    % \textit{Financial Support}: none declared.
-
-    \textit{Conflict of Interest}: none declared.
-    \vspace*{+24pt}
 
     % \section*{Data availability}
 
