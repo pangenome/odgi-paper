@@ -74,7 +74,6 @@
 
     \maketitle
 
-    \input{figure_p}
 
     \section{Introduction}
 
@@ -115,6 +114,9 @@
     piping the output of one tool into the next.
 
     \vspace{-0.1in}
+
+    \input{figure_p}
+
 
     \section{Results}
 
@@ -177,6 +179,46 @@
     Fig.~\ref{fig:1b}.
 
 
+        %TODO to repeat on a bigger machine to avoid vg crashing
+    \begin{table}[h!]
+        \caption{ Example of performance improvement between
+            \cmd{odgi} and \cmd{vg}~\citep{vgtools} equivalent
+            commands with output file sizes. The centromere region was
+            extracted from CHR 6 of the HPRC year one assembly, i.e.,
+            88~haploid, phased human genome assemblies from
+            44~individuals plus the chm13 cell line and GRCh38
+            reference genomes stored in 4.3GB~GFA format\citep{GFA}.
+            %
+            First GFS was converted from GFA to \odgi\ and
+            \vg\ formats, respectively.  \odgi's path implementation
+            can process paths in parallel, outperforming \vg. For the
+            same reason \cmd{odgi extract} is $20\times$ faster than
+            \cmd{vg chunk} extracting a portion from the full
+            graph. \FIXME: vg never finished.
+            %
+            All timings were performed on a server class machine
+            on SSD MODEL with X GB of RAM and 48 CPU cores (Y x 12 core
+        AMD Opteron) Processor MODEL @ 3.3 GHz with 8MB L2
+        Cache.\FIXME}
+        \begin{tabular}{{@{}lllll@{}}}
+          \toprule
+          Operation & Command & Runtime & Memory  & File size     \\
+                    &      & (mm:ss) & (GB) & (GB)           \\
+          \midrule
+          Covert GFA to native format                         &       &       &                   \\
+          & \cmd{odgi build}      & 1:35  & 10.39 & 5.4               \\
+          & \cmd{vg convert}      & 8:14  & 28.43 & 6.1               \\
+          Extract subgraph                         &       &       &                   \\
+          & \cmd{odgi extract}    & 1:15  & 9.43  & 2.7               \\
+          & \cmd{vg chunk}        & 21:09 & 59.33 & 1.7               \\
+          \botrule
+        \end{tabular}
+        \label{tab:02}
+
+    \end{table}
+
+
+
     \section{Discussion}
 
     Pangenome graphs stand to become a ubiquitous tool in
@@ -187,46 +229,6 @@
     normalization. Future work will add support for RNA and protein
     sequences and expand on metadata capabilities of large pangenome
     graphs.
-
-    %TODO to repeat on a bigger machine to avoid vg crashing
-    \begin{table}[th]
-      \processtable{\small
-        Example of performance improvement between
-        \cmd{odgi} and \cmd{vg}~\citep{vgtools} equivalent commands with output file
-        sizes. The centromere region was extracted from CHR 6 of the
-        HPRC year one assembly, i.e., 88~haploid, phased
-        human genome assemblies from 44~individuals plus the chm13
-        cell line and GRCh38 reference genomes stored in 4.3GB~GFA
-        format\citep{GFA}.
-        %
-        First GFS was converted from GFA to \odgi\ and \vg\
-        formats, respectively.  \odgi's path implementation can
-        process paths in parallel, outperforming \vg. For the
-        same reason \cmd{odgi extract} is $20\times$ faster than
-        \cmd{vg chunk} extracting a portion from the full
-        graph. \FIXME: vg never finished.
-        %
-        All timings were performed on a server class machine
-        on SSD MODEL with X GB of RAM and 48 CPU cores (Y x 12 core
-        AMD Opteron) Processor MODEL @ 3.3 GHz with 8MB L2
-        Cache.\FIXME
-        % \vspace{0.5in}
-        \label{tab:02}}
-                   {
-                     % \resizebox{.8\textwidth}{!}{
-            \begin{tabular*}{.5\textwidth}{@{}lllll@{}}
-                \toprule Operation & Tool & Runtime (mm:ss) & Memory (GB) & Output size (GB)    \\
-                \midrule
-                Format conversion                           &       &       &                   \\
-                                    & \cmd{odgi build}      & 1:35  & 10.39 & 5.4               \\
-                                    & \cmd{vg convert}      & 8:14  & 28.43 & 6.1               \\
-                Subgraph extraction                         &       &       &                   \\
-                                    & \cmd{odgi extract}    & 1:15  & 9.43  & 2.7               \\
-                                    & \cmd{vg chunk}        & 21:09 & 59.33 & 1.7               \\
-                \botrule
-            \end{tabular*}} %}
-
-    \end{table}
 
 
 %\begin{figure}[!tpb]%figure2
@@ -245,7 +247,7 @@
     % \textit{Financial Support}: none declared.
 
     \textit{Conflict of Interest}: none declared.
-    % \vspace*{+12pt}
+    \vspace*{+24pt}
 
     % \section*{Data availability}
 
