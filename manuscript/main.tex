@@ -10,7 +10,7 @@
 \newcommand{\vg}{VG}
 
 \newcommand{\FIXME}{\textbf{!!FIXME!!}}
-\newcommand{\cmd}[1]{\textbf{\textrm{#1}}}
+\newcommand{\cmd}[1]{\textrm{#1}}
 \newcommand{\cmdbf}[1]{{\textbf{#1}}}
 \newcommand{\topic}[1]{{\cmdbf{#1}}:}
 \newcommand{\Rplus}{\protect\hspace{-.1em}\protect\raisebox{.35ex}{\smaller{\smaller\textbf{+}}}}
@@ -60,7 +60,7 @@
         parallel execution.  \odgi\ includes
         tools for detecting complex regions, extracting \textit{loci},
         exploratory analysis, sorting, removing artifacts, and graph
-        manipulation and visualisation. \odgi\ also provides an API that allows
+        manipulation and visualisation. \odgi\ also provides an extensible API that allows
         for writing new tool.
         %
         \\
@@ -71,7 +71,7 @@
         \textbf{Contact:}
         % \href{andreaguarracino@outlook.com}{andreaguarracino@outlook.com},
         egarris5@uthcs.edu
-        % \textbf{Supplementary information:} Supplementary data are available at \textit{Bioinformatics} online. \FIXME
+        \textbf{Supplementary information:} Supplementary data are available at \textit{Bioinformatics} online. \FIXME
         }
     \maketitle
 
@@ -89,20 +89,19 @@
     pangenome can elegantly be represented by a graph data structure
     incorporating sequences as nodes and their connections as
     edges. These nodes are shared for homologs, paralogs and
-    orthologs. So-called paths represent contigs that run through the
-    nodes. A path can represent an individual chromosome or part
-    thereof.  A bi-directed graph can even contain both strands of DNA
+    orthologs. So-called paths represent reads, contigs, haplotypes, individual chromosomes or part thereof, that run through the
+    nodes.   A bi-directed graph can even contain both strands of DNA
     as paths. A graph-based approach is particularly relevant for
     exploring complex variation and highly repetitive regions.
 
     A major challenge is writing software that can deal with the sheer
     size of these graphs representing hundreds, and soon thousands, of
     human genomes. The \vg\ toolkit pioneered graph
-    processing~\citep{vgtools,Eizenga:2020b}, but was not designed for
+    processing~\citep{vgtools,Eizenga:2020b}, but does not scale for
     large data (see Table~\ref{tab:02}). We
     wrote a new toolset and API in \Cpp\ named Optimized Dynamic
     Genome/Graph Implementation (ODGI). \odgi\ implements a efficient
-    graph structure in computer memory (RAM) that can be dynamically updated using
+    graph structure in computer memory that can be dynamically updated using
     multiple CPU cores in parallel.
 
     Note that \odgi\ is focused on `first-order' graph
@@ -124,14 +123,15 @@
     applies concepts first introduced in the dynamic version of the
     graph extension of the positional Burrows-Wheeler
     transform~\citep{Siren:2020}. For implementation details see the
-    \odgi\ online documentation. \odgi\ includes the following tools:
+    \odgi\ online documentation. \odgi\ currently comes with over 30
+    tools, including:
 
     \indent \topic{odgi build, view \& validate} pangenome graphs can be
     stored in the textual Graphical Fragment Assembly
     (GFAv1) format\citep{GFA}; \cmd{odgi build} and \cmd{odgi view}
     convert graphs from GFA to the \odgi\ format and \textit{vice versa}.
     \cmd{odgi validate} ascertains the graph data is correct, e.g.,
-    validate paths respect the graph topology.
+    it validates paths with respect the graph topology.
 
     \topic{odgi viz, sort, draw \& layout} pangenome visualisation
     provides convenient insight into genomic variation. \cmd{odgi viz}
@@ -186,7 +186,7 @@
     Pangenome graphs stand to become a ubiquitous tool in
     genomics~\citep{Eizenga:2020}.  With \odgi\ we implemented a
     state-of-the-art tool suite, that can transform, analyse and
-    visualise pangenome graphs at scale.  \odgi\ also exposes an API
+    visualise pangenome graphs at scale.  \odgi\ also exposes an extensible API
     that can be used by other tools, e.g., for genotyping, pangenome
     graph building and normalization. Future work will add support for
     RNA and protein sequences and expand on metadata capabilities of
@@ -222,8 +222,8 @@
             44~individuals plus the chm13 cell line and GRCh38
             reference genomes stored in 4.3GB~GFA format~\citep{GFA}.
             %
-            First GFS was converted from GFA to \odgi\ and
-            \vg\ formats, respectively.  \odgi's path implementation
+            First GFA was to converted to xg and next to \odgi\ and
+            \vg\ formats respectively.  \odgi's path implementation
             can process paths in parallel, outperforming \vg. For the
             same reason \cmd{odgi extract} is $20\times$ faster than
             \cmd{vg chunk} extracting a portion from the full
