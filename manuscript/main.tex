@@ -42,7 +42,7 @@
         $^{\text{\sf 3}}$Dept. Genetics Genomics \& Informatics, UTHSC, Memphis, TN, USA
     }
 
-    \corresp{$^\ast$To whom correspondence should be addressed.}
+    \corresp{$^\dagger$To whom correspondence should be addressed.}
 
     \history{Received on XXXXX; revised on XXXXX; accepted on XXXXX}
 
@@ -105,8 +105,8 @@
     multiple CPU cores in parallel.
 
     Note that \odgi\ is focused on `first-order' graph
-    operations.  Other tools are required to construct graphs from raw
-    sequences, map reads, or call variants.  \odgi\ provides
+    operations. Other tools are required to construct graphs from raw
+    sequences, map reads, or call variants. \odgi\ provides
     operations on an existing graph, such as subset, subdivide, break,
     combine, normalize and order its components, nodes, and
     paths. Most of the tools are designed to be applied together,
@@ -128,7 +128,7 @@
 
     \indent \topic{odgi build, view \& validate} pangenome graphs can be
     stored in the textual Graphical Fragment Assembly
-    (GFAv1) format\citep{GFA}; \cmd{odgi build} and \cmd{odgi view}
+    (GFAv1) format\citep{GFA}. \cmd{odgi build} and \cmd{odgi view}
     convert graphs from GFA to the \odgi\ format and \textit{vice versa}.
     \cmd{odgi validate} ascertains the graph data is correct, e.g.,
     it validates paths with respect the graph topology.
@@ -140,13 +140,13 @@
     (see Fig.~\ref{fig:1}a). \cmd{odgi sort} reorganises node order and
     simplifies the graph by applying several algorithms, including the
     novel `path-guided stochastic gradient descent' algorithm.
-    \cmd{odgi layout} generates a file with the X-Y coordinates for
-    all nodes and \cmd{odgi draw} draws a layout of the graph
-    (Fig.~\ref{fig:1}b).
+    \cmd{odgi layout} generates a layout file with the X-Y coordinates for
+    all nodes and \cmd{odgi draw} draws it, bringing the pangenome representation
+    in two dimensions.
 
     \topic{odgi stats, bin, depth \& degree} pangenome numerical
     counts provide insight into genome complexity in other
-    ways. E.g., \cmd{odgi stats} returns the number of nodes,
+    ways. \cmd{odgi stats} returns the number of nodes,
     edges, paths, and graph length. \cmd{odgi bin} summarises path
     information into bins of a specified size, thereby enabling a
     summarised view of large genomes. \cmd{odgi depth} and
@@ -160,12 +160,12 @@
     spurious inverted links by aligning the graph from the orientation
     that is supported by most paths. \cmd{odgi chop} divides long
     nodes into shorter ones at a maximum requested size, thereby
-    simplifying downstream analysis.  \cmd{odgi unchop} joins nodes
+    simplifying downstream analysis. \cmd{odgi unchop} joins nodes
     and embedded sequences that do not change the graph topology,
     thereby obtaining a more compact representation of the graph.
 
-    \topic{odgi explode, squeeze \& extract} pangenome are constructed
-    as a large graph. \cmd{odgi explode} separates units, such as
+    \topic{odgi explode, squeeze \& extract} pangenomes are constructed
+    as large graphs. \cmd{odgi explode} separates units, such as
     chromosomes, into different files.  \cmd{odgi squeeze} merges
     multiple graphs into the same file whilst preventing node ID
     collisions. \cmd{odgi extract} extracts regions of the graph as
