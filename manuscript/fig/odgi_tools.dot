@@ -1,0 +1,57 @@
+digraph sample {
+	node [
+		shape=box
+		color=black
+	]
+
+	build [color = red]
+	view [color = red]
+
+	validate [color = green]
+
+	stats [color = blue]
+	bin [color = blue]
+	depth [color = blue]
+	degree [color = blue]
+
+	break [color = brown]
+	groom [color = brown]
+	chop [color = brown]
+	unchop [color = brown]
+	explode [color = brown]
+	squeeze [color = brown]
+	extract [color = brown]
+
+	position [color = red]
+
+	viz [color = cyan]
+	sort [color = cyan]
+	layout [color = cyan]
+	draw [color = cyan]
+
+	in_GFA -> build
+	in_ODGI -> {view, validate, stats, bin, depth, degree, break, groom, chop, unchop, explode, squeeze, extract, position, viz, sort, layout, draw}
+	in_BED -> {depth, degree, extract, position, viz}
+	LAY -> {draw}
+
+	build -> out_ODGI
+	view ->  out_GFA
+	validate -> TEXT
+	stats -> TEXT
+	bin -> JSON
+	depth -> out_BED
+	degree -> out_BED
+	break -> out_ODGI
+	groom -> out_ODGI
+	chop -> out_ODGI
+	unchop -> out_ODGI
+	explode -> out_ODGI
+	squeeze -> out_ODGI
+	extract -> out_ODGI
+	position -> out_BED
+	viz -> PNG
+	sort -> out_ODGI
+	layout -> LAY
+	draw -> PNG
+
+}
