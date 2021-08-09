@@ -929,7 +929,7 @@
   \begingroup
 \def\section{%
   \@startsection{section}{1}{\z@}
-  {-20\p@ plus -3\p@}{4\p@}
+  {-24\p@ plus -3\p@}{4\p@}
   {\reset@font\raggedright\helveticabold\fontsize{10}{12}\selectfont}}
  \def\subsection{%
   \@startsection{subsection}{2}{\z@}

@@ -274,3 +274,9 @@ TSWLatexianTemp*
 
 # Makeindex log files
 *.lpz
+
+# Emacs temp files
+*~
+
+# paper
+manuscript/main.pdf
