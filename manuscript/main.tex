@@ -17,7 +17,7 @@
 
 \subtitle{Genome Analysis}
 
-\title[short Title]{ODGI: scalable tools for working with pangenome graphs}
+\title[short Title]{ODGI: tools for working with pangenome graphs}
 \author[Heumos, \textit{et~al}.]{
 Simon Heumos\,$^{\text{\sfb 1, \sfb 2} \dagger}$,
 Andrea Guarracino\,$^{\text{\sfb 2} \dagger}$,
@@ -38,15 +38,17 @@ $^\dagger$Contributed equally.}
 
 \editor{Associate Editor: XXXXXXX}
 
+% XXX key message of the paper is that we have collected a set of algorithms that enable easy use of pangenome graphs for investigating biology
+
 \abstract{
 \textbf{Motivation:} Pangenome graphs provide a complete representation of the mutual alignment of collections of genomes.
-These models, therefore, offer the opportunity to study the entire genetic diversity of a population, bringing new challenges to how to analyze hundreds of genomes on a gigabase scale.
-In addition, vertebrate genomes present highly repetitive regions which increase the complexity of the analysis.
+These models offer the opportunity to study the total genomic diversity of a population, including structurally complex regions.
+Analyzing hundreds of gigabase-scale genomes using this model is difficult and not well-supported by existing tools.
+%In addition, vertebrate genomes present highly repetitive regions which increase the complexity of the analysis.
 Efficient and flexible tools are therefore required to work on pangenome graphs of any complexity and scale. \\
-\textbf{Results:} Pangenome graphs provide a complete representation of the mutual alignment of collections of genomes.
-These models, therefore, offer the opportunity to study the entire genetic diversity of a population, bringing new challenges to how to analyze hundreds of genomes on a gigabase scale.
-In addition, vertebrate genomes present highly repetitive regions which increase the complexity of the analysis.
-Efficient and flexible tools are therefore required to work on pangenome graphs of any complexity and scale. \\
+\textbf{Results:} Here we present ODGI, a new suite of tools to analyze and manipulate pangenome graphs structured in the variation graph model.
+ODGI supports graphs in the Graphical Fragment Assembly format version 1 (GFAv1).
+The tools scale efficiently to large collections of eukaryotic genomes, allowing users to work easily with pangenome graphs of tens to thousands of large genomes while maintaining fast execution runtime and low memory overhead.
 \textbf{Availability:} ODGI is written in C++. Its source code is freely available at \url{https://github.com/pangenome/odgi} with documentation at \url{https://odgi.readthedocs.io}.
 ODGI can be installed via Bioconda \url{https://bioconda.github.io/recipes/odgi/README.html} or Guix https://github.com/ekg/guix-genomics/blob/master/odgi.scm. \\
 \textbf{Contact:} \href{egarris5@uthsc.edu}{egarris5@uthsc.edu} \\
@@ -65,147 +67,150 @@ To overcome this limitation, we have developed an Optimized Dynamic Genome/Graph
 
 \cite{Eizenga_2020}
 
-\begin{methods}
+%\begin{methods}
 
 \section{Implementation}
 
-ODGI is designed to build and modify paths in parallel, keeping its representation in memory efficient. It applies concepts first introduced in the dynamic version of the Graph BWT {31406990} (gBWT), a scalable implementation of the graph extension of the positional Burrows-Wheeler transform {28702075}. Specifically, we build a node-local model of the graph, where the graph is stored in a vector of node structures. The identifier of each node is its offset in this vector plus 1. Each structure contains the sequence of the node, its edges in both directions (forward and backward), and a vector of path steps that describes how the embedded paths walk across the node. Each step records the path identifier and the previous and next path steps on the same path. To reduce the encoding, we encode path steps using a local alphabet that maps the N neighbors of the node into the range 1..N. To further save space, node deltas, rather than IDs, are stored in this alphabet. The delta between two nodes is defined as their distance in the graph vector (i.e., the difference between the node offsets). The path step vector, of length n, is stored using a dynamic succinct integer vector that requires O(5nw) bits, where w is ~log2(N). Finally, to allow operating on path steps in parallel, each node structure includes a byte-width mutex lock.
+ODGI is designed to build and modify paths in parallel, keeping its representation in memory efficient.
+It applies concepts first introduced in the dynamic version of the Graph BWT {31406990} (gBWT), a scalable implementation of the graph extension of the positional Burrows-Wheeler transform {28702075}.
+Specifically, we build a node-local model of the graph, where the graph is stored in a vector of node structures.
+The identifier of each node is its offset in this vector plus 1.
+Each structure contains the sequence of the node, its edges in both directions (forward and backward), and a vector of path steps that describes how the embedded paths walk across the node.
+Each step records the path identifier and the previous and next path steps on the same path.
+To reduce the encoding, we encode path steps using a local alphabet that maps the N neighbors of the node into the range $1\ldots N$.
+To further save space, node deltas, rather than IDs, are stored in this alphabet.
+The delta between two nodes is defined as their distance in the graph vector (i.e., the difference between the node offsets).
+The path step vector, of length n, is stored using a dynamic succinct integer vector that requires O(5nw) bits, where w is ~log2(N).
+Finally, to allow operating on path steps in parallel, each node structure includes a byte-width mutex lock.
 
-\end{methods}
+%\end{methods}
 
-\section{Results}
+ODGI is entirely focused on “first-order” operations on the graph (Table 1), providing, unlike VG, no method to construct graphs from raw sequences or map reads.
+It supports interrogation of the graph for basic dimensional properties, positional and path-related queries, and visualization in one-dimension (1D) and two-dimensions (2D).
+ODGI also supports operations on the graph such as subset, subdivide, break, combine, normalize, or order its components, nodes, and paths.
+Most of the tools are designed to be applied together, piping the output of one tool into the next, thereby preventing the creation of intermediate files, and reducing the number of IO operations.
 
-ODGI is entirely focused on “first-order” operations on the graph (Table 1), providing, unlike VG, no method to construct graphs from raw sequences or map reads. It supports interrogation of the graph for basic dimensional properties, positional and path-related queries, and visualization in one-dimension (1D) and two-dimensions (2D). ODGI also supports operations on the graph such as subset, subdivide, break, combine, normalize, or order its components, nodes, and paths. Most of the tools are designed to be applied together, piping the output of one tool into the next, thereby preventing the creation of intermediate files, and reducing the number of IO operations.
-
-\subsection{Core functionality}
+%\subsection{Core functionality}
 
 Variation graphs are commonly represented by a subset of version 1 of the Graphical Fragment Assembly format (GFAv1): odgi build and odgi view allow to convert graphs from GFA to ODGI format and vice versa, respectively.
 In the variation graph model, paths have to respect the graph’s topology: this can be verified with odgi validate, to ensure no errors in the input or edited graphs.
 
-By visualizing pangenome graphs, we can gain insight into the relationship between genomes. odgi viz applies binning and direct rendering to a raster image to generate a 1D representation able to scale up to gigabase pangenome graphs (Figure 1.A). However, pangenome graphs may present complex structures to visualize: odgi sort finds the best node order to simplify 1D graph visualization by applying several cutting-edge sorting algorithms. odgi draw extends the visualization in 2D, taking in input the layouts built by odgi layout.
+By visualizing pangenome graphs, we can gain insight into the relationship between genomes.
+odgi viz applies binning and direct rendering to a raster image to generate a 1D representation able to scale up to gigabase pangenome graphs (Figure 1.A).
+However, pangenome graphs may present complex structures to visualize: odgi sort finds the best node order to simplify 1D graph visualization by applying several cutting-edge sorting algorithms.
+odgi draw extends the visualization in 2D, taking in input the layouts built by odgi layout.
 
-Applying odgi stats, users can retrieve metrics describing the graph properties, such as the number of nodes, edges, paths, and graph length. ODGI also offers more advanced tools for interrogating the graphs. odgi bin summarizes the path information into bins of specified size, enabling a summarized view of gigabase scale graphs. odgi depth returns the node depth as defined by query criteria, allowing users to detect the complex regions in the graph due to sequences with highly identical repeats. Complex motifs can be also detected with odgi degree, which returns the node degree as defined by query criteria. High degree nodes are the mirror of misassemblies or problems in the pangenome building, making the tool useful for debugging the process as well.
+Applying odgi stats, users can retrieve metrics describing the graph properties, such as the number of nodes, edges, paths, and graph length.
+ODGI also offers more advanced tools for interrogating the graphs. odgi bin summarizes the path information into bins of specified size, enabling a summarized view of gigabase scale graphs.
+odgi depth returns the node depth as defined by query criteria, allowing users to detect the complex regions in the graph due to sequences with highly identical repeats.
+Complex motifs can be also detected with odgi degree, which returns the node degree as defined by query criteria.
+High degree nodes are the mirror of misassemblies or problems in the pangenome building, making the tool useful for debugging the process as well.
 
-\begin{comment}
+ODGI allows edit operations on the graphs.
+Cycles in the graph complicate downstream analyses: odgi break removes the cycles, reducing the complexity of the graph topology.
+odgi groom removes spurious inverting links by exploring the graph from the orientation supported by most paths.
+To enable efficient sequence alignment against the graph, long nodes can be divided into shorter nodes at a maximum requested size using odgi chop.
+Partial order alignment, which consists of aligning sequences against a directed acyclic graph (DAG), is frequently used in pangenome building pipelines, but the current implementations return DAGs with 1-bp long nodes; odgi unchop allows joining nodes that can be merged without changing the graph topology, nor the embedded sequences, obtaining an equivalent, but more compact, representation of the graph.
 
-% the table
+Pangenome graphs can embed multiple chromosomes as separated connected components (inter-chromosomal structural variants would join the components into bigger ones).
+odgi explode separates the connected components in different ODGI format files, while odgi squeeze allows merging multiple graphs into the same ODGI format file, preventing node ID collisions.
+odgi extract allows extracting specific subregions of the graph as defined by query criteria, thereby simplifying the downstream analyses and reducing the resources to work only with the extracted region.
 
-Table 1 - A selection of the tools available in ODGI
-Name
-Description
-For conversion
-
-
-build
-Convert graphs from GFA to ODGI format.
-view
-Convert graphs from ODGI to GFA format.
-For validation
-
-
-validate
-Check if the graph is consistent.
-For interrogation
-
-
-stats
-Return graph metrics.
-bin
-Summarize path information in bins of fixed size.
-depth
-Return node depth as defined by query criteria.
-degree
-Return node degree as defined by query criteria.
-For manipulation
-
-
-break
-Break cycles in the graph, reducing its complexity.
-groom
-Resolve spurious inverting links.
-chop
-Chop long nodes into short ones while preserving graph topology and node order.
-unchop
-Join nodes that can be merged without changing the graph topology, nor the embedded sequences.
-explode
-Separate the graph into the connected components.
-squeeze
-Squeeze multiple graphs into the same file, preventing node ID collisions.
-extract
-Extract parts of the graph as defined by query criteria.
-For coordinate projections
-
-
-position
-Coordinate projections between nodes and paths in different graphs.
-For visualization
-
-
-viz
-Visualize the graph in one dimension.
-sort
-Sort the graph.
-layout
-Generate two-dimension graph layouts.
-draw
-Draw two-dimension layouts.
-
-\end{comment}
-
-
-ODGI allows edit operations on the graphs. Cycles in the graph complicate downstream analyses: odgi break removes the cycles, reducing the complexity of the graph topology. odgi groom removes spurious inverting links by exploring the graph from the orientation supported by most paths. To enable efficient sequence alignment against the graph, long nodes can be divided into shorter nodes at a maximum requested size using odgi chop. Partial order alignment, which consists of aligning sequences against a directed acyclic graph (DAG), is frequently used in pangenome building pipelines, but the current implementations return DAGs with 1-bp long nodes; odgi unchop allows joining nodes that can be merged without changing the graph topology, nor the embedded sequences, obtaining an equivalent, but more compact, representation of the graph.
-
-Pangenome graphs can embed multiple chromosomes as separated connected components (inter-chromosomal structural variants would join the components into bigger ones). odgi explode separates the connected components in different ODGI format files, while odgi squeeze allows merging multiple graphs into the same ODGI format file, preventing node ID collisions. odgi extract allows extracting specific subregions of the graph as defined by query criteria, thereby simplifying the downstream analyses and reducing the resources to work only with the extracted region.
-
-In variation graphs the coordinates are provided by the embedded path sequences. Indeed, the node IDs are not meant to be stable. odgi position finds, translates, and liftovers graph and path positions between different graphs by exploiting their shared path sequences (Figure 1.B).
-
-\subsection{Performance on human data}
-
-Table 2 shows a comparison of the operations necessary to extract a subgraph using ODGI and VG. The example consists in extracting the centromeres from a pangenome graph made from 88 haploid, phased human genome assemblies from 44 individuals from the Human Pangenome Reference Consortium year 1 assembly (see Data Availability), plus the chm13 and GRCh38 reference genomes, for a total of 90 haplotypes. All commands are provided in the Supplementary Material.
-
-To work with ODGI and VG it is first necessary to convert the graph from GFA to ODGI and VG format, respectively. Thanks to the ODGI format’s path implementation, odgi build embeds the paths in parallel, outperforming vg convert in the same task. For the same reason, odgi extract results 20 times faster than vg chunk in extracting a portion from the full graph.
+In variation graphs the coordinates are provided by the embedded path sequences.
+Indeed, the node IDs are not meant to be stable. odgi position finds, translates, and liftovers graph and path positions between different graphs by exploiting their shared path sequences (Figure 1.B).
 
 \begin{comment}
-
-% table on human perf
-
-Table 2 - Centromere extraction comparison using ODGI and VG
-Operation
-Tool
-Runtime
-(mm:ss)
-Memory
-(GB)
-Output size
-(GB)
-Format conversion
-
-
-odgi build
-1:35
-10,39
-5,4
-
-vg convert
-8:14
-28,43
-6,1
-Subgraph extraction
-
-odgi extract
-1:15
-9,43
-2,7
-
-vg chunk
-21:09
-59,33
-1,7
-
+key message of the paper is that we have collected a set of algorithms that enable easy use of pangenome graphs for investigating biology
+-> build model solves problem of working with big graphs in memory
+-> view (convert to GFA) & paths solve problem of exporting basic features of the graph (e.g. paths)
+-> stats (understand basic size / structure) & bin & degree & depth solves problem of understanding the overall structure and size of the graph
+-> sort (groom) & layout solves problem of finding latent structure in the pangenome
+-> viz & draw provides a human-viewable readout of the graph
+-> chop & unchop & squeeze & break & prune & explode lets us break apart or combine the graph nodes and topology
+-> position & tips & untangle (jaccard based coordinate conversion) provides a way to map coordinates between any genomes in the graph (e.g. liftover!)
+-> extract lets us pull out specific regions of the graph based on path ranges, nodes and positions
 \end{comment}
+
+\section{Results}
+
+\subsection{Building the \textsc{ODGI} model}
+
+% erik
+
+% build
+Solves problem of working with big and complex graphs in limited memory.
+
+Figure: encoding model as a cartoon --  HTT exon 1 as tiny example graph (maybe)
+
+\subsection{Converting to standard text formats}
+
+% pjotr
+
+% view / paths
+Allows us to export basic data of the graph (genomes and graph structure).
+
+Figure: .dot showing the relationship between all the tools and the data formats we use.
+
+\subsection{Obtaining metrics of the pangenome graph}
+
+% simon
+% chr8 longs
+
+% stats / bin / degree / depth / multiQC
+Solves the problem of understanding the overall structure, size, and features of the graph and its sequences.
+
+Figure: small graph with all the stats shown. HTT exon 1 as tiny example graph
+
+\subsection{Finding latent structure in the pangenome graph topology}
+
+% simon
+
+% sort / layout / tension??
+Allows us to understand the sparse structures typically found in pangenome graphs.
+
+\subsection{Visualizing pangenome graphs}
+
+% andrea (viz) & erik (draw)
+
+% viz / draw
+These provide scalable ways of geneating human-viewable pictures of the high-level structure of the graph.
+% interesting that we don't go base-level at all... we use vg for that
+
+Figure here with 1D + 2D vizs.
+
+\subsection{Editing the graph structure}
+
+% andrea (?)
+
+% chop / unchop / squeeze / break / prune / explode
+These are commonly-needed basic operations on the topology of the graph.
+
+\subsection{Untangling and navigating the pangenome with path-based coordinates}
+
+% pjotr
+
+% position / tips
+% untangle (this follows on the jaccard graph mapping concepts in the previous section}
+The graph is a model of an alignment of many genomes.
+We can use coordinates in any genome to refer to it, but this requires a few basic operations ...
+Obtaining unambiguous mappings between different genomes requires the use of a new kind of graph based mapping (path graph jaccard).
+
+Figure showing the untangling of C4 ?
+Figure showing tips over a single human chromosome from HPRC.
+
+\subsection{Extracting regions of interest}
+
+% andrea (?)
+
+% extract
+Pangenome graphs are very large, but we often only want to work with a small portion (e.g. a single gene).
+We can extract such regions using coordinates on the paths in the graph to guide us.
+
+Figure showing extraction process---either schematic or ``real''.
 
 \section{Discussion}
 
+% erik & pjotr & anyone
 
 
 \section*{Funding}
