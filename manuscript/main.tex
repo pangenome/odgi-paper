@@ -157,16 +157,18 @@ Figure: .dot showing the relationship between all the tools and the data formats
 % simon
 % chr8 longs
 
-% stats / bin / degree / depth / multiQC
+% stats / multiQC / bin / degree / depth 
+
+Applying odgi stats, users can retrieve metrics describing the graph properties, such as the number of nodes, edges, paths, and graph length. ODGI also offers more advanced tools for interrogating the graphs. odgi bin summarizes the path information into bins of specified size, enabling a summarized view of gigabase scale graphs. odgi depth returns the node depth as defined by query criteria, allowing users to detect the complex regions in the graph due to sequences with highly identical repeats. Complex motifs can be also detected with odgi degree, which returns the node degree as defined by query criteria. High degree nodes are the mirror of misassemblies or problems in the pangenome building, making the tool useful for debugging the process as well.
 Solves the problem of understanding the overall structure, size, and features of the graph and its sequences.
 
-Figure: small graph with all the stats shown. HTT exon 1 as tiny example graph
+Figure: small graph with all the stats shown. A screenshot of MultiQC, visualize summary per bin somehow, R visualizations of degree and depth HTT exon 1 as tiny example graph
 
 \subsection{Finding latent structure in the pangenome graph topology}
 
 % simon
 
-% sort / layout / tension??
+% sort / layout / NO tension! We keep that for the sorting paper
 Allows us to understand the sparse structures typically found in pangenome graphs.
 
 \subsection{Visualizing pangenome graphs}
@@ -216,8 +218,8 @@ Figure showing extraction process---either schematic or ``real''.
 
 \section*{Funding}
 
-%This work was supported, in part, by the National Institutes of Health (award numbers U01HG010961, U41HG010972, R01HG010485, 2U41HG007234, 5U54HG007990, 5T32HG008345-04, U01HL137183 to B.P.) and the W. M. Keck Foundation (award number DT06172015 to B.P.).
 S.H. acknowledges funding from the Central Innovation Programme (ZIM) for SMEs of the Federal Ministry for Economic Affairs and Energy of Germany.
+This work was supported by the BMBF-funded de.NBI Cloud within the German Network for Bioinformatics Infrastructure (de.NBI) (031A537B, 031A533A, 031A538A, 031A533B, 031A535A, 031A537C, 031A534A, 031A532B).
 
 \section*{Data availability}
 
