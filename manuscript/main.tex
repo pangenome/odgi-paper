@@ -60,25 +60,23 @@ ODGI can be installed via Bioconda \url{https://bioconda.github.io/recipes/odgi/
 
 \section{Introduction}
 
-A pangenome models the full set of genomic elements in a given species or clade {32453966}. Indeed, these data structures encode the mutual relationships between all the genomes represented, in contrast to reference-based approaches which relate sequences only to a particular genome, chosen as reference. A class of methods to represent pangenomes involves the sequence graphs {2488477}, where similar orthologous regions between genomes collapse into a single representative sequence. In node-labeled sequence graphs, nodes indicate DNA sequences, with edges connecting the nodes that are concatenated in the sequences represented in the graph. A bidirected sequence graph represents both strands of DNA. On this model, variation graphs add the concept of path to embed linear sequences (e.g., genomes or haplotypes) into the graph {30125266}. Paths provide a stable coordinate system, allowing graph annotations and interoperability between different graphs.
+A pangenome models the full set of genomic elements in a given species or clade \citep{Eizenga_2020}. Indeed, these data structures encode the mutual relationships between all the genomes represented, in contrast to reference-based approaches which relate sequences only to a particular genome, chosen as reference. A class of methods to represent pangenomes involves the sequence graphs \citep{Paten:2017}, where similar orthologous regions between genomes collapse into a single representative sequence. In node-labeled sequence graphs, nodes indicate DNA sequences, with edges connecting the nodes that are concatenated in the sequences represented in the graph. A bidirected sequence graph represents both strands of DNA. On this model, variation graphs add the concept of path to embed linear sequences (e.g., genomes or haplotypes) into the graph. Paths provide a stable coordinate system, allowing graph annotations and interoperability between different graphs.
 
-Thanks to advances in sequencing technologies, new genome assemblies are produced at a high rate. This amount of data offers the opportunity to study genomic variation as never before, but it also brings challenges in how to represent and manipulate hundreds of genomes at a gigabase scale. Variation graphs compactly represent the full genetic variation across a population, but graph-based data structures present computational overheads: in addition to the sequences, they must also represent the graph topology. Several genome data structures were developed to address these challenges {33040146}. Memory-efficient representations do not allow dynamic updates to the graph, such as adding new genomes or simplifying the graph topology. Furthermore, dynamic updates must perform efficiently on the complex graphs generated from whole-genome alignment of vertebrates. Highly repetitive regions, such as centromeres, segmental duplications, and acrocentric chromosomes lead to graphs that present paths with very high-depth nodes. The node depth is defined as the number of times in which the node is crossed by all the paths embedded in the graph. High depth increases the complexity of the operations performed on the paths and the nodes they cross.
+Thanks to advances in sequencing technologies, new full-length genome assemblies are produced at a high rate, including efforst from the Human Pangenome Reference Consortium\footnote{https://humanpangenome.org/ (accessed Oct 2021)} (HPRC) and Telomere-to-Telomere (T2T) projects \citep{Miga:2020, Logsdon_2021, Nurk_2021}, from the T2T consortium\footnote{https://sites.google.com/ucsc.edu/t2tworkinggroup/home (accessed Oct 2021)}. This amount of data offers the opportunity to study genomic variation as never before, but it also brings challenges in how to represent and manipulate hundreds of genomes at a gigabase scale. Variation graphs compactly represent the full genetic variation across a population, but graph-based data structures present computational overheads: in addition to the sequences, they must also represent the graph topology. Several genome data structures were developed to address these challenges \citep{Eizenga_2020_BX}. Memory-efficient representations do not allow dynamic updates to the graph, such as adding new genomes or simplifying the graph topology. Furthermore, dynamic updates must perform efficiently on the complex graphs generated from whole-genome alignment of vertebrates. Highly repetitive regions, such as centromeres, segmental duplications, and acrocentric chromosomes lead to graphs that present paths with very high-depth nodes. The node depth is defined as the number of times in which the node is crossed by all the paths embedded in the graph. High depth increases the complexity of the operations performed on the paths and the nodes they cross.
 
-To overcome this limitation, we have developed an Optimized Dynamic Genome/Graph Implementation (ODGI). Each tool loads graphs into the succinct dynamic HandleGraph model {33040146} and applies methods based on the HandleGraph API. Several algorithms are shared with the VG toolkit (VG) {30125266}, the state-of-the-art toolkit for working with pangenome graphs. However, although similar in scope to VG, ODGI importantly differs in its design to support highly complex pangenome graphs. The majority of the ODGI tools are implemented in an index-free manner, avoiding the burning task needed to create an index structure. Indeed, index-constrained implementations would require building indexes also for single or little operations on the graphs. Moreover, thanks to its efficient path representation, ODGI tools can build and walk the internal graph representation (the ODGI format) in parallel, which is one of the major bottlenecks when working with very large and deep variation graphs, efficiently scaling up to hundreds of large vertebrate genomes.
-
-\cite{Eizenga_2020}
+To overcome this limitation, we have developed an Optimized Dynamic Genome/Graph Implementation (ODGI). Each tool loads graphs into the succinct dynamic HandleGraph model \citep{Eizenga_2020_BX} and applies methods based on the HandleGraph API. Several algorithms are shared with the VG toolkit (VG) \citep{Garrison:2018}, the state-of-the-art toolkit for working with pangenome graphs. However, although similar in scope to VG, ODGI importantly differs in its design to support highly complex pangenome graphs. The majority of the ODGI tools are implemented in an index-free manner, avoiding the burning task needed to create an index structure. Indeed, index-constrained implementations would require building indexes also for single or little operations on the graphs. Moreover, thanks to its efficient path representation, ODGI tools can build and walk the internal graph representation (the ODGI format) in parallel, which is one of the major bottlenecks when working with very large and deep variation graphs, efficiently scaling up to hundreds of large vertebrate genomes.
 
 %\begin{methods}
 
 \section{Implementation}
 
 ODGI is designed to build and modify paths in parallel, keeping its representation in memory efficient.
-It applies concepts first introduced in the dynamic version of the Graph BWT {31406990} (gBWT), a scalable implementation of the graph extension of the positional Burrows-Wheeler transform {28702075}.
+It applies concepts first introduced in the dynamic version of the Graph BWT \citep{Siren:2020} (gBWT), a scalable implementation of the graph extension of the positional Burrows-Wheeler transform \citep{Durbin_2014}.
 Specifically, we build a node-local model of the graph, where the graph is stored in a vector of node structures.
 The identifier of each node is its offset in this vector plus 1.
 Each structure contains the sequence of the node, its edges in both directions (forward and backward), and a vector of path steps that describes how the embedded paths walk across the node.
 Each step records the path identifier and the previous and next path steps on the same path.
-To reduce the encoding, we encode path steps using a local alphabet that maps the N neighbors of the node into the range $1\ldots N$.
+To reduce the encoding, we encode path steps using a local alphabet that maps the N neighbours of the node into the range $1\ldots N$.
 To further save space, node deltas, rather than IDs, are stored in this alphabet.
 The delta between two nodes is defined as their distance in the graph vector (i.e., the difference between the node offsets).
 The path step vector, of length n, is stored using a dynamic succinct integer vector that requires O(5nw) bits, where w is ~log2(N).
@@ -157,16 +155,18 @@ Figure: .dot showing the relationship between all the tools and the data formats
 % simon
 % chr8 longs
 
-% stats / bin / degree / depth / multiQC
+% stats / multiQC / bin / degree / depth 
+
+Applying odgi stats, users can retrieve metrics describing the graph properties, such as the number of nodes, edges, paths, and graph length. ODGI also offers more advanced tools for interrogating the graphs. odgi bin summarizes the path information into bins of specified size, enabling a summarized view of gigabase scale graphs. odgi depth returns the node depth as defined by query criteria, allowing users to detect the complex regions in the graph due to sequences with highly identical repeats. Complex motifs can be also detected with odgi degree, which returns the node degree as defined by query criteria. High degree nodes are the mirror of misassemblies or problems in the pangenome building, making the tool useful for debugging the process as well.
 Solves the problem of understanding the overall structure, size, and features of the graph and its sequences.
 
-Figure: small graph with all the stats shown. HTT exon 1 as tiny example graph
+Figure: small graph with all the stats shown. A screenshot of MultiQC, visualize summary per bin somehow, R visualizations of degree and depth HTT exon 1 as tiny example graph
 
 \subsection{Finding latent structure in the pangenome graph topology}
 
 % simon
 
-% sort / layout / tension??
+% sort / layout / NO tension! We keep that for the sorting paper
 Allows us to understand the sparse structures typically found in pangenome graphs.
 
 \subsection{Visualizing pangenome graphs}
@@ -216,8 +216,8 @@ Figure showing extraction process---either schematic or ``real''.
 
 \section*{Funding}
 
-%This work was supported, in part, by the National Institutes of Health (award numbers U01HG010961, U41HG010972, R01HG010485, 2U41HG007234, 5U54HG007990, 5T32HG008345-04, U01HL137183 to B.P.) and the W. M. Keck Foundation (award number DT06172015 to B.P.).
 S.H. acknowledges funding from the Central Innovation Programme (ZIM) for SMEs of the Federal Ministry for Economic Affairs and Energy of Germany.
+This work was supported by the BMBF-funded de.NBI Cloud within the German Network for Bioinformatics Infrastructure (de.NBI) (031A537B, 031A533A, 031A538A, 031A533B, 031A535A, 031A537C, 031A534A, 031A532B).
 
 \section*{Data availability}
 
