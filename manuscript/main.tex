@@ -4,6 +4,7 @@
 \usepackage[draft]{hyperref}
 \usepackage{makecell}
 \usepackage{comment}
+\usepackage{subcaption}
 
 \newcommand{\vocab}{\textbf}
 
@@ -18,7 +19,7 @@
 \subtitle{Genome Analysis}
 
 \title[short Title]{ODGI: understanding pangenome graphs}
-\author[Heumos, \textit{et~al}.]{
+\author[Guarracino, Heumos \textit{et~al}.]{
 Andrea Guarracino\,$^{\text{\sfb 1} \dagger}$,
 Simon Heumos\,$^{\text{\sfb 2} \dagger}$,
 Sven Nahnsen\,$^{\text{\sfb 2}}$,
@@ -165,7 +166,12 @@ Figure here with 1D + 2D vizs.
 % simon
 
 % sort / layout / NO tension! We keep that for the sorting paper
-Allows us to understand the sparse structures typically found in pangenome graphs.
+
+% Allows us to understand the sparse structures typically found in pangenome graphs.
+
+Pangenome graphs built from raw sets of alignments may have complex structures which can introduce difficulty in downstream analyses. Uncovering their latent topology allows us to understand the sparse structures typically found in pangenome graphs.
+
+\texttt{odgi sort} offers multiple sorting algorithms to find the best node order in one dimension. Nodes can be sorted randomly, topologically, by breaking cycles in the graph, by grooming, or by using the novel path-guided stochastic gradient descent (PG-SGD) algorithm.  can be combined together to a series of sorts.
 
 \subsection{Obtaining metrics of the pangenome graph}
 
@@ -180,7 +186,9 @@ Allows us to understand the sparse structures typically found in pangenome graph
 
 Graphs statistics provide alternative ways to gain insight into pangenomes complexity revealing the overall structure, size, and features of a graph and its sequences. 
 
-Applying \texttt{odgi stats}, users can retrieve metrics describing the graph properties, such as the number of nodes, edges, paths, and graph length. MultiQC's \citep{Ewels_2016} ODGI module\footnote{\url{https://multiqc.info/docs/\#odgi} (accessed Oct 2021)} provides an interactive way to comparatively explore the statistics of an arbitrary number of graphs. ODGI also offers more advanced tools for the interrogation of the graphs. \texttt{odgi bin} summarizes the path information into bins of a specified size, enabling a summarized view of gigabase scale graphs. \texttt{odgi depth} returns the node depth as defined by query criteria, allowing users to detect the complex regions in the graph due to collapsed sequences with highly identical repeats. Complex motifs can be also detected with \texttt{odgi degree}, which returns the node degree as defined by query criteria. High degree nodes are the mirror of misassemblies or problems in the pangenome building, making the tool useful for validation.
+Applying \texttt{odgi stats}, users can retrieve metrics describing the graph properties, such as the number of nodes, edges, paths, and graph length. MultiQC's \citep{Ewels_2016} ODGI module\footnote{\url{https://multiqc.info/docs/\#odgi} (accessed Oct 2021)} provides an interactive way to comparatively explore the statistics of an arbitrary number of graphs. ODGI also offers more advanced tools for the interrogation of the graphs. \texttt{odgi bin} summarizes the path information into bins of a specified size, enabling a summarized view of gigabase scale graphs. This concept found its way into the pangenome graph ontology \cite{Yokoyama2020}. \texttt{odgi depth} returns the node depth as defined by query criteria, allowing users to assess the complexity of regions in the graph. Collapsed sequences with highly identical repeats indicate intricate loci. Complex motifs can be also detected with \texttt{odgi degree}, which returns the node degree as defined by query criteria. High degree nodes are the mirror of misassemblies or problems in the pangenome building, making the tool useful for validation. In Fig. \ref{fig:metrics}, the characteristics of a human pangenome graph of the exon 1 huntingtin gene \citep{Sathasivam2013} (\textit{HTTexon1}), obtained with the ODGI metrics tools, are shown.
+
+\include{fig_metrics.tex}
 
 % Figure: small graph with all the stats shown. A screenshot of MultiQC, visualize summary per bin somehow, R visualizations of degree and depth HTT exon 1 as tiny example graph
 
@@ -220,6 +228,12 @@ Figure showing extraction process---either schematic or ``real''.
 
 Pangenome graphs stand to become a ubiquitous tool in genomics \citep{Eizenga_2020}. With ODGI we implemented a state-of-the-art tool suite that can transform, analyse, simplify, validate, and visualise pangenome graphs at large scale. Lifting over annotations and linearizing nested graph structures place the suite as the bridge between traditional linear reference genome analysis and pangenome graphs. ODGI is a unique set of tools that enables scientists to explore and discover the underlying biology of pangenome graphs. Already, the tools are the backbone of pipelines such as the Pangenome Graph Builder\footnote{\url{https://github.com/pangenome/pggb} (accessed Oct 2021)} (PGGB) or nf-core/pangenome\footnote{\url{https://github.com/nf-core/pangenome} (accessed Oct 2021)}. Future work will add support for RNA and protein sequences and expand on metadata capabilities of large pangenome graphs.
 
+rdf sparql side, bring in annotation for great biological interpretation
+
+some cancer stuff?!
+
+(recent) interactive visualization tools?!
+
 \section*{Funding}
 
 S.H. acknowledges funding from the Central Innovation Programme (ZIM) for SMEs of the Federal Ministry for Economic Affairs and Energy of Germany.
@@ -228,6 +242,7 @@ This work was supported by the BMBF-funded de.NBI Cloud within the German Networ
 \section*{Data availability}
 
 Data used to build Human pangenome graphs is available at \url{https://github.com/human-pangenomics/HPP_Year1_Data_Freeze_v1.0}.
+TODO!
 
 \bibliographystyle{natbib}
 %\bibliographystyle{achemnat}
