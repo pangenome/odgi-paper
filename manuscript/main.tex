@@ -186,7 +186,7 @@ Pangenome graphs built from raw sets of alignments may have complex structures w
 
 Graphs statistics provide alternative ways to gain insight into pangenomes complexity revealing the overall structure, size, and features of a graph and its sequences. 
 
-Applying \texttt{odgi stats}, users can retrieve metrics describing the graph properties, such as the number of nodes, edges, paths, and graph length. MultiQC's \citep{Ewels_2016} ODGI module\footnote{\url{https://multiqc.info/docs/\#odgi} (accessed Oct 2021)} provides an interactive way to comparatively explore the statistics of an arbitrary number of graphs. ODGI also offers more advanced tools for the interrogation of the graphs. \texttt{odgi bin} summarizes the path information into bins of a specified size, enabling a summarized view of gigabase scale graphs. This concept found its way into the pangenome graph ontology \cite{Yokoyama2020}. \texttt{odgi depth} returns the node depth as defined by query criteria, allowing users to assess the complexity of regions in the graph. Collapsed sequences with highly identical repeats indicate intricate loci. Complex motifs can be also detected with \texttt{odgi degree}, which returns the node degree as defined by query criteria. High degree nodes are the mirror of misassemblies or problems in the pangenome building, making the tool useful for validation. In Fig. \ref{fig:metrics}, the characteristics of a human pangenome graph of the exon 1 huntingtin gene \citep{Sathasivam2013} (\textit{HTTexon1}), obtained with the ODGI metrics tools, are shown.
+Applying \texttt{odgi stats}, users can retrieve metrics describing the graph properties, such as the number of nodes, edges, paths, and graph length. MultiQC's \citep{Ewels_2016} ODGI module\footnote{\url{https://multiqc.info/docs/\#odgi} (accessed Oct 2021)} provides an interactive way to comparatively explore the statistics of an arbitrary number of graphs. ODGI also offers more advanced tools for the interrogation of the graphs. \texttt{odgi bin} summarizes the path information into bins of a specified size, enabling a summarized view of gigabase scale graphs. This concept found its way into the pangenome graph ontology \cite{Yokoyama2020}. \texttt{odgi depth} returns the node depth as defined by query criteria, allowing users to assess the complexity of regions in the graph. Collapsed sequences with highly identical repeats indicate intricate loci. Complex motifs can be also detected with \texttt{odgi degree}, which returns the node degree as defined by query criteria. High degree nodes are the mirror of misassemblies or problems in the pangenome building, making the tool useful for validation. In Fig. \ref{fig:metrics}, the characteristics of a human pangenome graph of the exon 1 huntingtin gene \citep{Sathasivam2013,Neueder2017} (\textit{HTTexon1}), obtained with the ODGI metrics tools, are shown.
 
 \include{fig_metrics.tex}
 
@@ -228,11 +228,11 @@ Figure showing extraction process---either schematic or ``real''.
 
 Pangenome graphs stand to become a ubiquitous tool in genomics \citep{Eizenga_2020}. With ODGI we implemented a state-of-the-art tool suite that can transform, analyse, simplify, validate, and visualise pangenome graphs at large scale. Lifting over annotations and linearizing nested graph structures place the suite as the bridge between traditional linear reference genome analysis and pangenome graphs. ODGI is a unique set of tools that enables scientists to explore and discover the underlying biology of pangenome graphs. Already, the tools are the backbone of pipelines such as the Pangenome Graph Builder\footnote{\url{https://github.com/pangenome/pggb} (accessed Oct 2021)} (PGGB) or nf-core/pangenome\footnote{\url{https://github.com/nf-core/pangenome} (accessed Oct 2021)}. Future work will add support for RNA and protein sequences and expand on metadata capabilities of large pangenome graphs.
 
-rdf sparql side, bring in annotation for great biological interpretation
+rdf sparql side, bring in annotation for great biological interpretation \cite{Yokoyama2020}, federated queries, sharing, FAIR
+
+(recent) interactive visualization tools?! CITE PANACHE, also indicate that no published tool for interactive exploration of such graphs exist
 
 some cancer stuff?!
-
-(recent) interactive visualization tools?!
 
 \section*{Funding}
 
