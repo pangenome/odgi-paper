@@ -14,9 +14,32 @@ odgi paths -L -i chr4.pan.fa.a2fb268.e820cd3.9ea71d8.smooth.gfa.og > chr4.pan.fa
 
 odgi extract -i chr4.pan.fa.a2fb268.e820cd3.9ea71d8.smooth.gfa.og -r grch38#chr4:3074681-3075088 -o chr4.pan.fa.a2fb268.e820cd3.9ea71d8.smooth.gfa.og.HTTex1.og -P -t 16 -E
 odgi sort -i chr4.pan.fa.a2fb268.e820cd3.9ea71d8.smooth.gfa.og.HTTex1.og -o chr4.pan.fa.a2fb268.e820cd3.9ea71d8.smooth.gfa.og.HTTex1.og.O.og -O
-odgi viz -i chr4.pan.fa.a2fb268.e820cd3.9ea71d8.smooth.gfa.og.HTTex1.og.O.og -o chr4.pan.fa.a2fb268.e820cd3.9ea71d8.smooth.gfa.og.HTTex1.og.O.og.png
-odgi viz -i chr4.pan.fa.a2fb268.e820cd3.9ea71d8.smooth.gfa.og.HTTex1.og.O.og -w 2 -o chr4.pan.fa.a2fb268.e820cd3.9ea71d8.smooth.gfa.og.HTTex1.og.O.og.w2.png
-convert -size 852x940 xc:white chr4.pan.fa.a2fb268.e820cd3.9ea71d8.smooth.gfa.og.HTTex1.og.O.og.w2.png -gravity West -composite chr4.pan.fa.a2fb268.e820cd3.9ea71d8.smooth.gfa.og.HTTex1.og.O.og.w2.convert.png
+
+odgi paths -i chr4.pan.fa.a2fb268.e820cd3.9ea71d8.smooth.gfa.og.HTTex1.og.O.og -L > chr4.pan.fa.a2fb268.e820cd3.9ea71d8.smooth.gfa.og.HTTex1.og.O.og.paths
+#### FIXME ####
+# we accidentally cut off stuff from chm13 and grch13 -> fix this first
+cat chr4.pan.fa.a2fb268.e820cd3.9ea71d8.smooth.gfa.og.HTTex1.og.O.og.paths | cut -f 1 -d':' | cut -f 1,2 -d'#' | cut -c3- > chr4.pan.fa.a2fb268.e820cd3.9ea71d8.smooth.gfa.og.HTTex1.og.O.og.paths_tiny
+odgi view -i chr4.pan.fa.a2fb268.e820cd3.9ea71d8.smooth.gfa.og.HTTex1.og.O.og -g > chr4.pan.fa.a2fb268.e820cd3.9ea71d8.smooth.gfa.og.HTTex1.og.O.og.gfa
+paste chr4.pan.fa.a2fb268.e820cd3.9ea71d8.smooth.gfa.og.HTTex1.og.O.og.paths chr4.pan.fa.a2fb268.e820cd3.9ea71d8.smooth.gfa.og.HTTex1.og.O.og.paths_tiny| while read n k; do sed -i "s/$n/$k/g" chr4.pan.fa.a2fb268.e820cd3.9ea71d8.smooth.gfa.og.HTTex1.og.O.og.gfa; done
+# we overwrite the old one!
+odgi build -g chr4.pan.fa.a2fb268.e820cd3.9ea71d8.smooth.gfa.og.HTTex1.og.O.og.gfa -o chr4.pan.fa.a2fb268.e820cd3.9ea71d8.smooth.gfa.og.HTTex1.og.O.og
+
+odgi paths -i chr4.pan.fa.a2fb268.e820cd3.9ea71d8.smooth.gfa.og.HTTex1.og.O.og -f > chr4.pan.fa.a2fb268.e820cd3.9ea71d8.smooth.gfa.og.HTTex1.og.O.og.fasta
+samtools faidx chr4.pan.fa.a2fb268.e820cd3.9ea71d8.smooth.gfa.og.HTTex1.og.O.og.fasta
+#### TODO ####
+# take care of chm13 and grch13
+cat chr4.pan.fa.a2fb268.e820cd3.9ea71d8.smooth.gfa.og.HTTex1.og.O.og.fasta.fai | sort -k2 -r | head -n 20 | cut -f 1 > paths_to_viz
+printf "grch38#chr4:3074678-3075229" >> paths_to_viz
+odgi viz -i chr4.pan.fa.a2fb268.e820cd3.9ea71d8.smooth.gfa.og.HTTex1.og.O.og -o chr4.pan.fa.a2fb268.e820cd3.9ea71d8.smooth.gfa.og.HTTex1.og.O.og.png -a 10 -p paths_to_viz -c 100
+#### MANUAL INTERVENTION ####
+# Go to https://drububu.com/tutorial/bitmap-to-vector.html. 
+# Drag and drop chr4.pan.fa.a2fb268.e820cd3.9ea71d8.smooth.gfa.og.HTTex1.og.O.og.png into the dashed field.
+# Click "save as svg" to chr4.pan.fa.a2fb268.e820cd3.9ea71d8.smooth.gfa.og.HTTex1.og.O.og.png.svg.
+inkscape chr4.pan.fa.a2fb268.e820cd3.9ea71d8.smooth.gfa.og.HTTex1.og.O.og.png.svg --export-pdf=chr4.pan.fa.a2fb268.e820cd3.9ea71d8.smooth.gfa.og.HTTex1.og.O.og.png.svg.pdf
+
+odgi viz -i chr4.pan.fa.a2fb268.e820cd3.9ea71d8.smooth.gfa.og.HTTex1.og.O.og -o chr4.pan.fa.a2fb268.e820cd3.9ea71d8.smooth.gfa.og.HTTex1.og.O.og.a1.png -a 2 -p paths_to_viz
+#### MANUAL INTERVENTION ####
+inkscape chr4.pan.fa.a2fb268.e820cd3.9ea71d8.smooth.gfa.og.HTTex1.og.O.og.a1.png.svg --export-pdf=chr4.pan.fa.a2fb268.e820cd3.9ea71d8.smooth.gfa.og.HTTex1.og.O.og.a1.png.svg.pdf
 
 odgi depth -i chr4.pan.fa.a2fb268.e820cd3.9ea71d8.smooth.gfa.og.HTTex1.og.O.og -r chm13#chr4:3073405-3073983 -P -t 16 | bedtools makewindows -b /dev/stdin -w 1 > chr4.HTT.chm13.depth.bed
 odgi depth -i chr4.pan.fa.a2fb268.e820cd3.9ea71d8.smooth.gfa.og.HTTex1.og.O.og -b chr4.HTT.chm13.depth.bed | bedtools sort > chr4.HTT.chm13.depth.w1.bed
