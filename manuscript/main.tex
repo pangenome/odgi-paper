@@ -51,7 +51,7 @@ Hence, fast and versatile software is required to ask intricate questions of suc
 \textbf{Results:} Here we present ODGI, a new suite of tools that implements scalable algorithms and has an efficient in-memory representation of DNA variation graphs. ODGI includes tools for detecting complex regions, extracting loci, removing artifacts, exploratory analysis, manipulation, validation, and visualization. Its fast parallel execution facilitates routine pangenomic tasks as well as pipelines that can quickly answer complex biological questions of gigabase-scale pangenome graphs. \\
 %ODGI supports graphs in the Graphical Fragment Assembly format version 1 (GFAv1).
 %The tools scale efficiently to large collections of eukaryotic genomes, allowing users to work easily with pangenome graphs of tens to thousands of large genomes while maintaining fast execution runtime and low memory overhead.
-\textbf{Availability:} ODGI is ++ software published under the MIT license. Source code can be downloaded from \url{https://github.com/pangenome/odgi} while the documentation is available at \url{https://odgi.readthedocs.io}.
+\textbf{Availability:} ODGI is under the MIT license. Source code can be downloaded from \url{https://github.com/pangenome/odgi} while the documentation is available at \url{https://odgi.readthedocs.io}.
 ODGI can be installed via Bioconda \url{https://bioconda.github.io/recipes/odgi/README.html} or Guix \url{https://github.com/ekg/guix-genomics/blob/master/odgi.scm}. \\
 \textbf{Contact:} \href{egarris5@uthsc.edu}{egarris5@uthsc.edu} \\
 \textbf{Supplementary information:} Supplementary data are available at \textit{Bioinformatics} online.
@@ -62,13 +62,21 @@ ODGI can be installed via Bioconda \url{https://bioconda.github.io/recipes/odgi/
 \section{Introduction}
 
 A pangenome models the full set of genomic elements in a given species or clade \citep{Eizenga_2020}.
-In contrast to reference-based approaches which relate sequences only to a particular genome, these data structures encode the mutual relationships between all the genomes represented.
-A class of methods to represent pangenomes involves the sequence graphs \citep{Paten:2017}, where similar orthologous regions between genomes collapse into a single representative sequence.
-In node-labeled sequence graphs, nodes indicate DNA sequences, with edges connecting the nodes that are concatenated in the sequences represented in the graph.
-A bidirected sequence graph represents both strands of DNA. On this model, variation graphs add the concept of path to embed linear sequences (e.g., genomes or haplotypes) into the graph.
-Paths provide a stable coordinate system, allowing graph annotations and interoperability between different graphs.
+In contrast to reference-based approaches which relate sequences to a single genome, these data structures encode the mutual relationships between all the genomes represented.
+In pangenome graphs \citep{Paten:2017}, homologous regions between genomes are compressed into a single representative model of all alleles present in the pangenome.
+These flexible models let us encode any kind of variation, allowing the generation of truly unbiased data systems on which to base analyses of genome evolution.
+Although these structures are of clear utility to researchers \citep{cpang2018}, and have been the focus of numerous applications in read mapping \cite{Garrison:2018,Baaijens_2019,Hickey:2020,Sibbesen_2021}, we observe that the community lacks a set of tools focused on graph manipulation and interrogation.
 
-Thanks to advances in sequencing technologies, new full-length genome assemblies are produced at a high rate, including efforst from the Human Pangenome Reference Consortium\footnote{\url{https://humanpangenome.org/} (accessed Oct 2021)} (HPRC) and Telomere-to-Telomere (T2T) projects \citep{Miga:2020, Logsdon_2021, Nurk_2021}, from the T2T consortium\footnote{\url{https://sites.google.com/ucsc.edu/t2tworkinggroup/home} (accessed Oct 2021)}.
+%In node-labeled sequence graphs, nodes indicate DNA sequences, with edges connecting the nodes that are concatenated in the sequences represented in the graph.
+
+%A bidirected sequence graph represents both strands of DNA.
+%On this model, variation graphs add the concept of path to embed linear sequences (e.g., genomes or haplotypes) into the graph.
+%Paths provide a stable coordinate system, and allow the graph to support annotations and  different graphs.
+
+%\footnote{\url{https://humanpangenome.org/} (accessed Oct 2021)}
+%\footnote{\url{https://sites.google.com/ucsc.edu/t2tworkinggroup/home} (accessed Oct 2021)}.
+
+Thanks to advances in sequencing technologies, new full-length genome assemblies are produced at a high rate, including efforts from the Human Pangenome Reference Consortium (HPRC) and Telomere-to-Telomere (T2T) projects \citep{Miga:2020, Logsdon_2021, Nurk_2021}, from the T2T consortium.
 This amount of data offers the opportunity to study genomic variation as never before, but it also brings challenges in how to represent and manipulate hundreds of genomes at a gigabase scale.
 Variation graphs compactly represent the full genetic variation across a population, but graph-based data structures present computational overheads: in addition to the sequences, they must also represent the graph topology.
 Several genome data structures were developed to address these challenges \citep{Eizenga_2020_BX}.
