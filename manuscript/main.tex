@@ -65,42 +65,26 @@ A pangenome models the full set of genomic elements in a given species or clade 
 In contrast to reference-based approaches which relate sequences to a single genome, these data structures encode the mutual relationships between all the genomes represented.
 In pangenome graphs \citep{Paten:2017}, homologous regions between genomes are compressed into a single representative model of all alleles present in the pangenome.
 These flexible models let us encode any kind of variation, allowing the generation of truly unbiased data systems on which to base analyses of genome evolution.
-Although these structures are of clear utility to researchers \citep{cpang2018}, and have been the focus of numerous applications in read mapping \cite{Garrison:2018,Baaijens_2019,Hickey:2020,Sibbesen_2021}, we observe that the community lacks a set of tools focused on graph manipulation and interrogation.
+Although these structures are of clear utility to researchers \citep{cpang2018}, and have been the focus of numerous applications in read mapping \cite{Garrison:2018,Baaijens_2019,Hickey:2020,Sibbesen_2021}, we observe that the community lacks a toolset specifically focused on graph manipulation and interrogation.
 
-%In node-labeled sequence graphs, nodes indicate DNA sequences, with edges connecting the nodes that are concatenated in the sequences represented in the graph.
+Projects like the Human Pangenome Reference Consortium (HPRC) and Telomere-to-Telomere (T2T) consortium \citep{Miga:2020, Logsdon_2021, Nurk_2021} have recently demonstrated that high-quality \textit{de novo} assemblies can be routinely generated from third-generation long read sequencing data.
+We anticipate that in the near future, studies will frequently begin from assemblies of similar quality, leading to demand for methods that allow us to understand pangenomes.
+As experience in the HPRC has shown, pangenome graphs are a natural model to support these kinds of analyses, but studies based on pangenome graphs are difficult due to a lack of downstream tools and standard operations.
 
-%A bidirected sequence graph represents both strands of DNA.
-%On this model, variation graphs add the concept of path to embed linear sequences (e.g., genomes or haplotypes) into the graph.
-%Paths provide a stable coordinate system, and allow the graph to support annotations and  different graphs.
+Here, we present the Optimized Dynamic Genome/Graph Implementation (ODGI) toolkit, a genome graph interrogation and transformation system specifically built to handle the data scales encountered when working with pangenomes built from hundreds of haplotype-resolved genomes.
+ODGI provides a set of standard operations on the pangenome variation graph data model, generalizing ``genome arithmetic'' concepts like those found in BEDTools \citep{Quinlan_2010} to work on genome graphs, and providing new operations, such as visualizations, sorting, and liftover projections critical to understanding the structure of pangenome graphs.
+
+%Tools in ODGI operate on an efficient dynamic HandleGraph model \citep{Eizenga_2020_BX}.
+%Algorithms written against this abstract API can be applied to the graph.% applies algorithms based on the HandleGraph API.
+%This common API lets us reuse and and extend algorithms shared with the VG toolkit (VG) \citep{Garrison:2018}.
+%We specifically develop new methodsfocused on problems encountered when building pangenome graphs at the scale of vertebrate populations.
+%To ease interactive use, the majority of the ODGI tools are implemented in an index-free manner, avoiding the need to create index structures at each step of complex graph processing pipelines.
+%Thanks to ODGI's efficient path representation, its tools can work with variation graphs with highly complex regions.
+%This eliminates one of the major bottlenecks when working with very large and deep variation graphs, and allows researchers to build and understand graphs of previously-inaccessible complexity and scale.
+
 
 %\footnote{\url{https://humanpangenome.org/} (accessed Oct 2021)}
 %\footnote{\url{https://sites.google.com/ucsc.edu/t2tworkinggroup/home} (accessed Oct 2021)}.
-
-Thanks to advances in sequencing technologies, new full-length genome assemblies are produced at a high rate, including efforts from the Human Pangenome Reference Consortium (HPRC) and Telomere-to-Telomere (T2T) projects \citep{Miga:2020, Logsdon_2021, Nurk_2021}, from the T2T consortium.
-This amount of data offers the opportunity to study genomic variation as never before, but it also brings challenges in how to represent and manipulate hundreds of genomes at a gigabase scale.
-Variation graphs compactly represent the full genetic variation across a population, but graph-based data structures present computational overheads: in addition to the sequences, they must also represent the graph topology.
-Several genome data structures were developed to address these challenges \citep{Eizenga_2020_BX}.
-Here, we build on these approaches, developing essential functions for graph interrogation and manipulation, and refining our implementation to scale to the complexity found in T2T genome assemblies produced with modern long read sequencing. 
-
-%that we have found to be essential during our work in the HPRC.
-%Most memory-efficient representations do not allow dynamic updates to the graph, such as adding new genomes or simplifying the graph topology.
-%Furthermore, dynamic updates must perform efficiently on the complex graphs generated from whole-genome alignment of vertebrates.
-%Highly repetitive regions, such as centromeres, segmental duplications, and acrocentric chromosomes lead to graphs that present paths with very high-depth nodes.
-%The node depth is defined as the number of times in which the node is crossed by all the paths embedded in the graph.
-%High depth increases the complexity of the operations performed on the paths and the nodes they cross.
-
-%To overcome this limitation, we have developed an 
-We implement these functions in the Optimized Dynamic Genome/Graph Implementation (ODGI).
-Each tool in ODGI loads graphs into a succinct dynamic HandleGraph model \citep{Eizenga_2020_BX} and applies methods based on the HandleGraph API.
-In addition to reusing and extending algorithms shared with the VG toolkit (VG) \citep{Garrison:2018}, we develop new methods to focused specifically on problems encountered when building pangenome graphs at the scale of vertebrate populations.
-%However, although similar in scope to VG, ODGI importantly differs in its design to support highly complex pangenome graphs.
-To ease interactive use, the majority of the ODGI tools are implemented in an index-free manner, avoiding the need to create index structures at each step of complex graph processing pipelines.
-%Indeed, index-constrained implementations would require building indexes also for single or little operations on the graphs.
-Thanks to ODGI's efficient path representation, its tools can work with variation graphs with highly complex regions.
-This eliminates one of the major bottlenecks when working with very large and deep variation graphs, and allows researchers to build and interrogate graphs of previously-inaccessible complexity and scale.
-%efficiently scaling up to hundreds of large vertebrate genomes.
-
-%\begin{methods}
 
 \section{Implementation}
 
