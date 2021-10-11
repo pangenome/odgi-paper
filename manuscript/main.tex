@@ -204,9 +204,14 @@ Figure here with 1D + 2D vizs.
 
 % Allows us to understand the sparse structures typically found in pangenome graphs.
 
-Pangenome graphs built from raw sets of alignments may have complex structures which can introduce difficulty in downstream analyses. Uncovering their latent topology allows us to understand the sparse structures typically found in pangenome graphs.
+Pangenome graphs built from raw sets of alignments may have complex structures which can introduce difficulty in downstream analyses. Uncovering their latent topology allows us to understand their typical sparse structures.
 
-\texttt{odgi sort} offers multiple sorting algorithms to find the best node order in one dimension. Nodes can be sorted randomly, topologically, by breaking cycles in the graph, by grooming, or by using the novel path-guided stochastic gradient descent (PG-SGD) algorithm.  can be combined together to a series of sorts.
+\texttt{odgi sort} offers multiple sorting algorithms to find the best node order in one dimension. Most notably, nodes can be sorted topologically, randomly, by breaking cycles in the graph, by grooming, or by using a novel path-guided stochastic gradient descent (PG-SGD) algorithm. 
+The latter one exploits the biological information in the paths for sorting the nodes.
+Combining a series of sorts can mitigate the weaknesses of individually applied sorting algorithms. 
+In Figure \textbf{\textit{TODO MHC wgg.85}}, a comparison of an unsorted human pangenome MHC graph and a sorted one are displayed.
+
+For the establishment of a layout in two dimensions \texttt{odgi layout} applies a 2D adjusted PG-SGD algorithm. A calculated layout can be visualized statically with \texttt{odgi draw} (see Figure \textit{\textbf{TODO MHC wgg.85}}) or interactively explored with the in-development \texttt{gfaestus}\footnote{\url{https://github.com/chfi/gfaestus}}.
 
 \subsection{Obtaining metrics of the pangenome graph}
 
@@ -221,7 +226,14 @@ Pangenome graphs built from raw sets of alignments may have complex structures w
 
 Graphs statistics provide alternative ways to gain insight into pangenomes complexity revealing the overall structure, size, and features of a graph and its sequences. 
 
-Applying \texttt{odgi stats}, users can retrieve metrics describing the graph properties, such as the number of nodes, edges, paths, and graph length. MultiQC's \citep{Ewels_2016} ODGI module\footnote{\url{https://multiqc.info/docs/\#odgi} (accessed Oct 2021)} provides an interactive way to comparatively explore the statistics of an arbitrary number of graphs. ODGI also offers more advanced tools for the interrogation of the graphs. \texttt{odgi bin} summarizes the path information into bins of a specified size, enabling a summarized view of gigabase scale graphs. This concept found its way into the pangenome graph ontology \cite{Yokoyama2020}. \texttt{odgi depth} returns the node depth as defined by query criteria, allowing users to assess the complexity of regions in the graph. Collapsed sequences with highly identical repeats indicate intricate loci. Complex motifs can be also detected with \texttt{odgi degree}, which returns the node degree as defined by query criteria. High degree nodes can be the mirror of variation, misassemblies, or problems in the pangenome building, making the tool useful for validation. In Fig. \ref{fig:metrics}, the characteristics of a human pangenome graph of the exon 1 huntingtin gene \citep{Sathasivam2013,Neueder2017} (\textit{HTTexon1}), obtained with the ODGI metrics tools, are shown.
+Applying \texttt{odgi stats}, users can retrieve metrics describing the graph properties, such as the number of nodes, edges, paths, and graph length. 
+MultiQC's \citep{Ewels_2016} ODGI module\footnote{\url{https://multiqc.info/docs/\#odgi} (accessed Oct 2021)} provides an interactive way to comparatively explore the statistics of an arbitrary number of graphs. 
+ODGI also offers more advanced tools for the interrogation of the graphs. \texttt{odgi bin} summarizes the path information into bins of a specified size, enabling a summarized view of gigabase scale graphs. 
+This concept found its way into the pangenome graph ontology \cite{Yokoyama2020}. \texttt{odgi depth} returns the node depth as defined by query criteria, allowing users to assess the complexity of regions in the graph. 
+Collapsed sequences with highly identical repeats indicate intricate \textit{loci}. 
+Complex motifs can be also detected with \texttt{odgi degree}, which returns the node degree as defined by query criteria. 
+High degree nodes can be the mirror of variation, misassemblies, or problems in the pangenome building, making the tool useful for validation. 
+In Fig. \ref{fig:metrics}, the characteristics of a 90 haplotypes human pangenome graph of the exon 1 huntingtin gene \citep{Sathasivam2013,Neueder2017} (\textit{HTTexon1}), obtained with the ODGI metrics tools, are shown.
 
 \include{fig_metrics.tex}
 
