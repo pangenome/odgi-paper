@@ -114,11 +114,6 @@ Most of the tools are designed to be applied together, piping the output of one 
 Variation graphs are commonly represented by a subset of version 1 of the Graphical Fragment Assembly format (GFAv1): odgi build and odgi view allow to convert graphs from GFA to ODGI format and vice versa, respectively.
 In the variation graph model, paths have to respect the graph’s topology: this can be verified with odgi validate, to ensure no errors in the input or edited graphs.
 
-By visualizing pangenome graphs, we can gain insight into the relationship between genomes.
-odgi viz applies binning and direct rendering to a raster image to generate a 1D representation able to scale up to gigabase pangenome graphs (Figure 1.A).
-However, pangenome graphs may present complex structures to visualize: odgi sort finds the best node order to simplify 1D graph visualization by applying several cutting-edge sorting algorithms.
-odgi draw extends the visualization in 2D, taking in input the layouts built by odgi layout.
-
 Applying odgi stats, users can retrieve metrics describing the graph properties, such as the number of nodes, edges, paths, and graph length.
 ODGI also offers more advanced tools for interrogating the graphs. odgi bin summarizes the path information into bins of specified size, enabling a summarized view of gigabase scale graphs.
 odgi depth returns the node depth as defined by query criteria, allowing users to detect the complex regions in the graph due to sequences with highly identical repeats.
@@ -174,9 +169,25 @@ Figure: .dot showing the relationship between all the tools and the data formats
 
 % andrea (viz) & erik (draw)
 
-% viz / draw
-These provide scalable ways of generating human-viewable pictures of the high-level structure of the graph.
 % interesting that we don't go base-level at all... we use vg for that, or STM
+
+Pangenome graph visualization is one of the first steps to gain insight into the mutual relationship between the sequences and their variation.
+\texttt{odgi viz} and \texttt{odgi draw} provide scalable ways of generating human-viewable pictures of the high-level structure of the graph.
+
+\texttt{odgi viz} offers a binned, linearized rendering in 1 dimension (1D).
+
+% Explain odgi viz's visualization
+
+However, complex, nonlinear graph structures are difficult to display and interpret in a convenient low number of dimensions.
+To overcome such a limitation, \texttt{odgi viz} supports multiple visualization modes, making it easy to grasp the properties of the graph and its complexity.
+
+% Explain odgi viz's color by path position
+% Explain odgi viz's color by strandness
+% Explain odgi viz's color by coverage
+
+\texttt{odgi draw} extends the visualization in 2 dimensions (2D), taking in input the layouts built by \texttt{odgi layout}.
+
+% Explain odgi draw's visualization
 
 Figure here with 1D + 2D vizs.
 
