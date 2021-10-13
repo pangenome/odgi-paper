@@ -61,18 +61,18 @@ ODGI can be installed via Bioconda \url{https://bioconda.github.io/recipes/odgi/
 
 \section{Introduction}
 
-A pangenome models the full set of genomic elements in a given species or clade \citep{Eizenga_2020}.
+A pangenome models the full set of genomic elements in a given species or clade \citep{cpang2018,Eizenga_2020}.
 In contrast to reference-based approaches which relate sequences to a single genome, these data structures encode the mutual relationships between all the genomes represented.
 In pangenome graphs \citep{Paten:2017}, homologous regions between genomes are compressed into a single representative model of all alleles present in the pangenome.
 These flexible models let us encode any kind of variation, allowing the generation of truly unbiased data systems on which to base analyses of genome evolution.
-Although these structures are of clear utility to researchers \citep{cpang2018}, and have been the focus of numerous applications in read mapping \cite{Garrison:2018,Baaijens_2019,Hickey:2020,Sibbesen_2021}, we observe that the community lacks a toolset specifically focused on graph manipulation and interrogation.
+Although these structures are of clear utility to researchers \citep{cpang2018}, and have been the focus of numerous applications in read mapping \citep{Garrison:2018,Baaijens_2019,Hickey:2020,Sibbesen_2021}, we observe that the community lacks a toolset specifically focused on graph manipulation and interrogation.
 
 Projects like the Human Pangenome Reference Consortium (HPRC) and Telomere-to-Telomere (T2T) consortium \citep{Miga:2020, Logsdon_2021, Nurk_2021} have recently demonstrated that high-quality \textit{de novo} assemblies can be routinely generated from third-generation long read sequencing data.
 We anticipate that in the near future, studies will frequently begin from assemblies of similar quality, leading to demand for methods that allow us to understand pangenomes.
 As experience in the HPRC has shown, pangenome graphs are a natural model to support these kinds of analyses, but studies based on pangenome graphs are difficult due to a lack of downstream tools and standard operations.
 
 Here, we present the Optimized Dynamic Genome/Graph Implementation (ODGI) toolkit, a genome graph interrogation and transformation system specifically built to handle the data scales encountered when working with pangenomes built from hundreds of haplotype-resolved genomes.
-ODGI provides a set of standard operations on the pangenome variation graph data model, generalizing ``genome arithmetic'' concepts like those found in BEDTools \citep{Quinlan_2010} to work on genome graphs, and providing new operations, such as visualizations, sorting, and liftover projections critical to understanding the structure of pangenome graphs.
+ODGI provides a set of standard operations on the pangenome variation graph data model, generalizing ``genome arithmetic'' concepts like those found in BEDTools \citep{Quinlan_2010} to work on genome graphs, and providing new operations, such as visualizations, sorting, and liftover projections critical to understanding and exploiting pangenome graphs.
 
 %Tools in ODGI operate on an efficient dynamic HandleGraph model \citep{Eizenga_2020_BX}.
 %Algorithms written against this abstract API can be applied to the graph.% applies algorithms based on the HandleGraph API.
@@ -89,10 +89,30 @@ ODGI provides a set of standard operations on the pangenome variation graph data
 \section{Implementation}
 
 %ODGI is designed to build and modify paths in parallel, keeping its representation in memory efficient.
-The ODGI toolkit builds on existing approaches to efficiently store and manipulate variation graphs \citep{Eizenga_2020_BX}. %, presenting a refined and well-tested implementation.
-We begin with several key properties which hold for most pangenome variation graphs that we have built: 1) The graphs are relatively sparse, with low node degree; 2) The graphs can be sorted, so that most edges go between nodes that are close together in the sort order (and identifier space); 3) There is high similarity between paths in the graph.
+The ODGI toolkit builds on existing approaches to efficiently store and manipulate variation graphs \citep{Garrison:2018,Eizenga_2020_BX}. %, presenting a refined and well-tested implementation.
+Its implementation rests on three key properties which hold for most pangenome variation graphs:
+
+\begin{enumerate}
+\item They are relatively sparse, with low average node degree.
+\item They can be sorted, so that most edges go between nodes that are close together in the sort order (and identifier space).
+\item Paths are similar to each other.
 %We incorporate concepts first introduced in the dynamic version of the Graph BWT \citep{Siren:2020} (GBWT), a scalable implementation of the graph extension of the positional Burrows-Wheeler transform \citep{Durbin_2014}.
-To exploit these properties, we follow a design first explored in the dynamic Graph BWT (GBWT) \citep{Siren:2020} and build a node-centric model of the graph, where the graph is stored in a vector of node structures, each of which presents a node-local view of the graph sequence, topology, and path layout.
+\end{enumerate}
+
+%These properties and this  encourage us to use a node-centric model for the graph, where we apply a local, compressed representation of the node neighborhood.
+
+%These structures are complex, but we can make sense of them so long as we can load and analyze   %In order to make sense of such structures
+%(Although we usually seek to remove as many such motifs as possible through graph normalization, to do so requires that we be able to load and traverse the graph.)
+%Our objective is to allow dynamic modification of graphs even when they contain nodes with very high path depth.
+%This requires an efficient
+
+A key design objective, motivated by experience working with graphs built from high quality eukaryotic genome assemblies, is to support graphs with very high path depth.
+Such motifs can occur in collapsed repeat structures generated by ambiguous sequence homology relationships in repeats found in the centromeres and other segmental duplications.
+To meet these needs, we follow the approach of the dynamic Graph BWT (GBWT) \citep{Siren:2020}, and built a dynamic, compressed model of the paths.
+
+%wherein we save space using a local encoding of paths 
+%We construct a node-centric model of the graph.
+We store the graph in a vector of node structures, each of which presents a node-local view of the graph sequence, topology, and path layout.
 %The identifier of each node is its offset in this vector plus 1.
 Each structure contains the sequence of the node, its edges in both directions (forward and backward), and a vector of path steps that describes the previous and next steps in paths that walk across the node.
 %Each step records the path identifier and the previous and next path steps on the same path.
