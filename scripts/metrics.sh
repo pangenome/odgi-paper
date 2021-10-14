@@ -1,7 +1,5 @@
 #!/bin/bash
 
-SVG=$1
-
 wget https://s3-us-west-2.amazonaws.com/human-pangenomics/pangenomes/scratch/2021_07_30_pggb/chroms/chr4.pan.fa.a2fb268.e820cd3.9ea71d8.smooth.gfa.gz
 gunzip chr4.pan.fa.a2fb268.e820cd3.9ea71d8.smooth.gfa.gz
 wget https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/genes/hg38.ncbiRefSeq.gtf.gz
@@ -23,7 +21,7 @@ odgi depth -i chr4.pan.fa.a2fb268.e820cd3.9ea71d8.smooth.gfa.og.HTTex1.og.O.og -
 odgi degree -i chr4.pan.fa.a2fb268.e820cd3.9ea71d8.smooth.gfa.og.HTTex1.og.O.og -r chm13#chr4:3073405-3073983 -P -t 16 | bedtools makewindows -b /dev/stdin -w 1 > chr4.HTT.chm13.degree.bed
 odgi degree -i chr4.pan.fa.a2fb268.e820cd3.9ea71d8.smooth.gfa.og.HTTex1.og.O.og -b chr4.HTT.chm13.degree.bed | bedtools sort > chr4.HTT.chm13.degree.w1.bed
 
-Rscript metrics.R chr4.HTT.chm13.depth.w1.bed chr4.HTT.chm13.depth.w1.bed.pdf chr4.HTT.chm13.degree.w1.bed chr4.HTT.chm13.degree.w1.bed.pdf
+Rscript metrics.R chr4.HTT.chm13.depth.w1.bed chr4_HTT_chm13_depth_w1_bed.pdf chr4.HTT.chm13.degree.w1.bed chr4_HTT_chm13_degree_w1_bed.pdf
 
 odgi stats -i chr4.pan.fa.a2fb268.e820cd3.9ea71d8.smooth.gfa.og.HTTex1.og.O.og -m > chr4.pan.fa.a2fb268.e820cd3.9ea71d8.smooth.gfa.og.HTTex1.og.O.og.stats.yml
 
@@ -57,7 +55,7 @@ odgi viz -i chr4.pan.fa.a2fb268.e820cd3.9ea71d8.smooth.gfa.og.HTTex1.og.O.og.tin
 # check if the svg already exists, else boil out
 if [[ -f chr4.pan.fa.a2fb268.e820cd3.9ea71d8.smooth.gfa.og.HTTex1.og.O.og.tiny.og.png.svg ]]
 then
-    inkscape chr4.pan.fa.a2fb268.e820cd3.9ea71d8.smooth.gfa.og.HTTex1.og.O.og.tiny.og.png.svg --export-pdf=chr4.pan.fa.a2fb268.e820cd3.9ea71d8.smooth.gfa.og.HTTex1.og.O.og.tiny.og.png.svg.pdf
+    inkscape chr4.pan.fa.a2fb268.e820cd3.9ea71d8.smooth.gfa.og.HTTex1.og.O.og.tiny.og.png.svg --export-pdf=chr4_pan_fa_a2fb268_e820cd3_9ea71d8_smooth_gfa_og_HTTex1_og_O_og_tiny_og_png_svg.pdf
 else
     echo "Please create a perfect lossless SVG from the PNG via https://drububu.com/tutorial/bitmap-to-vector.html and save it as chr4.pan.fa.a2fb268.e820cd3.9ea71d8.smooth.gfa.og.HTTex1.og.O.og.tiny.og.png.svg!"
 fi
