@@ -86,48 +86,73 @@ ODGI provides a set of standard operations on the pangenome variation graph data
 %\footnote{\url{https://humanpangenome.org/} (accessed Oct 2021)}
 %\footnote{\url{https://sites.google.com/ucsc.edu/t2tworkinggroup/home} (accessed Oct 2021)}.
 
+\section{Model}
+
+A pangenome graph is a sequence model that encodes the mutual alignment of many genomes \citep{Garrison_2019_thesis,Eizenga_2020}.
+In the variation graph, $V = (N, E, P)$, nodes $N = n_1\ldots n_{|N|}$ contain sequences of DNA.
+Each node $n_i$ has an identifier $i$ and an implicit reverse complement $\bar{n_i}$, and a node strand $s$ corresponds to one such orientation.
+Edges $E = e_1\ldots e_{|E|}$ represent ordered pairs of node strands: $e_i = ( s_a, s_b )$.
+Paths $P = p_1\ldots p_{|P|}$ describe walks over node strands: $p_i = s_1 \ldots s_{|p_i|}$.
+When used as a pangenome graph, $V$ expresses sequences, haplotypes, and annotations as paths.
+%The utility of the variation graph model lies in its lossless representation of genomes and their alignment.
+By containing both the sequences and information about their relative variations, the variation graph provides a powerful foundation for many bioinformatic applications.
+
+Such a graph can be constructed by a process like multiple sequence alignment \citep{Lee_2002,Grasso_2004}, but this partially-ordered graph cannot represent complex variation like inversions and cycles that occur at structural scales in genomes.
+General approaches to building pangenome graphs transitively reduce an alignment between sequences to an equivalent, labeled sequence graph \citep{Kehr_2014,Garrison_2019_thesis}.
+Current methods to build these graphs are still in development \citep{Li:2020,Armstrong:2020,pggb}, but they have largely settled on a common data model, represented in the Graphical Fragment Assembly (GFA) format \citep{GFA}).
+%The improvement of these methods depends on tools that allow us to investigate 
+This standardization supports the development of a reference set of tools that operate on the pangenome graph model, while the need to understand the graphs made by these methods motivates it.
+
+%The improvement of these approaches depends on scalable tools for understanding pangenome graphs, a need that our work responds to.
+
+%As a toolkit for understanding these graphs, ODGI 
+
+%A more general approach is to build the graph from an alignment between sequences.
+%We first transitively collapse characters in the input sequences that align together into single character in the output genome
+%By projecting input sequences through this transformation, we obtain paths that losslessly encode the original sequences, but in the space of the graph \citep{Garrison_2019_thesis}.
+%Methods to build such graphs are in active development, and here we focus on graphs built with the PanGenome Graph Builder pipeline \citep{pggb}, a process that converts an input pangenome (in FASTA) into a combined graphical model (in the Graphical Fragment Assembly (GFA) format \citep{GFA}).
+
 \section{Implementation}
 
 %ODGI is designed to build and modify paths in parallel, keeping its representation in memory efficient.
-The ODGI toolkit builds on existing approaches to efficiently store and manipulate variation graphs \citep{Garrison:2018,Eizenga_2020_BX}. %, presenting a refined and well-tested implementation.
+The ODGI toolkit builds on existing approaches to efficiently store and manipulate variation graphs \citep{Garrison:2018,Eizenga_2020_BX}.
+It implements the \textsc{HandleGraph} model \cite{Eizenga_2020_BX}.
 Its implementation rests on three key properties which hold for most pangenome variation graphs:
 
 \begin{enumerate}
 \item They are relatively sparse, with low average node degree.
 \item They can be sorted, so that most edges go between nodes that are close together in the sort order (and identifier space).
-\item Paths are similar to each other---in general, sequences from a species pangenome are similar enough to be easily alignable.
+\item Paths are locally similar to each other, 
 %We incorporate concepts first introduced in the dynamic version of the Graph BWT \citep{Siren:2020} (GBWT), a scalable implementation of the graph extension of the positional Burrows-Wheeler transform \citep{Durbin_2014}.
 \end{enumerate}
 
-These properties have already been used to build efficient dynamic variation graph data structures \citep{Eizenga_2020_BX}.
+These properties have already been used to build efficient dynamic variation graph data structures \citep{Siren:2020,Eizenga_2020_BX}.
 %Here, we build on this work and focus on issues that have arisen during our recent work on the Human Pangenome.
-However, we take this work further, focusing on bottlenecks that arose during our work with high-quality assemblies that cover almost all parts of the genome \citep{Logsdon_2021,Nurk_2021}.
+Here, we improve on these prior efforts, focusing on issues that arose during our work with high-quality assemblies that cover almost all parts of the genome \citep{Logsdon_2021,Nurk_2021}.
 %A key design objective, motivated by experience working with graphs built from high quality eukaryotic genome assemblies, is to support graphs with very high path depth.
 We find that it is necessary to support graphs that have regions of very high path depth.
 Such motifs can occur in collapsed repeat structures generated by ambiguous sequence homology relationships in repeats found in the centromeres and other segmental duplications.
 If we cannot process such regions, we have only two options---we can remove these regions, or we can leave them unaligned.
 Neither of these solutions allows us to investigate their biological features.
 To seamlessy represent such difficult regions, we follow the approach of the dynamic Graph BWT (GBWT) \citep{Siren:2020}, and built a node-centric, dynamic, compressed model of the paths.
+This design supports node-local modification and update of the graph, which lets us build and transform the model in parallel.
 
-%wherein we save space using a local encoding of paths 
-%We construct a node-centric model of the graph.
 We store the graph in a vector of node structures, each of which presents a node-local view of the graph sequence, topology, and path layout.
-%The identifier of each node is its offset in this vector plus 1.
 Each structure contains the sequence of the node, its edges in both directions (forward and backward), and a vector of path steps that describes the previous and next steps in paths that walk across the node.
-%Each step records the path identifier and the previous and next path steps on the same path.
 As in the GBWT, to compress the encoding, we encode path steps using a local alphabet that maps the N neighbours of the node into the range $1\ldots N$.
 To further save space, node deltas, rather than IDs, are stored in this alphabet.
 The delta between two nodes is defined as their distance in the graph vector (i.e., the difference between the node offsets).
 The path step vector, of length n, is stored using a dynamic succinct integer vector that requires O(5nw) bits, where w is ~log2(N).
 Finally, to allow operating on path steps in parallel, each node structure includes a byte-width mutex lock.
 
-%\end{methods}
-
 ODGI is entirely focused on “first-order” operations on the graph (Table 1), providing, unlike VG, no method to construct graphs from raw sequences or map reads.
 It supports interrogation of the graph for basic dimensional properties, positional and path-related queries, and visualization in one-dimension (1D) and two-dimensions (2D).
 ODGI also supports operations on the graph such as subset, subdivide, break, combine, normalize, or order its components, nodes, and paths.
 Most of the tools are designed to be applied together, piping the output of one tool into the next, thereby preventing the creation of intermediate files, and reducing the number of IO operations.
 
+
+
+\begin{comment}
 %\subsection{Core functionality}
 
 Variation graphs are commonly represented by a subset of version 1 of the Graphical Fragment Assembly format (GFAv1): odgi build and odgi view allow to convert graphs from GFA to ODGI format and vice versa, respectively.
@@ -151,6 +176,7 @@ odgi extract allows extracting specific subregions of the graph as defined by qu
 
 In variation graphs the coordinates are provided by the embedded path sequences.
 Indeed, the node IDs are not meant to be stable. odgi position finds, translates, and liftovers graph and path positions between different graphs by exploiting their shared path sequences (Figure 1.B).
+\end{comment}
 
 \begin{comment}
 key message of the paper is that we have collected a set of algorithms that enable easy use of pangenome graphs for investigating biology
