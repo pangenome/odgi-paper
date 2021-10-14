@@ -5,6 +5,10 @@
 \usepackage{makecell}
 \usepackage{comment}
 \usepackage{subcaption}
+\usepackage{algorithm2e}
+
+\SetAlgoLined
+\SetKwProg{MyStruct}{Struct}{ contains}{end}
 
 \newcommand{\vocab}{\textbf}
 
@@ -142,7 +146,18 @@ To seamlessy represent such difficult regions, we follow the approach of the dyn
 This design supports node-local modification and update of the graph, which lets us build and transform the model in parallel.
 
 We store the graph in a vector of node structures, each of which presents a node-local view of the graph sequence, topology, and path layout.
-Expressed in terms of the variation graph $V$, the structure for node  the node sequence $seq(n_i)$
+Expressed in terms of the variation graph $V$, the $Node$ structure includes:
+\begin{algorithm}
+\MyStruct{Node}{
+  Node* parent\;
+  int size\;
+  \tcp{other stuff}
+}
+\end{algorithm}
+
+%\begin{enumerate}
+%\item a node sequence $seq(n_i)$
+%\end{enumerate}
 
 
 Each structure contains the sequence of the node, its edges in both directions (forward and backward), and a vector of path steps that describes the previous and next steps in paths that walk across the node.
