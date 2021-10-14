@@ -146,38 +146,35 @@ To seamlessy represent such difficult regions, we follow the approach of the dyn
 This design supports node-local modification and update of the graph, which lets us build and transform the model in parallel.
 
 We store the graph in a vector of node structures, each of which presents a node-local view of the graph sequence, topology, and path layout.
-Expressed in terms of the variation graph $V$, ODGI's core $Node$ structure includes.
-
+Expressed in terms of the variation graph $V$, ODGI's core $Node$ structure includes a decoder that maps the neighbors of each node to a dense range of integers.
+For a given node $i$ and neighbor $j$, the decoder itself does not store the $id$s of $j$, but rather $Node_i.id - Node_j.id$.
+This keeps even the size of the encoding small, per common variation graph property (2).
 
 
 \begin{algorithm}
 \MyStruct{Node}{
     \textbf{id} $\in \mathbb{N}$ \tcp{an identifier}
     \textbf{lock} \tcp{atomic locking primitive}
-    \textbf{sequence} $= [ATGC]*$ \tcp{DNA, RNA, protein}
-    \tcp{succinct dynamic bitvector of edges}
-    \textbf{edges} $= (s_{x},s_{y})* : x \land y \in$ decoding \\
-    \tcp{a vector of id deltas}
-    \textbf{decoding} $= (1 \ldots x \ldots N)*$ \\
-    \tcp{a vector of path steps}
-    \textbf{paths}
+    \textbf{sequence} $= [$A$|$T$|$G$|$C$]*$ \tcp{DNA, RNA, protein}
+    \tcp{bit-packed vector of edges}
+    \textbf{edges} $= (s_{x},s_{y})* : x \land y \in [1\ldots N]$ \\
+    \tcp{bit-packed vector of id deltas}
+    \textbf{decoding} $x_i \ldots x_N \in \mathbb{N}^N$ \\
+    \tcp{bit-packed vector of path steps}
+    \textbf{paths} $[Step_1 \ldots Step_M]*$
 }
-\caption{ODGI's relativistically-packed node structure.}
+\MyStruct{Step}{
+    \textbf{path\_id} $\in \mathbb{N}$ \tcp{the path's global id}
+    \textbf{is\_rev} $\in ( 0, 1 )$ \tcp{the step orientation}
+    \textbf{is\_start} $\in ( 0, 1 )$ \tcp{if first step in path}
+    \textbf{is\_end} $\in ( 0, 1 )$ \tcp{if last step in path}
+    \textbf{prev$_\delta$} $\in [1\ldots N]$ \tcp{$\delta$-encoded previous node}
+    \textbf{prev\_rank} $\in \mathbb{N}$ \tcp{step rank on previous node}
+    \textbf{next$_\delta$} $\in [1\ldots N]$ \tcp{$\delta$-encoded previous node}
+    \textbf{next\_rank} $\in \mathbb{N}$ \tcp{step rank on next node}
+}
+\caption{ODGI's relativistically-packed node structure and the step structure used to represent the paths as doubly-linked lists.}
 \end{algorithm}
-
-\begin{comment}
-TODO:
-    struct step_t {
-        uint64_t path_id;
-        bool is_rev;
-        bool is_start;
-        bool is_end;
-        uint64_t prev_id;
-        uint64_t prev_rank;
-        uint64_t next_id;
-        uint64_t next_rank;
-    };
-\end{comment}
 
 %\begin{enumerate}
 %\item a node sequence $seq(n_i)$
