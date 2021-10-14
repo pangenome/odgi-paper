@@ -115,18 +115,22 @@ This standardization supports the development of a reference set of tools that o
 \section{Implementation}
 
 %ODGI is designed to build and modify paths in parallel, keeping its representation in memory efficient.
-The ODGI toolkit builds on existing approaches to efficiently store and manipulate variation graphs \citep{Garrison:2018,Eizenga_2020_BX}.
-It implements the \textsc{HandleGraph} model \cite{Eizenga_2020_BX}.
-Its implementation rests on three key properties which hold for most pangenome variation graphs:
+The ODGI toolkit builds on existing approaches to efficiently store and manipulate variation graphs \citep{Garrison:2018}.
+%It implements the \textsc{HandleGraph} model \cite{Eizenga_2020_BX}.
+Like other efficient libaries presenting the \textsc{HandleGraph} model \citep{Eizenga_2020_BX}, its implementation rests on three key properties which hold for most pangenome variation graphs:
 
 \begin{enumerate}
 \item They are relatively sparse, with low average node degree.
-\item They can be sorted, so that most edges go between nodes that are close together in the sort order (and identifier space).
-\item Paths are locally similar to each other, 
+\item They can be sorted so that most edges go between nodes that are close together in the sort order.
+\item Paths are locally similar to each other.
 %We incorporate concepts first introduced in the dynamic version of the Graph BWT \citep{Siren:2020} (GBWT), a scalable implementation of the graph extension of the positional Burrows-Wheeler transform \citep{Durbin_2014}.
 \end{enumerate}
 
 These properties have already been used to build efficient dynamic variation graph data structures \citep{Siren:2020,Eizenga_2020_BX}.
+Sparsity (1) allows us to encode edges $E$ using adjacency lists rather than matricies or hash tables.
+The local linear structure of the graph (2) lets us assign node identifiers that increase along the linear components of the graph, which supports a compact storage of edges and path steps as relativistic (usually small) differences rather than absolute (always large) integer identifiers.
+Path similarity (3) allows us to write local compressors that reduce the storage cost of collections of path steps.
+
 %Here, we build on this work and focus on issues that have arisen during our recent work on the Human Pangenome.
 Here, we improve on these prior efforts, focusing on issues that arose during our work with high-quality assemblies that cover almost all parts of the genome \citep{Logsdon_2021,Nurk_2021}.
 %A key design objective, motivated by experience working with graphs built from high quality eukaryotic genome assemblies, is to support graphs with very high path depth.
@@ -138,6 +142,9 @@ To seamlessy represent such difficult regions, we follow the approach of the dyn
 This design supports node-local modification and update of the graph, which lets us build and transform the model in parallel.
 
 We store the graph in a vector of node structures, each of which presents a node-local view of the graph sequence, topology, and path layout.
+Expressed in terms of the variation graph $V$, the structure for node  the node sequence $seq(n_i)$
+
+
 Each structure contains the sequence of the node, its edges in both directions (forward and backward), and a vector of path steps that describes the previous and next steps in paths that walk across the node.
 As in the GBWT, to compress the encoding, we encode path steps using a local alphabet that maps the N neighbours of the node into the range $1\ldots N$.
 To further save space, node deltas, rather than IDs, are stored in this alphabet.
