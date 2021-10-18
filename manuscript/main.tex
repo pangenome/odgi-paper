@@ -6,11 +6,15 @@
 \usepackage{comment}
 \usepackage{subcaption}
 \usepackage{algorithm2e}
+\usepackage[usenames,dvipsnames]{xcolor}
+
 
 \SetAlgoLined
 \SetKwProg{MyStruct}{Struct}{ contains}{end}
 
 \newcommand{\vocab}{\textbf}
+\newcommand{\red}[1]{{\textcolor{Red}{#1}}}
+\newcommand{\FIXME}[1]{\red{[FIXME: #1]}}
 
 \def\labelitemi{--}
 
@@ -70,14 +74,14 @@ ODGI can be installed via Bioconda \url{https://bioconda.github.io/recipes/odgi/
 A pangenome models the full set of genomic elements in a given species or clade \citep{cpang2018,Eizenga_2020}.
 In contrast to reference-based approaches which relate sequences to a single genome, these data structures encode the mutual relationships between all the genomes represented.
 In pangenome graphs \citep{Paten:2017}, homologous regions between genomes are compressed into a single representative model of all alleles present in the pangenome.
-These flexible models let us encode any kind of variation, allowing the generation of truly unbiased data systems on which to base analyses of genome evolution.
+These flexible models let us encode any kind of variation, allowing the generation of truly unbiased \FIXME{unbiased needs a little explanation} data systems on which to base analyses of genome evolution.
 Although these structures are of clear utility to researchers \citep{cpang2018}, and have been the focus of numerous applications in read mapping \citep{Garrison:2018,Baaijens_2019,Hickey:2020,Sibbesen_2021}, we observe that the community lacks a toolset specifically focused on graph manipulation and interrogation.
 
-Projects like the Human Pangenome Reference Consortium (HPRC) and Telomere-to-Telomere (T2T) consortium \citep{Miga:2020, Logsdon_2021, Nurk_2021} have recently demonstrated that high-quality \textit{de novo} assemblies can be routinely generated from third-generation long read sequencing data.
-We anticipate that in the near future, studies will frequently begin from assemblies of similar quality, leading to demand for methods that allow us to understand pangenomes.
-As experience in the HPRC has shown, pangenome graphs are a natural model to support these kinds of analyses, but studies based on pangenome graphs are difficult due to a lack of downstream tools and standard operations.
+The Human Pangenome Reference Consortium (HPRC) and Telomere-to-Telomere (T2T) consortium \citep{Miga:2020, Logsdon_2021, Nurk_2021} have recently demonstrated that high-quality \textit{de novo} assemblies can be routinely generated from third-generation long read sequencing data.
+We anticipate that in the near future, studies will frequently begin from assemblies of similar quality, leading to demand for methods that allow us to create and explore pangenomes.
+As experience \FIXME{this is a bit odd} in the HPRC has shown, pangenome graphs are a natural model to support these kinds of analyses, but studies based on pangenome graphs are difficult due to a lack of downstream tools and standard operations.
 
-Here, we present the Optimized Dynamic Genome/Graph Implementation (ODGI) toolkit, a genome graph interrogation and transformation system specifically built to handle the data scales encountered when working with pangenomes built from hundreds of haplotype-resolved genomes.
+Here, we present the Optimized Dynamic Genome/Graph Implementation (ODGI) toolkit, a pangenome graph interrogation and transformation system specifically built to handle the data scales encountered when working with pangenomes built from hundreds of haplotype-resolved genomes.
 ODGI provides a set of standard operations on the pangenome variation graph data model, generalizing ``genome arithmetic'' concepts like those found in BEDTools \citep{Quinlan_2010} to work on genome graphs, and providing new operations, such as visualizations, sorting, and liftover projections critical to understanding and exploiting pangenome graphs.
 
 %Tools in ODGI operate on an efficient dynamic HandleGraph model \citep{Eizenga_2020_BX}.
