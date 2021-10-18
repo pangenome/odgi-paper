@@ -23,6 +23,7 @@ digraph sample {
 	extract [color = brown]
 
 	position [color = red]
+    untangle [color = red]
 
 	viz [color = cyan]
 	sort [color = cyan]
@@ -30,7 +31,7 @@ digraph sample {
 	draw [color = cyan]
 
 	in_GFA -> build
-	in_ODGI -> {view, validate, stats, bin, depth, degree, break, groom, chop, unchop, explode, squeeze, extract, position, viz, sort, layout, draw}
+	in_ODGI -> {view, validate, stats, bin, depth, degree, break, groom, chop, unchop, explode, squeeze, extract, position, viz, sort, layout, draw, untangle}
 	in_BED -> {depth, degree, extract, position, viz}
 	LAY -> {draw}
 
@@ -53,5 +54,7 @@ digraph sample {
 	sort -> out_ODGI
 	layout -> LAY
 	draw -> PNG
+    untangle -> out_BED
+    untangle -> out_PAF
 
 }

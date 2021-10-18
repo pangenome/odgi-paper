@@ -242,11 +242,25 @@ We have established these tools to support our exploration of graphs built from 
 They are practical and able to work with high levels of graph complexity, even with regions of very high path depth (10$^5$ to 10$^6$-fold coverage).
 To further our understanding of these graphs, we have developed a set of methods that let us inspect and manipulate them.
 
-Low-dimensional projections and related visualizations support a complete understanding of the graph.
+A few design considerations shape these tools.
+To navigate the graph, we need a coordinate system.
+ODGI uses the embedded pangenome sequences to provide a set of coordinates in a standard, 1D format.
+These coordinates depend on the sequences, and are graph-independent.
+
+
 To provide a universal coordinate space for the graph, we project its nodes into a low-dimensional space (in practice, 1 or 2 dimensions) by learning the projection via a HOGWILD!, path-guided stochastic gradient descent (PG-SGD) model.
 This approach updates node relative positions to best-match their distance in the paths running through the graph.
 Based on this projection, we can trivially generate 1D and 2D visualizations.
 We can also detect regions whose layout is distorted, and which thus may represent structural variation or assembly error.
+ODGI can project vector and matrix representations of the graph relative to these learned coordinate spaces.
+
+In addition to these projections, we use the paths in the graph to provide a universal coordinate space.
+It also supports several kinds of ``lift-over'' of coordinates between different genomes.
+These allow for the direct translation of single coordinates and ranges, in an interactive way.
+And, they let us extract a pairwise 1:many alignment between a given set of ``query'' sequences and a given set of ``target'' or reference sequences.
+This lets us convert the graph to lift-over maps compatible with standard software for projecting annotations and alignments from one genome to another.
+
+
 %To our knowledge, these methods are the first to trivially scale to operate on large base-level graphs of this type.
 
 %To foster a high-level understanding of large graphs, we pursue a novel approach to visualization.
@@ -271,6 +285,8 @@ Unlike VG, we provide no methods to construct graphs, map reads to the graph, or
 %It supports interrogation of the graph for basic dimensional properties, positional and path-related queries, and visualization in one-dimension (1D) and two-dimensions (2D).
 %ODGI also supports operations on the graph such as subset, subdivide, break, combine, normalize, or order its components, nodes, and paths.
 %Most of the tools are designed to be applied together, piping the output of one tool into the next, thereby preventing the creation of intermediate files, and reducing the number of IO operations.
+
+\input{fig_operations}
 
 
 \subsection{Building the \textsc{ODGI} model}
