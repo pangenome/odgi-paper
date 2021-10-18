@@ -12,6 +12,8 @@
 
 \newcommand{\vocab}{\textbf}
 
+\def\labelitemi{--}
+
 \copyrightyear{XXXX} \pubyear{XXXX}
 
 \access{Advance Access Publication Date: Day Month Year}
@@ -147,9 +149,10 @@ This design supports node-local modification and update of the graph, which lets
 
 We store the graph in a vector of node structures, each of which presents a node-local view of the graph sequence, topology, and path layout.
 Expressed in terms of the variation graph $V$, ODGI's core $Node$ structure includes a decoder that maps the neighbors of each node to a dense range of integers.
-For a given node $i$ and neighbor $j$, the decoder itself does not store the $id$s of $j$, but rather $Node_i.id - Node_j.id$.
+For a given node $i$ and neighbor $j$, the decoder itself does not store the $id$s of $j$, but rather a compact representation of the relative difference between the node ids: $\delta = Node_i.id - Node_j.id$.
 This keeps even the size of the encoding small, per common variation graph property (2).
-
+We define the edges and path steps traversing the node in terms of this alphabet of $\delta$'s.
+The structures in algorithm \ref{alg:structs} describes our encoding.
 
 \begin{algorithm}
 \MyStruct{Node}{
@@ -157,43 +160,42 @@ This keeps even the size of the encoding small, per common variation graph prope
     \textbf{lock} \tcp{atomic locking primitive}
     \textbf{sequence} $= [$A$|$T$|$G$|$C$]*$ \tcp{DNA, RNA, protein}
     \tcp{bit-packed vector of edges}
-    \textbf{edges} $= (s_{x},s_{y})* : x \land y \in [1\ldots N]$ \\
+    \textbf{edges} $= (x_i,x_j)* : (i, j) \in [1\ldots \Sigma]^2$ \\
     \tcp{bit-packed vector of id deltas}
-    \textbf{decoding} $x_i \ldots x_N \in \mathbb{N}^N$ \\
+    \textbf{decoding} $x_1 \ldots x_{\Sigma} \in \mathbb{N}^\Sigma$ \\
     \tcp{bit-packed vector of path steps}
-    \textbf{paths} $[Step_1 \ldots Step_M]*$
+    \textbf{path\_steps} $[Step_1 \ldots Step_\Omega]*$
 }
 \MyStruct{Step}{
     \textbf{path\_id} $\in \mathbb{N}$ \tcp{the path's global id}
     \textbf{is\_rev} $\in ( 0, 1 )$ \tcp{the step orientation}
     \textbf{is\_start} $\in ( 0, 1 )$ \tcp{if first step in path}
     \textbf{is\_end} $\in ( 0, 1 )$ \tcp{if last step in path}
-    \textbf{prev$_\delta$} $\in [1\ldots N]$ \tcp{$\delta$-encoded previous node}
+    \textbf{prev\_$\delta$} $\in [1\ldots \Sigma]$ \tcp{$\delta$-encoded previous node}
     \textbf{prev\_rank} $\in \mathbb{N}$ \tcp{step rank on previous node}
-    \textbf{next$_\delta$} $\in [1\ldots N]$ \tcp{$\delta$-encoded previous node}
+    \textbf{next\_$\delta$} $\in [1\ldots \Sigma]$ \tcp{$\delta$-encoded previous node}
     \textbf{next\_rank} $\in \mathbb{N}$ \tcp{step rank on next node}
 }
-\caption{ODGI's relativistically-packed node structure and the step structure used to represent the paths as doubly-linked lists.}
+\caption{ODGI's relativistically-packed $Node$ structure and the $Step$ structure used to represent the paths as doubly-linked lists.}
+\label{alg:structs}
 \end{algorithm}
 
-%\begin{enumerate}
-%\item a node sequence $seq(n_i)$
-%\end{enumerate}
 
+Each structure contains the sequence of the node ($Node_i.sequence$), its edges in both directions ($Node_i.edges$), and a vector of path steps that describes the previous and next steps in paths that walk across the node ($Node_i.path\_steps$).
+%As in the GBWT, to compress the encoding, we encode path steps using a local alphabet that maps the N neighbours of the node into the range $1\ldots N$.
+%To further save space, node deltas, rather than IDs, are stored in this alphabet.
+%The delta between two nodes is defined as their distance in the graph vector (i.e., the difference between the node offsets).
+For efficiency $Node_i.sequence$ is stored as a plain string, while the $edges$ and $path\_steps$ are stored using a dynamic succinct integer vector that requires $O(2nw)$ bits for the edges and $O(5nw)$ bits for the path steps, where $w$ is $\approx log_2(n)$ \citep{prezza2017framework}.
 
-Each structure contains the sequence of the node, its edges in both directions (forward and backward), and a vector of path steps that describes the previous and next steps in paths that walk across the node.
-As in the GBWT, to compress the encoding, we encode path steps using a local alphabet that maps the N neighbours of the node into the range $1\ldots N$.
-To further save space, node deltas, rather than IDs, are stored in this alphabet.
-The delta between two nodes is defined as their distance in the graph vector (i.e., the difference between the node offsets).
-The path step vector, of length n, is stored using a dynamic succinct integer vector that requires O(5nw) bits, where w is ~log2(N).
-Finally, to allow operating on path steps in parallel, each node structure includes a byte-width mutex lock.
-
-ODGI is entirely focused on “first-order” operations on the graph (Table 1), providing, unlike VG, no method to construct graphs from raw sequences or map reads.
-It supports interrogation of the graph for basic dimensional properties, positional and path-related queries, and visualization in one-dimension (1D) and two-dimensions (2D).
-ODGI also supports operations on the graph such as subset, subdivide, break, combine, normalize, or order its components, nodes, and paths.
-Most of the tools are designed to be applied together, piping the output of one tool into the next, thereby preventing the creation of intermediate files, and reducing the number of IO operations.
-
-
+To allow edit operations in parallel, each node structure includes a byte-width mutex $lock$.
+All edit operations on the graph must touch at most two $Node$ structs at a time.
+(Both our edge and path step representations are doubly-linked.)
+To avoid deadlocks, we acquire the node locks in ascending $Node.id$ order and release them in desceding order.
+In addition to node-local features of the graph, we must maintain some global information.
+Specifically, we record the start and end of paths, as well as a name to path id mapping in lock-free hashtables.
+The use of lock-free hashtables lets us avoid a global lock when looking up path or graph metadata, which would quickly become a bottleneck during parallel operations on the graph.
+By avoiding global locks, we implement many of the operations in ODGI using maximum parallelism available.
+This ``atomic'' approach to edit operations on the graph is key to enabling our method to scale to the largest genome graphs that we can currently build.
 
 \begin{comment}
 %\subsection{Core functionality}
@@ -235,6 +237,42 @@ key message of the paper is that we have collected a set of algorithms that enab
 
 \section{Results}
 
+ODGI provides a set of first-order interrogative and manipulative operations on pangenome graphs.
+We have established these tools to support our exploration of graphs built from hundreds of large eukaryotic genomes.
+They are practical and able to work with high levels of graph complexity, even with regions of very high path depth (10$^5$ to 10$^6$-fold coverage).
+To further our understanding of these graphs, we have developed a set of methods that let us inspect and manipulate them.
+
+Low-dimensional projections and related visualizations support a complete understanding of the graph.
+To provide a universal coordinate space for the graph, we project its nodes into a low-dimensional space (in practice, 1 or 2 dimensions) by learning the projection via a HOGWILD!, path-guided stochastic gradient descent (PG-SGD) model.
+This approach updates node relative positions to best-match their distance in the paths running through the graph.
+Based on this projection, we can trivially generate 1D and 2D visualizations.
+We can also detect regions whose layout is distorted, and which thus may represent structural variation or assembly error.
+%To our knowledge, these methods are the first to trivially scale to operate on large base-level graphs of this type.
+
+%To foster a high-level understanding of large graphs, we pursue a novel approach to visualization.
+%ODGI provides a linear-time 1D visualization that easily renders gigabase-scale pangenomes in a human-interpretable format suitable for understanding the topology and genome releationships in the pangenome graph.
+%A similar 2D visualization is more costly to compute, but similarly provides linear-time scaling, allowing us to apply it to large pangenomes.
+%This removes a major bottleneck in 
+
+Subsetting operations allow us to zoom in on particular genes or regions of interest for more precise examination.
+
+We extract key information about the graph using its paths as a pangenome reference system.
+
+
+We find that, to understanding relationships between sequences and positions in pangenome graphs, we must use context mapping to ``untangle'' complex regions found in VNTRs, segmental duplications, and centromeric repeats.
+This approach lets use pangenome graphs as a foundation for universal liftover between any two sets of sequences in the graph.
+
+
+We begin with a set of HandleGraph-based algorithms first establish in the VG toolkit.
+These include algorithms for graph traversal, partition-finding, $k$-mer and character enumeration, sorting, and pruning.
+However, ODGI is more focused than VG.
+Unlike VG, we provide no methods to construct graphs, map reads to the graph, or derive variants.
+
+%It supports interrogation of the graph for basic dimensional properties, positional and path-related queries, and visualization in one-dimension (1D) and two-dimensions (2D).
+%ODGI also supports operations on the graph such as subset, subdivide, break, combine, normalize, or order its components, nodes, and paths.
+%Most of the tools are designed to be applied together, piping the output of one tool into the next, thereby preventing the creation of intermediate files, and reducing the number of IO operations.
+
+
 \subsection{Building the \textsc{ODGI} model}
 
 % erik
@@ -252,6 +290,16 @@ Figure: encoding model as a cartoon --  HTT exon 1 as tiny example graph (maybe)
 Allows us to export basic data of the graph (genomes and graph structure).
 
 Figure: .dot showing the relationship between all the tools and the data formats we use.
+
+\subsection{Extracting regions of interest}
+
+% andrea (?)
+
+% extract
+Pangenome graphs are very large, but we often only want to work with a small portion (e.g. a single gene).
+We can extract such regions using coordinates on the paths in the graph to guide us.
+
+Figure showing extraction process---either schematic or ``real''.
 
 \subsection{Visualizing pangenome graphs}
 
@@ -278,6 +326,19 @@ To overcome such a limitation, \texttt{odgi viz} supports multiple visualization
 % Explain odgi draw's visualization
 
 Figure here with 1D + 2D vizs.
+
+\subsection{Untangling and navigating the pangenome with path-based coordinates}
+
+% erik
+
+% position / tips
+% untangle (this follows on the jaccard graph mapping concepts in the previous section}
+The graph is a model of an alignment of many genomes.
+We can use coordinates in any genome to refer to it, but this requires a few basic operations ...
+Obtaining unambiguous mappings between different genomes requires the use of a new kind of graph based mapping (path graph jaccard).
+
+Figure showing the untangling of C4 ?
+Figure showing tips over a single human chromosome from HPRC.
 
 \subsection{Finding latent structure in the pangenome graph topology}
 
@@ -328,29 +389,6 @@ In Fig. \ref{fig:metrics}, the characteristics of a 90 haplotypes human pangenom
 
 % chop / unchop / squeeze / break / prune / explode
 These are commonly-needed basic operations on the topology of the graph.
-
-\subsection{Untangling and navigating the pangenome with path-based coordinates}
-
-% erik
-
-% position / tips
-% untangle (this follows on the jaccard graph mapping concepts in the previous section}
-The graph is a model of an alignment of many genomes.
-We can use coordinates in any genome to refer to it, but this requires a few basic operations ...
-Obtaining unambiguous mappings between different genomes requires the use of a new kind of graph based mapping (path graph jaccard).
-
-Figure showing the untangling of C4 ?
-Figure showing tips over a single human chromosome from HPRC.
-
-\subsection{Extracting regions of interest}
-
-% andrea (?)
-
-% extract
-Pangenome graphs are very large, but we often only want to work with a small portion (e.g. a single gene).
-We can extract such regions using coordinates on the paths in the graph to guide us.
-
-Figure showing extraction process---either schematic or ``real''.
 
 \section{Discussion}
 
