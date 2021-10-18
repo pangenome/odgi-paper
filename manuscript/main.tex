@@ -107,11 +107,11 @@ When used as a pangenome graph, $V$ expresses sequences, haplotypes, and annotat
 %The utility of the variation graph model lies in its lossless representation of genomes and their alignment.
 By containing both the sequences and information about their relative variations, the variation graph provides a powerful foundation for many bioinformatic applications.
 
-Such a graph can be constructed by a process like multiple sequence alignment \citep{Lee_2002,Grasso_2004}, but this partially-ordered graph cannot represent complex variation like inversions and cycles that occur at structural scales in genomes.
+Such a graph can be constructed by multiple sequence alignment \citep{Lee_2002,Grasso_2004}, but the resulting partially-ordered graph cannot represent complex variation like inversions and cycles that occur at structural scales in genomes.
 General approaches to building pangenome graphs transitively reduce an alignment between sequences to an equivalent, labeled sequence graph \citep{Kehr_2014,Garrison_2019_thesis}.
 Current methods to build these graphs are still in development \citep{Li:2020,Armstrong:2020,pggb}, but they have largely settled on a common data model, represented in the Graphical Fragment Assembly (GFA) format \citep{GFA}).
 %The improvement of these methods depends on tools that allow us to investigate
-This standardization supports the development of a reference set of tools that operate on the pangenome graph model, while the need to understand the graphs made by these methods motivates it.
+This standardization supports the development of a reference set of tools that operate on the pangenome graph model, while the need to understand the graphs made by these methods motivates it. \FIXME{Sentence is a bit odd}.
 
 %The improvement of these approaches depends on scalable tools for understanding pangenome graphs, a need that our work responds to.
 
