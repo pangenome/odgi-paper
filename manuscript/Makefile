@@ -5,7 +5,7 @@ main.pdf: main.tex main.bbl fig/* fig/odgi_tools.pdf *.tex
 	pdflatex main.tex </dev/null
 
 fig/odgi_tools.pdf: fig/odgi_tools.dot
-	<fig/odgi_tools.dot dot -T pdf >fig/odgi_tools.pdf
+	dot -T pdf fig/odgi_tools.dot > fig/odgi_tools.pdf
 
 main.bbl: document.bib
 	pdflatex main </dev/null
