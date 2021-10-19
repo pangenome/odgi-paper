@@ -13,7 +13,7 @@ sudo apt-get -y install texlive texlive-latex-recommended \
         texlive-science
 
 git clone https://github.com/pangenome/odgi-paper
-cd manuscript && make -k
+cd odgi-paper/manuscript && make -k
 ```
 
 ## Bx author instructions
