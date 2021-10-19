@@ -13,6 +13,7 @@ digraph sample {
 	bin [color = blue]
 	depth [color = blue]
 	degree [color = blue]
+  	matrix [color = blue]
 
 	break [color = brown]
 	groom [color = brown]
@@ -31,14 +32,15 @@ digraph sample {
 	draw [color = cyan]
 
 	in_GFA -> build
-	in_ODGI -> {view, validate, stats, bin, depth, degree, break, groom, chop, unchop, explode, squeeze, extract, position, viz, sort, layout, draw, untangle}
+	in_ODGI -> {view, validate, stats, bin, depth, degree, break, groom, chop, unchop, explode, squeeze, extract, position, viz, sort, layout, draw, untangle, matrix}
 	in_BED -> {depth, degree, extract, position, viz}
-	LAY -> {draw}
+    in_LAY -> {draw}
 
 	build -> out_ODGI
 	view ->  out_GFA
 	validate -> TEXT
 	stats -> TEXT
+    matrix -> TEXT
 	bin -> JSON
 	depth -> out_BED
 	degree -> out_BED
@@ -52,7 +54,7 @@ digraph sample {
 	position -> out_BED
 	viz -> PNG
 	sort -> out_ODGI
-	layout -> LAY
+	layout -> out_LAY
 	draw -> PNG
     untangle -> out_BED
     untangle -> out_PAF
