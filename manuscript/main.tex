@@ -165,13 +165,13 @@ The structures in Algorithm \ref{alg:structs} describes our encoding.
 \MyStruct{Node}{
     \textbf{id} $\in \mathbb{N}$ \tcp{an identifier}
     \textbf{lock} \tcp{atomic locking primitive}
-    \textbf{sequence} $= [$A$|$T$|$G$|$C$]*$ \tcp{DNA, RNA, protein}
+    \textbf{sequence} $= [$A$|$T$|$G$|$C$|$N$]*$ \tcp{DNA}
     \tcp{bit-packed vector of edges}
     \textbf{edges} $= (x_i,x_j)* : (i, j) \in [1\ldots \Sigma]^2$ \\
     \tcp{bit-packed vector of id deltas}
     \textbf{decoding} $x_1 \ldots x_{\Sigma} \in \mathbb{N}^\Sigma$ \\
     \tcp{bit-packed vector of path steps}
-    \textbf{path\_steps} $[Step_1 \ldots Step_\Omega]*$
+    \textbf{path\_steps} $[Step_1 \ldots Step_n]*$
 }
 \MyStruct{Step}{
     \textbf{path\_id} $\in \mathbb{N}$ \tcp{the path's global id}
