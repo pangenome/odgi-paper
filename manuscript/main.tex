@@ -256,19 +256,35 @@ ODGI's tools cover common operations that we have found to be essential when wor
 \item \textit{odgi view} converts the graph into standard text formats (\S\ref{sec:text}).
 \item \textit{odgi stats} provides numerical properties of the graph (\S\ref{sec:text}).
 \item \textit{odgi matrix} derives the pangenome matrix (\S\ref{sec:text}).
+\item \textit{odgi paths} lists and extracts paths in FASTA (\S\ref{sec:text}).
+\item \textit{odgi flatten} converts the graph to FASTA and BED (\S\ref{sec:text}).
 \item \textit{odgi extract} subsets the graph based on path ranges (\S\ref{sec:extract}).
 \item \textit{odgi chop} breaks long nodes into shorter ones (\S\ref{sec:edit}).
 \item \textit{odgi unchop} combines redundant nodes (\S\ref{sec:edit}).
 \item \textit{odgi explode} breaks the graph into connected components (\S\ref{sec:edit}).
 \item \textit{odgi squeeze} unifies disjoint graphs (\S\ref{sec:edit}).
 \item \textit{odgi prune} removes complex regions (\S\ref{sec:edit}).
-\item \textit{odgi viz} provides a scalable 1D rendering of the graph (\S\ref{sec:viz}).
+\item \textit{odgi viz} provides a scalable linear visualization of the graph (\S\ref{sec:viz}).
+\item \textit{odgi draw} renders a 2D image of the graph (\S\ref{sec:viz}).
+\item \textit{odgi position} lift coordinates between paths and graph positions (\S\ref{sec:untangle}).
 \item \textit{odgi untangle} deconvolutes paths relative to a reference (\S\ref{sec:untangle}).
 \item \textit{odgi sort} orders the graph with sorting pipelines (\S\ref{sec:sort}).
 \item \textit{odgi layout} establishes a 2D layout using SGD (\S\ref{sec:sort}).
-\item \textit{odgi depth} describes path depth over the graph (\S\ref{sec:metrics}).
+\item \textit{odgi depth} describes path depth over graph and path positions (\S\ref{sec:metrics}).
+\item \textit{odgi degree} describes node degree over graph and path positions (\S\ref{sec:metrics}).
 \item \textit{odgi tips} finds path end points relative to a reference (\S\ref{sec:metrics}).
 \end{itemize}
+
+Each tool focuses on a small set of related operations.
+Most read or write the native ODGI format (.og) (Figure \ref{fig:operations}) and work with standard text based data formats common to bioinformatics.
+This supports the implementation of flexible, composable, graph processing pipelines based on a common data type.
+While the pangenome graph is a first-class entity in ODGI, we focus on the embedded paths to provide a universal coordinate system.
+By considering all paths in the graph as potential reference or query sequences, we make the graph invisible to downstream tools that operate on collections of sequences (e.g. bedtools, samtools, aligners).
+This approach benefits from the information in the graph without strongly embedding our methods in this difficult new research context.
+%ODGI provides methods that empower ``legacy'' toolsets.
+
+%we focus on common reference-based data formats like BED and PAF to input and output information from the graph.
+
 
 %To further our understanding of these graphs, we have developed a set of methods that let us inspect and manipulate them.
 
