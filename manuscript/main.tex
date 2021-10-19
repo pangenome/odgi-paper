@@ -323,9 +323,9 @@ This approach benefits from the information in the graph without strongly embedd
 % build
 We begin by transforming the ``columnar'' storage model of GFA, in which nodes, edges, and paths are described independently, into the ODGI node-centric encoding with \textit{odgi build}.
 This construction step can present a significant bottleneck, in particular as the size of the path set of the graph increases.
-The ODGI data structure (Algorithm \ref{alg:structs}) allows algorithms to dynamically construct the graph and its path set to operate in parallel.
+The ODGI data structure (Algorithm \ref{alg:structs}) allows algorithms that build and modify the graph to operate in parallel, without any global locks.
 In \textit{odgi build}, we initially construct the node vector in a serial operation that scans across the input GFA.
-Edges, and then paths, can be added in parallel by obtaining mutex $Node.lock$ for pairs of nodes and adding edges or steps to their corresponding vectors in both nodes.
+Edges, and then paths, can be added in parallel by obtaining mutex $Node.lock$ for pairs of nodes and adding the edge or path step their $Node.edges$ and $Node.path\_steps$ vectors.
 This parallelism speeds ODGI model construction by many-fold when testing against graphs built by the HPRC (TODO).
 
 %Figure: encoding model as a cartoon --  HTT exon 1 as tiny example graph (maybe)
