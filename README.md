@@ -7,10 +7,13 @@ The grch38 FASTAs we used can be found at https://hgdownload.soe.ucsc.edu/golden
 ## building the manuscript
 
 ```bash
+# Dependencies
 sudo apt-get -y install texlive texlive-latex-recommended \
         texlive-pictures texlive-latex-extra texlive-fonts-extra \
         texlive-science
-cd manuscript && make -k
+
+git clone https://github.com/pangenome/odgi-paper
+cd odgi-paper/manuscript && make -k
 ```
 
 ## Bx author instructions
