@@ -12,6 +12,8 @@ sudo apt-get -y install texlive texlive-latex-recommended \
         texlive-pictures texlive-latex-extra texlive-fonts-extra \
         texlive-science
 
+sudo apt install graphviz
+
 git clone https://github.com/pangenome/odgi-paper
 cd odgi-paper/manuscript && make -k
 ```
