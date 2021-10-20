@@ -33,8 +33,8 @@
 Andrea Guarracino\,$^{\text{\sfb 1} \dagger}$,
 Simon Heumos\,$^{\text{\sfb 2} \dagger}$,
 Sven Nahnsen\,$^{\text{\sfb 2}}$,
-Pjotr Prins\,$^{\text{\sfb 3}}$,
-and Erik Garrison\,$^{\text{\sfb 3}*}$
+Pjotr~Prins\,$^{\text{\sfb 3}}$,
+and~Erik~Garrison\,$^{\text{\sfb 3}*}$
 }
 
 \address{
@@ -58,11 +58,11 @@ These models offer the opportunity to study the total genomic diversity of a pop
 However, analyzing hundreds of gigabase-scale genomes using pangenome graphs is difficult and not well-supported by existing tools.
 %In addition, vertebrate genomes present highly repetitive regions which increase the complexity of the analysis.
 Hence, fast and versatile software is required to ask intricate questions of such data in an efficient way. \\
-\textbf{Results:} Here we present ODGI, a new suite of tools that implements scalable algorithms and has an efficient in-memory representation of DNA variation graphs. ODGI includes tools for detecting complex regions, extracting loci, removing artifacts, exploratory analysis, manipulation, validation, and visualization. Its fast parallel execution facilitates routine pangenomic tasks as well as pipelines that can quickly answer complex biological questions of gigabase-scale pangenome graphs. \\
+\textbf{Results:} We wrote ODGI, a new suite of tools that implements scalable algorithms and has an efficient in-memory representation of DNA variation graphs. ODGI includes tools for detecting complex regions, extracting loci, removing artifacts, exploratory analysis, manipulation, validation, and visualization. Its fast parallel execution facilitates routine pangenomic tasks as well as pipelines that can quickly answer complex biological questions of gigabase-scale pangenome graphs. \\
 %ODGI supports graphs in the Graphical Fragment Assembly format version 1 (GFAv1).
 %The tools scale efficiently to large collections of eukaryotic genomes, allowing users to work easily with pangenome graphs of tens to thousands of large genomes while maintaining fast execution runtime and low memory overhead.
-\textbf{Availability:} ODGI is under the MIT license. Source code can be downloaded from \url{https://github.com/pangenome/odgi} while the documentation is available at \url{https://odgi.readthedocs.io}.
-ODGI can be installed via Bioconda \url{https://bioconda.github.io/recipes/odgi/README.html} or Guix \url{https://github.com/ekg/guix-genomics/blob/master/odgi.scm}. \\
+\textbf{Availability:} ODGI is published as free software under the MIT open source license. Source code can be downloaded from \url{https://github.com/pangenome/odgi} and documentation is available at \url{https://odgi.readthedocs.io}.
+ODGI can be installed via Bioconda \url{https://bioconda.github.io/recipes/odgi/README.html} or GNU Guix \url{https://github.com/ekg/guix-genomics/blob/master/odgi.scm}. \\
 \textbf{Contact:} \href{egarris5@uthsc.edu}{egarris5@uthsc.edu} \\
 \textbf{Supplementary information:} Supplementary data are available at \textit{Bioinformatics} online.
 }
@@ -110,10 +110,12 @@ By containing both the sequences and information about their relative variations
 Such a graph can be constructed by multiple sequence alignment \citep{Lee_2002,Grasso_2004}, but the resulting partially-ordered graph cannot represent complex variation like inversions and cycles that occur at structural scales in genomes.
 General approaches to building pangenome graphs transitively reduce an alignment between sequences to an equivalent, labeled sequence graph \citep{Kehr_2014,Garrison_2019_thesis}.
 Current methods to build these graphs are still in development \citep{Li:2020,Armstrong:2020,pggb}, but they have largely settled on a common data model, represented in the Graphical Fragment Assembly (GFA) format \citep{GFA}).
+Because ODGI make use of the GFA file standard its functionality can be mixed with other pangenome tools, such as the VG toolkit\citep{Garrison:2018}.
 %The improvement of these methods depends on tools that allow us to investigate
 This standardization supports the development of a reference set of tools that operate on the pangenome graph model.
 %The need to understand the graphs made by these methods motivates it.
 We require such a toolkit to understand the graphs made by these methods.
+\FIXME{last sentence not really clear}
 
 %The improvement of these approaches depends on scalable tools for understanding pangenome graphs, a need that our work responds to.
 
@@ -436,18 +438,18 @@ In Fig. \ref{fig:metrics}, the characteristics of a 90 haplotypes human pangenom
 
 % erik & pjotr & anyone
 
-Pangenome graphs stand to become a ubiquitous tool in genomics \citep{Eizenga_2020}. With ODGI we implemented a state-of-the-art tool suite that can transform, analyse, simplify, validate, and visualise pangenome graphs at large scale. Lifting over annotations and linearizing nested graph structures place the suite as the bridge between traditional linear reference genome analysis and pangenome graphs. ODGI is a unique set of tools that enables scientists to explore and discover the underlying biology of pangenome graphs. Already, the tools are the backbone of pipelines such as the Pangenome Graph Builder\footnote{\url{https://github.com/pangenome/pggb} (accessed Oct 2021)} (PGGB) or nf-core/pangenome\footnote{\url{https://github.com/nf-core/pangenome} (accessed Oct 2021)}. Future work will add support for RNA and protein sequences and expand on metadata capabilities of large pangenome graphs.
+Pangenome graphs stand to become a ubiquitous tool in genomics \citep{Eizenga_2020}. With ODGI we implemented a state-of-the-art tool suite that can transform, analyse, simplify, validate, and visualise pangenome graphs at large scale.
+%
+Lifting over annotations and linearizing nested graph structures place the suite as the bridge between traditional linear reference genome analysis and pangenome graphs. ODGI is a unique set of tools that enables scientists to explore and discover the underlying biology of pangenome graphs. Already, the tools are the backbone of pipelines such as the Pangenome Graph Builder\footnote{\url{https://github.com/pangenome/pggb} (accessed Oct 2021)} (PGGB) or nf-core/pangenome\footnote{\url{https://github.com/nf-core/pangenome} (accessed Oct 2021)}. Future work will add support for RNA and protein sequences and expand on metadata capabilities of large pangenome graphs.
 
-rdf sparql side, bring in annotation for great biological interpretation \cite{Yokoyama2020}, federated queries, sharing, FAIR
+ODGI provides common operation on on standard pangenomic file formats, such as GFA. ODGI aims to be a reference implementation for many pangenome related operations. In the near future we aim to improve RDF support for annotation in the in-memory graph\cite{Yokoyama2020}, for example, and allow for federated queries on the pangenome, and FAIR data sharing.
 
 (recent) interactive visualization tools?! CITE PANACHE, also indicate that no published tool for interactive exploration of such graphs exist
 \FIXME{mention gfaestus?}
 
 is ODGI ready for scWGS data? potentially, each cell is a path in a graph!! very very high path depth
 
-some cancer stuff?!
-
-\FIXME{I think we can leave RDF and FAIR out as it does not really relate to performance and ODGI explorations. Cancer, yes, we could state that the tools are applicable to cancer genome exploration as wild variation can be represented :)}
+With the increased adoption of long read sequencing we expect pangenome tools to become increasingly common in biomedical research. Particularly for targets that involve complex variation, such as cancer, plant genomics and metagenomics, ODGI should facilitate disentangling, describing and analysing a much larger set of variation than previously was possible with tools that depend on short reads and reference genomes.
 
 \section*{Funding}
 
