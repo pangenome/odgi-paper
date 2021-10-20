@@ -110,7 +110,8 @@ By containing both the sequences and information about their relative variations
 Such a graph can be constructed by multiple sequence alignment \citep{Lee_2002,Grasso_2004}, but the resulting partially-ordered graph cannot represent complex variation like inversions and cycles that occur at structural scales in genomes.
 General approaches to building pangenome graphs transitively reduce an alignment between sequences to an equivalent, labeled sequence graph \citep{Kehr_2014,Garrison_2019_thesis}.
 Current methods to build these graphs are still in development \citep{Li:2020,Armstrong:2020,pggb}, but they have largely settled on a common data model, represented in the Graphical Fragment Assembly (GFA) format \citep{GFA}).
-Because ODGI make use of the GFA file standard its functionality can be mixed with other pangenome tools, such as the VG toolkit\citep{Garrison:2018}.
+Because ODGI make use of the GFA file standard its functionality can be mixed with other pangenome tools, such as the VG toolkit~\citep{Garrison:2018}.
+\FIXME{may want to move GFA standard+VG to intro section 1}
 %The improvement of these methods depends on tools that allow us to investigate
 This standardization supports the development of a reference set of tools that operate on the pangenome graph model.
 %The need to understand the graphs made by these methods motivates it.
@@ -129,7 +130,7 @@ We require such a toolkit to understand the graphs made by these methods.
 \section{Implementation}
 
 The ODGI toolkit builds on existing approaches to efficiently store and manipulate variation graphs \citep{Garrison:2018}.
-Similar to other efficient libaries presenting the \textsc{HandleGraph} model \citep{Eizenga_2020_BX}, ODGI's implementation rests on three key properties which hold for most pangenome variation graphs:
+Similar to other efficient libaries presenting the \red{so-called} \textsc{HandleGraph} model \citep{Eizenga_2020_BX}, ODGI's implementation rests on three key properties which hold for most pangenome variation graphs:
 
 \begin{enumerate}
 \item They are relatively sparse, with low average node degree.
