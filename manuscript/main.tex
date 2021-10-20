@@ -78,7 +78,7 @@ These flexible models let us encode any kind of variation, allowing the generati
 Although these structures are of clear utility to researchers \citep{cpang2018}, and have been the focus of numerous applications in read mapping \citep{Garrison:2018,Baaijens_2019,Hickey:2020,Sibbesen_2021}, we observe that the community lacks a toolset specifically focused on graph manipulation and interrogation.
 
 The Human Pangenome Reference Consortium (HPRC) and Telomere-to-Telomere (T2T) consortium \citep{Miga:2020, Logsdon_2021, Nurk_2021} have recently demonstrated that high-quality \textit{de novo} assemblies can be routinely generated from third-generation long read sequencing data.
-We anticipate that in the near future, studies will frequently begin from assemblies of similar quality, leading to demand for methods that allow us to create and explore pangenomes.
+We anticipate that assemblies of similar quality will become common, leading to demand for methods that allow us to create and explore pangenomes.
 Pangenome graphs are a natural model to support these kinds of analyses, but studies based on pangenome graphs are difficult due to a lack of downstream tools and standard workflows.
 
 Here, we present the Optimized Dynamic Genome/Graph Implementation (ODGI) toolkit, a pangenome graph interrogation and transformation system specifically built to handle the data scales encountered when working with pangenomes built from hundreds of haplotype-resolved genomes.
@@ -107,16 +107,19 @@ When used as a pangenome graph, $V$ expresses sequences, haplotypes, and annotat
 %The utility of the variation graph model lies in its lossless representation of genomes and their alignment.
 By containing both the sequences and information about their relative variations, the variation graph provides a powerful foundation for many bioinformatic applications.
 
-Such a graph can be constructed by multiple sequence alignment \citep{Lee_2002,Grasso_2004}, but the resulting partially-ordered graph cannot represent complex variation like inversions and cycles that occur at structural scales in genomes.
-General approaches to building pangenome graphs transitively reduce an alignment between sequences to an equivalent, labeled sequence graph \citep{Kehr_2014,Garrison_2019_thesis}.
+Such a graph can be constructed by multiple sequence alignment \citep{Lee_2002,Grasso_2004}, or by transitively reducing an alignment between sequences to an equivalent, labeled sequence graph \citep{Kehr_2014,Garrison_2019_thesis}.
 Current methods to build these graphs are still in development \citep{Li:2020,Armstrong:2020,pggb}, but they have largely settled on a common data model, represented in the Graphical Fragment Assembly (GFA) format \citep{GFA}).
-Because ODGI make use of the GFA file standard its functionality can be mixed with other pangenome tools, such as the VG toolkit~\citep{Garrison:2018}.
-\FIXME{may want to move GFA standard+VG to intro section 1}
+%\FIXME{may want to move GFA standard+VG to intro section 1}
 %The improvement of these methods depends on tools that allow us to investigate
 This standardization supports the development of a reference set of tools that operate on the pangenome graph model.
+Such an effort began with the VG toolkit toolkit~\citep{Garrison:2018}.
+Here we refocus it with with ODGI---a compatible, but independent set of algorithms focused on first-order interrogation and transformation of pangenome graphs.
+
+%Because ODGI uses this standard to  can be mixed with other pangenome tools, such as the VG toolkit
+%Here, we enhance ongoing efforts with the VG 
 %The need to understand the graphs made by these methods motivates it.
-We require such a toolkit to understand the graphs made by these methods.
-\FIXME{last sentence not really clear}
+%We require such a toolkit to understand the graphs made by these methods.
+%\FIXME{last sentence not really clear}
 
 %The improvement of these approaches depends on scalable tools for understanding pangenome graphs, a need that our work responds to.
 
@@ -130,7 +133,7 @@ We require such a toolkit to understand the graphs made by these methods.
 \section{Implementation}
 
 The ODGI toolkit builds on existing approaches to efficiently store and manipulate variation graphs \citep{Garrison:2018}.
-Similar to other efficient libaries presenting the \red{so-called} \textsc{HandleGraph} model \citep{Eizenga_2020_BX}, ODGI's implementation rests on three key properties which hold for most pangenome variation graphs:
+Similar to other efficient libaries presenting the \textsc{HandleGraph} model \citep{Eizenga_2020_BX}, ODGI's implementation rests on three key properties which hold for most pangenome variation graphs:
 
 \begin{enumerate}
 \item They are relatively sparse, with low average node degree.
