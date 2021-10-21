@@ -116,7 +116,7 @@ Such an effort began with the VG toolkit toolkit~\citep{Garrison:2018}.
 Here we refocus it with with ODGI---a compatible, but independent set of algorithms focused on first-order interrogation and transformation of pangenome graphs.
 
 %Because ODGI uses this standard to  can be mixed with other pangenome tools, such as the VG toolkit
-%Here, we enhance ongoing efforts with the VG 
+%Here, we enhance ongoing efforts with the VG
 %The need to understand the graphs made by these methods motivates it.
 %We require such a toolkit to understand the graphs made by these methods.
 %\FIXME{last sentence not really clear}
@@ -287,21 +287,25 @@ This parallelism speeds ODGI model construction by many-fold when testing agains
 
 %Figure: encoding model as a cartoon --  HTT exon 1 as tiny example graph (maybe)
 
-\subsection{Converting to standard text formats}
+\subsection{Converting to standard file formats}
 \label{sec:text}
 
 % pjotr & andrea
+ODGI maintains its own efficient binary format for storing graphs on disk.
+ODGI also supports reading and writing the textual GFA file format for interchange with other tools such as with the VG toolkit toolkit~\citep{Garrison:2018}.
 
-% view / paths
-Allows us to export basic data of the graph (genomes and graph structure).
+\textit{odgi view} can convert a graph in ODGI binary format to the standard GFAv1 format. It can reveal a graph’s internal structures for e.g. debugging processes.
 
-\textit{odgi view} can output GFA and internal graph representations \\
-\textit{odgi stats} outputs statistics in TSV or YAML. \\
-\textit{odgi bin} can output JSON. \\
-\textit{odgi degree/position/depth/untangle/tips} can output BED. \\
-\textit{odgi untangle} outputs PAF.
+\textit{odgi stats} outputs pangenome statistics in TSV or YAML textual file formats.
+Among other metrics, it can calculate the number of nodes, edges, paths and the total nucleotide length of the graph.
 
-Figure: .dot showing the relationship between all the tools and the data formats we use.
+\textit{odgi bin} generates a summarized view of gigabase scale graphs providing tab delimited or JSON `bins'. Also it is possible to output a FASTA file.
+
+\textit{odgi degree/position/depth/untangle/tips} all can output the BED format~\citep{Quinlan_2010}.
+
+\textit{odgi untangle} outputs the Pairwise mApping Format (PAF). PAF is a text format describing the approximate mapping positions between two set of sequences.
+The odgi untangle command projects paths into a reference-relative BEDPE file, decomposing paralogy relationships.
+During this process, it is capable of untangling loopy region resulting in linearized pairs of regions in the BEDPE file. A self dotplot assists in debugging and understanding the untangle process.
 
 \subsection{Visualizing pangenome graphs}
 \label{sec:viz}
