@@ -3,30 +3,43 @@
         \caption{}
         \centering
         % include first image
-        \includegraphics[width=1.0\linewidth, trim=0 +2cm 0 0]{fig/visualization_1D/chr6.pan.fa.a2fb268.e820cd3.9ea71d8.smooth.gfa.og.grch38_chr6_31889244-32095493.0.sorted}
+        \includegraphics[width=1.0\linewidth, trim=0 +2cm 0 0]{fig/visualization_1D/chr6.pan.fa.c3d3224.7748b33.395c7f4.smooth.gfa.C4.sorted}
         \label{fig:odgi_viz_default}
     \end{subfigure}
     \begin{subfigure}{\linewidth}
         \caption{}
         \centering
         % include second image
-        \includegraphics[width=1.0\linewidth, trim=0 +2cm 0 0]{fig/visualization_1D/chr6.pan.fa.a2fb268.e820cd3.9ea71d8.smooth.gfa.og.grch38_chr6_31889244-32095493.0.sorted.du}
+        \includegraphics[width=1.0\linewidth, trim=0 +2cm 0 0]{fig/visualization_1D/chr6.pan.fa.c3d3224.7748b33.395c7f4.smooth.gfa.C4.sorted.du}
         \label{fig:odgi_viz_color_by_path_pos}
     \end{subfigure}
     \begin{subfigure}{\linewidth}
         \caption{}
         \centering
         % include second image
-        \includegraphics[width=\linewidth, trim=0 +2cm 0 0]{fig/visualization_1D/chr6.pan.fa.a2fb268.e820cd3.9ea71d8.smooth.gfa.og.grch38_chr6_31889244-32095493.0.sorted.z}
+        \includegraphics[width=\linewidth, trim=0 +2cm 0 0]{fig/visualization_1D/chr6.pan.fa.c3d3224.7748b33.395c7f4.smooth.gfa.C4.sorted.z}
         \label{fig:odgi_viz_color_by_inversion_rate}
     \end{subfigure}
     \begin{subfigure}{1\linewidth}
         \caption{}
         \centering
         % include fourth image
-        \includegraphics[width=\linewidth, trim=0 0 0 0]{fig/visualization_1D/chr6.pan.fa.a2fb268.e820cd3.9ea71d8.smooth.gfa.og.grch38_chr6_31889244-32095493.0.sorted.m}
+        \includegraphics[width=\linewidth, trim=0 1.5cm 0 0]{fig/visualization_1D/chr6.pan.fa.c3d3224.7748b33.395c7f4.smooth.gfa.C4.sorted.m}
         \label{fig:odgi_viz_color_by_path_depth}
     \end{subfigure}
-    \caption{Visualizing the complement component 4 (C4) \textit{locus} from a human pangenome graph of 90 haplotypes: \textbf{(a)} standard mode: explain the bio stuff. \textbf{(b)} odgi viz's color by path position: explain the bio stuff XXX. \textbf{(c)} odgi viz's color by strandness: explain the bio stuff XXX. `textbf{(d)}  odgi viz's color by coverage: explain the bio stuff XXX.}
+    \caption{
+        Visualizing the complement component 4 (C4) pangenome graph extracted from a whole human pangenome graph of 90 haplotypes.
+        In all visualizations, 10 paths are displayed: 2 reference genomes (chm13 and grch38 on the top) and 8 haplotypes from 4 individuals.
+        \textbf{(a)} default modality: the image shows a quite linear graph.
+        The 2 longer links at the bottom indicate the presence of a structural variant (long link) with another structural variant nested inside it (short link).
+        Indeed, human C4 exists as 2 functionally distinct genes, C4A and C4B, which both vary in structure and copy number \citep{Sekar_2016}. The longer link indicates that the copy number status varies across the haplotypes represented in the pangenome.
+        Moreover, C4A and C4B genes segregate in both long and short genomic forms, distinguished by the presence or absence of a human endogenous retroviral (HERV) sequence, as also highlighted by the short nested link on the bottom.
+        \textbf{(b)} color by path position: the color gradients are smooths, highlighting that its node are well sorted in 1 dimension.
+        The top two reference genomes and 2 haplotypes (with names starting with HG01978\#1 and HG03492\#2) go from left to right, while 5 haplotypes go in the opposite direction, as indicated by the black color on their left.
+        \textbf{(c)} color by strandness: the red paths indicate the haplotypes that were assembled in reverse with respect to the 2 reference genomes.
+        \textbf{(d)} color by path depth: using the Spectra color palette with 4 level of path depths, white indicates no depth, while grey, red, and yellow indicate depth 1, 2, and 3, respectively.
+        Coloring by path depth, we can see that the two references present two different allele copies of the C4 genes, both of them including the HERV sequence. The entirely grey paths have one copy of these genes.
+        The path with name starting with HG01071\#2 presents 3 copies of the genes (indicated by the orange color), of which only 1 with the HERV sequence (gray color in the middle of the orange region).
+    }
     \label{fig:odgi_viz}
 \end{figure*}
