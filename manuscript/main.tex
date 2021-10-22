@@ -299,13 +299,20 @@ ODGI also supports reading and writing the textual GFA file format for interchan
 \textit{odgi stats} outputs pangenome statistics in TSV or YAML textual file formats.
 Among other metrics, it can calculate the number of nodes, edges, paths and the total nucleotide length of the graph.
 
+\textit{odgi matrix} derives the pangenome matrix and writes the graph topology in sparse matrix formats.
+
+\textit{odgi paths} allows the investigation of paths of a given variation graph. It can calculate overlap statistics of groupings of paths and extracts FASTA.
+
+\textit{odgi flatten} projects the graph sequence and paths into FASTA and BED.
+
 \textit{odgi bin} generates a summarized view of gigabase scale graphs providing tab delimited or JSON `bins'. Also it is possible to output a FASTA file.
 
-\textit{odgi degree/position/depth/untangle/tips} all can output the BED format~\citep{Quinlan_2010}.
+\textit{odgi degree/position/depth/untangle/tips} all can output the BED format.
 
 \textit{odgi untangle} outputs the Pairwise mApping Format (PAF). PAF is a text format describing the approximate mapping positions between two set of sequences.
 The odgi untangle command projects paths into a reference-relative BEDPE file, decomposing paralogy relationships.
 During this process, it is capable of untangling loopy region resulting in linearized pairs of regions in the BEDPE file. A self dotplot assists in debugging and understanding the untangle process.
+
 
 \subsection{Visualizing pangenome graphs}
 \label{sec:viz}
@@ -450,7 +457,7 @@ Pangenome graphs stand to become a ubiquitous tool in genomics \citep{Eizenga_20
 %
 Lifting over annotations and linearizing nested graph structures place the suite as the bridge between traditional linear reference genome analysis and pangenome graphs. ODGI is a unique set of tools that enables scientists to explore and discover the underlying biology of pangenome graphs. Already, the tools are the backbone of pipelines such as the Pangenome Graph Builder\footnote{\url{https://github.com/pangenome/pggb} (accessed Oct 2021)} (PGGB) or nf-core/pangenome\footnote{\url{https://github.com/nf-core/pangenome} (accessed Oct 2021)}. Future work will add support for RNA and protein sequences and expand on metadata capabilities of large pangenome graphs.
 
-ODGI provides common operation on on standard pangenomic file formats, such as GFA. ODGI aims to be a reference implementation for many pangenome related operations. In the near future we aim to improve RDF support for annotation in the in-memory graph\cite{Yokoyama2020}, for example, and allow for federated queries on the pangenome, and FAIR data sharing.
+ODGI provides common operation on on standard pangenomic file formats, such as GFA. ODGI aims to be a reference implementation for many pangenome related operations. In the near future we aim to improve RDF support for annotation in the in-memory graph~\citep{Yokoyama2020}, for example, and allow for federated queries on the pangenome, and FAIR data sharing.
 
 (recent) interactive visualization tools?! CITE PANACHE, also indicate that no published tool for interactive exploration of such graphs exist
 \FIXME{mention gfaestus?}
