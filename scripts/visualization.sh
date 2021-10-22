@@ -4,10 +4,10 @@
 # odgi viz with C4A/C4B locus graph
 #==================================
 
-filename_chr6_gfa=chr6.pan.fa.c3d3224.7748b33.395c7f4.smooth.gfa
+filename_chr6_gfa=chr6.pan.fa.a2fb268.4030258.d9f1245.smooth.gfa
 
 # Download and build the graph
-wget https://s3-us-west-2.amazonaws.com/human-pangenomics/pangenomes/scratch/2021_06_27_pggb/chroms/${filename_chr6_gfa}.gz
+wget http://hypervolu.me/~guarracino/${filename_chr6_gfa}.gz
 gunzip ${filename_chr6_gfa}.gz
 odgi build -g ${filename_chr6_gfa} -o ${filename_chr6_gfa}.og -t 16 -P
 
@@ -20,6 +20,8 @@ zgrep 'gene_id "C4A"\|gene_id "C4B"' hg38.ncbiRefSeq.gtf.gz | awk '$1 == "chr6"'
 odgi extract -i ${filename_chr6_gfa}.og -b C4.coordinates.bed -o - --full-range -t 16 -P |
   odgi explode -i - --biggest 1 --sorting-criteria P --optimize -p ${filename_chr6_gfa}.C4
 odgi sort -i ${filename_chr6_gfa}.C4.0.og -o ${filename_chr6_gfa}.C4.sorted.og -p Ygs -x 100 -t 16 -P
+
+odgi paths -i ${filename_chr6_gfa}.C4.sorted.og -L | grep 'chr6\|HG00438\|HG0107\|HG01952' > chr6.selected_paths.txt
 
 # Default (binned) mode
 odgi viz -i ${filename_chr6_gfa}.C4.sorted.og -o ${filename_chr6_gfa}.C4.sorted.png -w 50 -y 50 -p chr6.selected_paths.txt
