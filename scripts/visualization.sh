@@ -24,16 +24,16 @@ odgi sort -i ${filename_chr6_gfa}.C4.0.og -o ${filename_chr6_gfa}.C4.sorted.og -
 odgi paths -i ${filename_chr6_gfa}.C4.sorted.og -L | grep 'chr6\|HG00438\|HG0107\|HG01952' > chr6.selected_paths.txt
 
 # Default (binned) mode
-odgi viz -i ${filename_chr6_gfa}.C4.sorted.og -o ${filename_chr6_gfa}.C4.sorted.png -w 50 -y 50 -p chr6.selected_paths.txt
+odgi viz -i ${filename_chr6_gfa}.C4.sorted.og -o "$(echo ${filename_chr6_gfa} | tr '.' '_' )"_C4_sorted.png -w 50 -y 50 -p chr6.selected_paths.txt
 
 # Color by strand
-odgi viz -i ${filename_chr6_gfa}.C4.sorted.og -o ${filename_chr6_gfa}.C4.sorted.z.png -w 50 -y 50 -p chr6.selected_paths.txt -z
+odgi viz -i ${filename_chr6_gfa}.C4.sorted.og -o "$(echo ${filename_chr6_gfa} | tr '.' '_' )"_C4_sorted_z.png -w 50 -y 50 -p chr6.selected_paths.txt -z
 
 # Color by position
-odgi viz -i ${filename_chr6_gfa}.C4.sorted.og -o ${filename_chr6_gfa}.C4.sorted.du.png -w 50 -y 50 -p chr6.selected_paths.txt -du
+odgi viz -i ${filename_chr6_gfa}.C4.sorted.og -o "$(echo ${filename_chr6_gfa} | tr '.' '_' )"_C4_sorted_du.png -w 50 -y 50 -p chr6.selected_paths.txt -du
 
 # Color by depth
-odgi viz -i ${filename_chr6_gfa}.C4.sorted.og -o ${filename_chr6_gfa}.C4.sorted.m.png -w 50 -y 50 -p chr6.selected_paths.txt -m -B Spectral:4
+odgi viz -i ${filename_chr6_gfa}.C4.sorted.og -o "$(echo ${filename_chr6_gfa} | tr '.' '_' )"_C4_sorted_m.png -w 50 -y 50 -p chr6.selected_paths.txt -m -B Spectral:4
 
 #======================================================================================================================
 
