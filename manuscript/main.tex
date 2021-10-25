@@ -162,7 +162,7 @@ This design supports node-local modification and update of the graph, which lets
 
 We store the graph in a vector of node structures, each of which presents a node-local view of the graph sequence, topology, and path layout.
 Expressed in terms of the variation graph $V$, ODGI's core $Node$ structure includes a decoder that maps the neighbors of each node to a dense range of integers.
-For a given node $i$ and neighbor $j$, the decoder itself does not store the $id$s of $j$, but rather a compact representation of the relative difference between the node ids: $\delta = Node_i.id - Node_j.id$.
+For a given node $i$ and neighbor $j$, the decoder itself does not store the $id$ of $j$, but rather a compact representation of the relative difference between the node ids: $\delta = Node_i.id - Node_j.id$.
 This keeps even the size of the encoding small, per common variation graph property (2).
 We define the edges and path steps traversing the node in terms of this alphabet of $\delta$'s.
 The structures in Algorithm \ref{alg:structs} describes our encoding.
@@ -241,7 +241,6 @@ ODGI's tools cover common operations that we have found to be essential when wor
 \begin{itemize}
 \item \textit{odgi build} constructs the ODGI data model from GFA (\S\ref{sec:build}).
 \item \textit{odgi view} converts the graph into standard text formats (\S\ref{sec:text}).
-\item \textit{odgi stats} provides numerical properties of the graph (\S\ref{sec:text}).
 \item \textit{odgi matrix} derives the pangenome matrix (\S\ref{sec:text}).
 \item \textit{odgi paths} lists and extracts paths in FASTA (\S\ref{sec:text}).
 \item \textit{odgi flatten} converts the graph to FASTA and BED (\S\ref{sec:text}).
@@ -255,11 +254,13 @@ ODGI's tools cover common operations that we have found to be essential when wor
 \item \textit{odgi prune} removes complex regions (\S\ref{sec:edit}).
 \item \textit{odgi position} lift coordinates between paths and graph positions (\S\ref{sec:untangle}).
 \item \textit{odgi untangle} deconvolutes paths relative to a reference (\S\ref{sec:untangle}).
+\item \textit{odgi tips} finds path end points relative to a reference (\S\ref{sec:untangle}).
 \item \textit{odgi sort} orders the graph with sorting pipelines (\S\ref{sec:sort}).
 \item \textit{odgi layout} establishes a 2D layout using SGD (\S\ref{sec:sort}).
+\item \textit{odgi stats} provides numerical properties of the graph (\S\ref{sec:metrics}).
+\item \textit{odgi bin} generates a summarized view of the graph (\S\ref{sec:metrics}).
 \item \textit{odgi depth} describes path depth over graph and path positions (\S\ref{sec:metrics}).
 \item \textit{odgi degree} describes node degree over graph and path positions (\S\ref{sec:metrics}).
-\item \textit{odgi tips} finds path end points relative to a reference (\S\ref{sec:metrics}).
 \end{itemize}
 
 Each tool focuses on a small set of related operations.
@@ -308,7 +309,7 @@ Among other metrics, it can calculate the number of nodes, edges, paths and the 
 
 \textit{odgi flatten} projects the graph sequence and paths into FASTA and BED.
 
-\textit{odgi bin} generates a summarized view of gigabase scale graphs providing tab delimited or JSON `bins'. Also it is possible to output a FASTA file.
+\textit{odgi bin} generates a summarized view of gigabase scale graphs providing tab delimited or JSON `bins'.
 
 \textit{odgi degree/position/depth/untangle/tips} all can output the BED format.
 
@@ -448,9 +449,9 @@ Combining a series of sorts can mitigate the weaknesses of individually applied 
 
 Graphs statistics provide alternative ways to gain insight into pangenomes complexity revealing the overall structure, size, and features of a graph and its sequences.
 
-Applying \textit{odgi stats}, users can retrieve metrics describing the graph properties, such as the number of nodes, edges, paths, and graph length.
+Applying \textit{odgi stats}, users can retrieve metrics describing the graph properties, such as the number of nodes, edges, paths, and graph length. It outputs pangenome statistics in TSV or YAML textual file formats.
 MultiQC's \citep{Ewels_2016} ODGI module\footnote{\url{https://multiqc.info/docs/\#odgi} (accessed Oct 2021)} provides an interactive way to comparatively explore the statistics of an arbitrary number of graphs.
-ODGI also offers more advanced tools for the interrogation of the graphs. \textit{odgi bin} summarizes the path information into bins of a specified size, enabling a summarized view of gigabase scale graphs.
+ODGI also offers more advanced tools for the interrogation of the graphs. \textit{odgi bin} summarizes the path information into bins of a specified size, enabling a summarized view of gigabase scale graphs. It provides tab delimited or JSON `bins'.
 This concept found its way into the pangenome graph ontology \cite{Yokoyama2020}. \textit{odgi depth} returns the node depth as defined by query criteria, allowing users to assess the complexity of regions in the graph.
 Collapsed sequences with highly identical repeats indicate intricate loci.
 Complex motifs can be also detected with \textit{odgi degree}, which returns the node degree as defined by query criteria.
@@ -473,7 +474,7 @@ Pangenome graphs stand to become a ubiquitous tool in genomics \citep{Eizenga_20
 %
 Lifting over annotations and linearizing nested graph structures place the suite as the bridge between traditional linear reference genome analysis and pangenome graphs. ODGI is a unique set of tools that enables scientists to explore and discover the underlying biology of pangenome graphs. Already, the tools are the backbone of pipelines such as the Pangenome Graph Builder\footnote{\url{https://github.com/pangenome/pggb} (accessed Oct 2021)} (PGGB) or nf-core/pangenome\footnote{\url{https://github.com/nf-core/pangenome} (accessed Oct 2021)}. Future work will add support for RNA and protein sequences and expand on metadata capabilities of large pangenome graphs.
 
-ODGI provides common operation on on standard pangenomic file formats, such as GFA. ODGI aims to be a reference implementation for many pangenome related operations. In the near future we aim to improve RDF support for annotation in the in-memory graph~\citep{Yokoyama2020}, for example, and allow for federated queries on the pangenome, and FAIR data sharing.
+ODGI provides common operation on standard pangenomic file formats, such as GFA. ODGI aims to be a reference implementation for many pangenome related operations. In the near future we aim to improve RDF support for annotation in the in-memory graph~\citep{Yokoyama2020}, for example, and allow for federated queries on the pangenome, and FAIR data sharing.
 
 (recent) interactive visualization tools?! CITE PANACHE, also indicate that no published tool for interactive exploration of such graphs exist
 \FIXME{mention gfaestus?}
