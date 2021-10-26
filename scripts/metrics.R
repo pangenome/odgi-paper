@@ -23,7 +23,7 @@ degree <- read.table(bed_degree, sep = "\t", quote = "", as.is = T,
 pdf(degree_pdf, height = 3, width = 14)
 plot(degree$V2, degree$V4, pch=20, 
 #     main = "odgi degree - chm13#chr4:3073405-3073983 - HTT exon1", 
-     xlab = "position of chm13 in HTT exon1",
+     xlab = "",
      ylab = "degree")
 lines(degree$V2, degree$V4, xlim=range(degree$V2), ylim=range(degree$V4), pch=1)
 dev.off()

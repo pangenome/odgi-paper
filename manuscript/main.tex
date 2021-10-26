@@ -11,6 +11,8 @@
 \usepackage{algorithm2e}
 \usepackage[usenames,dvipsnames]{xcolor}
 
+% we squeeze our figures even more together
+\captionsetup{belowskip=-2pt}
 
 \SetAlgoLined
 \SetKwProg{MyStruct}{Struct}{ contains}{end}
@@ -311,6 +313,10 @@ Among other metrics, it can calculate the number of nodes, edges, paths and the 
 
 \textit{odgi bin} generates a summarized view of gigabase scale graphs providing tab delimited or JSON `bins'.
 
+\textit{odgi position} translates graph and path positions between or within graphs emitting the liftovers in TSV format.
+
+\textit{odgi server} implements a basic HTTP server which can translate a 'path:position' to a 'pangenome:position' very efficiently.
+
 \textit{odgi degree/position/depth/untangle/tips} all can output the BED format.
 
 \textit{odgi untangle} outputs the Pairwise mApping Format (PAF). PAF is a text format describing the approximate mapping positions between two set of sequences.
@@ -373,13 +379,13 @@ odgi extract allows extracting specific subregions of the graph as defined by qu
 
 % chop / unchop / squeeze / break / prune / explode
 
-To enable efficient sequence alignment against the graph, long nodes can be divided into shorter nodes at a maximum requested size using odgi chop. Partial order alignment, which consists of aligning sequences against a directed acyclic graph (DAG), is frequently used in pangenome building pipelines, but the current implementations return DAGs with 1-bp long nodes; odgi unchop allows joining nodes that can be merged without changing the graph topology, nor the embedded sequences, obtaining an equivalent, but more compact, representation of the graph.
+To enable efficient sequence alignment against the graph, long nodes can be divided into shorter nodes at a maximum requested size using \textit{odgi chop}. Partial order alignment, which consists of aligning sequences against a directed acyclic graph (DAG), is frequently used in pangenome building pipelines, but the current implementations return DAGs with 1-bp long nodes; \textit{odgi unchop} allows joining nodes that can be merged without changing the graph topology, nor the embedded sequences, obtaining an equivalent, but more compact, representation of the graph.
 
 Pangenome graphs can embed multiple chromosomes as separated connected components (inter-chromosomal structural variants would join the components into bigger ones).
-odgi explode separates the connected components in different ODGI format files, while odgi squeeze allows merging multiple graphs into the same ODGI format file, preventing node ID collisions.
+\textit{odgi explode} separates the connected components in different ODGI format files, while \textit{odgi squeeze} allows merging multiple graphs into the same ODGI format file, preventing node ID collisions.
 
-Cycles in the graph complicate downstream analyses: odgi break removes the cycles, reducing the complexity of the graph topology.
-odgi groom removes spurious inverting links by exploring the graph from the orientation supported by most paths.
+Cycles in the graph complicate downstream analyses: \textit{odgi break} removes the cycles, reducing the complexity of the graph topology.
+\textit{odgi groom} removes spurious inverting links by exploring the graph from the orientation supported by most paths.
 
 
 
@@ -394,9 +400,9 @@ These are commonly-needed basic operations on the topology of the graph.
 
 The key data in a pangenome graph is a representation of the alignment (or homology) relationships between sequences in the pangenome.
 Navigating and understanding the graph requires coordinate systems that we can use to link other data into the graph model, and thus to all genomes in the pangenome.
-Primarily, ODGI uses the embedded pangenome sequences to provide a set of coordinates in a standard, 1D format.e
+Primarily, ODGI uses the embedded pangenome sequences to provide a set of coordinates in a standard, 1D format.	
 These coordinates depend on the sequences, and are graph-independent.
-Our for positional conversion (\textit{odgi position}), annotation liftover (\textit{odgi untangle}), subgraph extraction (\textit{odgi extract}), visualization (\textit{odgi viz}), path depth (\textit{odgi depth}), and graph complexity measurement (\textit{odgi degree}) can all operate on coordinates of paths in the graph.
+Our for positional conversion (\textit{odgi position}), annotation liftover (\textit{odgi untangle}), breakpoint identification (\textit{odgi tips}), subgraph extraction (\textit{odgi extract}), visualization (\textit{odgi viz}), path depth (\textit{odgi depth}), and graph complexity measurement (\textit{odgi degree}) can all operate on coordinates of paths in the graph.
 
 For understanding the large-scale organization of the graph, we benefit from an even simpler coordinate system.
 To provide a universal coordinate space for the graph, we project its nodes into a low-dimensional space (in practice, 1 or 2 dimensions) by learning the projection via a HOGWILD! \citep{niu2011hogwild}, path-guided stochastic gradient descent (PG-SGD) layout algorithm that adapts SGD-based drawing to pangenome graphs \citep{zheng2018graph}.
