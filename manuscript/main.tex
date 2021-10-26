@@ -482,10 +482,9 @@ Lifting over annotations and linearizing nested graph structures place the suite
 
 ODGI provides common operation on standard pangenomic file formats, such as GFA. ODGI aims to be a reference implementation for many pangenome related operations. In the near future we aim to improve RDF support for annotation in the in-memory graph~\citep{Yokoyama2020}, for example, and allow for federated queries on the pangenome, and FAIR data sharing.
 
-(recent) interactive visualization tools?! CITE PANACHE, also indicate that no published tool for interactive exploration of such graphs exist
-\FIXME{mention gfaestus?}
+ODGI's visualization tools produce static, large-scale snapshots. Recent interactive browsers are reference centric \citep{Beyer2019, Yokoyama2019, Durant2021} or focusing on one dimension \citep{Wick_2015}. However, an interactive visualization solution that combines the 1D and 2D layout of a graph with annotation and read mapping information across different zoom levels is still missing. ODGI's graph layout algorithms could become a backbone of such tools, as is already the case for \textit{gfaestus}\footnote{\url{https://github.com/chfi/gfaestus}}, which currently relies on the \textit{odgi layout} output for its interactive 2D visualization.
 
-is ODGI ready for scWGS data? potentially, each cell is a path in a graph!! very very high path depth
+So far, ODGI has not been applied to graphs build from scWGS \citep{Zhuo2021} data. Each cell would be represented as a path in the graph, the path depth would be very high. As ODGI was designed to deal with the path depth of human pangenome graphs, it remains to be seen, if it will work equally well with scWGS data.
 
 With the increased adoption of long read sequencing we expect pangenome tools to become increasingly common in biomedical research. Particularly for targets that involve complex variation, such as cancer, plant genomics and metagenomics, ODGI should facilitate disentangling, describing and analysing a much larger set of variation than previously was possible with tools that depend on short reads and reference genomes.
 
