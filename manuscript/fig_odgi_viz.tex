@@ -1,51 +1,48 @@
-\begin{figure*}[h!]
-    \begin{subfigure}[b]{.50\linewidth}
-        \caption{}
-        \centering
-        % include first image
-        \includegraphics[width=\linewidth, trim=0 +1.5cm -0.5cm 0.5cm]{fig/visualization_1D/chr6_pan_fa_a2fb268_4030258_d9f1245_smooth_gfa_C4_sorted}
-        \label{fig:odgi_viz_default}
-    \end{subfigure}
-    \begin{subfigure}[b]{.50\linewidth}
-        \caption{}
-        \centering
-        % include first image
-        \includegraphics[width=0.5\linewidth, trim=0 +2cm 0 0.5cm]{fig/visualization_1D/chr6_pan_fa_a2fb268_4030258_d9f1245_smooth_gfa_C4_sorted_layout}
-        \label{fig:odgi_viz_default2}
-    \end{subfigure}
+\begin{figure*}[!htb]
+    \centering
+    \begin{tabular}[t]{cc}%{|c|c|}
+        %\hline
+        \begin{tabular}{c}% if you add [t], then sub images are pushed down
+            %\smallskip
+            \begin{subfigure}[t]{0.5\textwidth}
+                \centering
+                \caption{}
+                \includegraphics[width=\linewidth, trim=0 +1cm -0.5cm 0.5cm]{fig/fig2_extract_viz_draw_position_untangle/chr6_pan_fa_a2fb268_4030258_d9f1245_smooth_gfa_C4_sorted}
+            \end{subfigure} \\
+            \begin{subfigure}[t]{0.5\textwidth}
+                \centering
+                \caption{}
+                \includegraphics[width=\linewidth, trim=0 +1cm -0.5cm 0.5cm]{fig/fig2_extract_viz_draw_position_untangle/chr6_pan_fa_a2fb268_4030258_d9f1245_smooth_gfa_C4_sorted_du}
+            \end{subfigure} \\
+            \begin{subfigure}[t]{0.5\textwidth}
+                \centering
+                \caption{}
+                \includegraphics[width=\linewidth, trim=0 +1cm -0.5cm 0.5cm]{fig/fig2_extract_viz_draw_position_untangle/chr6_pan_fa_a2fb268_4030258_d9f1245_smooth_gfa_C4_sorted_z}
+            \end{subfigure} \\
+            \begin{subfigure}[t]{0.5\textwidth}
+                \centering
+                \caption{}
+                \includegraphics[width=\linewidth, trim=0 +1cm -0.5cm 0.5cm]{fig/fig2_extract_viz_draw_position_untangle/chr6_pan_fa_a2fb268_4030258_d9f1245_smooth_gfa_C4_sorted_m}
+            \end{subfigure}
+        \end{tabular}
+        %&
+        \begin{tabular}{c}% if you add [t], than sub images are pushed down
+            %\smallskip
+            \begin{subfigure}[t]{0.5\textwidth}
+                \centering
+                \includegraphics[width=0.65\linewidth, trim=0 +2cm 0 0.5cm]{fig/fig2_extract_viz_draw_position_untangle/chr6_pan_fa_a2fb268_4030258_d9f1245_smooth_gfa_C4_sorted_layout}
+                \caption{}
+            \end{subfigure} \\
+            \\
 
-    \begin{subfigure}[b]{.50\linewidth}
-        \caption{}
-        \centering
-        % include second image
-        \includegraphics[width=\linewidth, trim=0 +1.5cm -0.5cm 0.5cm]{fig/visualization_1D/chr6_pan_fa_a2fb268_4030258_d9f1245_smooth_gfa_C4_sorted_du}
-        \label{fig:odgi_viz_color_by_path_pos}
-    \end{subfigure}
-
-    \begin{subfigure}[b]{.50\linewidth}
-        \caption{}
-        \centering
-        % include second image
-        \includegraphics[width=\linewidth, trim=0 +1.5cm -0.5cm 0.5cm]{fig/visualization_1D/chr6_pan_fa_a2fb268_4030258_d9f1245_smooth_gfa_C4_sorted_z}
-        \label{fig:odgi_viz_color_by_inversion_rate}
-    \end{subfigure}
-    \begin{subfigure}[b]{.50\linewidth}
-        \caption{}
-        \centering
-        % include second image
-        %todo BANDAGE
-        \includegraphics[width=0.5\linewidth, trim=0 +1.5cm -0.5cm 0.5cm]{fig/visualization_1D/chr6_pan_fa_a2fb268_4030258_d9f1245_smooth_gfa_C4_sorted_layout}
-        \label{fig:odgi_viz_color_by_inversion_rate2}
-    \end{subfigure}
-
-    \begin{subfigure}[b]{.50\linewidth}
-        \caption{}
-        \centering
-        % include fourth image
-        \includegraphics[width=\linewidth, trim=0 +1.5cm -0.5cm 0.5cm]{fig/visualization_1D/chr6_pan_fa_a2fb268_4030258_d9f1245_smooth_gfa_C4_sorted_m}
-        \label{fig:odgi_viz_color_by_path_depth}
-    \end{subfigure}
-
+            \begin{subfigure}[t]{0.5\textwidth}
+                \centering
+                \includegraphics[width=0.65\linewidth, trim=0 +2cm 0 0.5cm]{fig/fig2_extract_viz_draw_position_untangle/chr6_pan_fa_a2fb268_4030258_d9f1245_smooth_gfa_C4_sorted_layout}
+                \caption{}
+            \end{subfigure}
+        \end{tabular}\\
+        %\hline
+    \end{tabular}
     \caption{
         Visualizing the complement component 4 (C4) pangenome graph extracted from a whole human pangenome graph of 90 haplotypes.
         In all visualizations, 8 paths are displayed: 2 reference genomes (chm13 and grch38 on the top) and 6 haplotypes of 3 individuals.
@@ -64,3 +61,71 @@
     }
     \label{fig:odgi_viz}
 \end{figure*}
+
+
+%\begin{figure*}[h!]
+%    \begin{subfigure}[t]{.50\linewidth}
+%        \caption{}
+%        \centering
+%        % include first image
+%        \includegraphics[width=\linewidth, trim=0 +1.5cm -0.5cm 0.5cm]{fig/fig2_extract_viz_draw_position_untangle/chr6_pan_fa_a2fb268_4030258_d9f1245_smooth_gfa_C4_sorted}
+%        \label{fig:odgi_viz_default}
+%    \end{subfigure}
+%
+%    \begin{subfigure}[t]{.50\linewidth}
+%        \caption{}
+%        \centering
+%        % include second image
+%        \includegraphics[width=\linewidth, trim=0 +1.5cm -0.5cm 0.5cm]{fig/fig2_extract_viz_draw_position_untangle/chr6_pan_fa_a2fb268_4030258_d9f1245_smooth_gfa_C4_sorted_du}
+%        \label{fig:odgi_viz_color_by_path_pos}
+%    \end{subfigure}
+%
+%    \begin{subfigure}[t]{.50\linewidth}
+%        \caption{}
+%        \centering
+%        % include second image
+%        \includegraphics[width=\linewidth, trim=0 +1.5cm -0.5cm 0.5cm]{fig/fig2_extract_viz_draw_position_untangle/chr6_pan_fa_a2fb268_4030258_d9f1245_smooth_gfa_C4_sorted_z}
+%        \label{fig:odgi_viz_color_by_inversion_rate}
+%    \end{subfigure}
+%
+%    \begin{subfigure}[t]{.50\linewidth}
+%        \caption{}
+%        \centering
+%        % include fourth image
+%        \includegraphics[width=\linewidth, trim=0 +1.5cm -0.5cm 0.5cm]{fig/fig2_extract_viz_draw_position_untangle/chr6_pan_fa_a2fb268_4030258_d9f1245_smooth_gfa_C4_sorted_m}
+%        \label{fig:odgi_viz_color_by_path_depth}
+%    \end{subfigure}
+%    \begin{subfigure}[t]{.50\linewidth}
+%        \caption{}
+%        \centering
+%        % include first image
+%        \includegraphics[width=0.5\linewidth, trim=0 +2cm 0 0.5cm]{fig/fig2_extract_viz_draw_position_untangle/chr6_pan_fa_a2fb268_4030258_d9f1245_smooth_gfa_C4_sorted_layout}
+%        \label{fig:odgi_viz_default2}
+%    \end{subfigure}
+%    \begin{subfigure}[t]{.50\linewidth}
+%        \caption{}
+%        \centering
+%        % include second image
+%        %todo BANDAGE
+%        \includegraphics[width=0.5\linewidth, trim=0 +1.5cm -0.5cm 0.5cm]{fig/fig2_extract_viz_draw_position_untangle/chr6_pan_fa_a2fb268_4030258_d9f1245_smooth_gfa_C4_sorted_layout}
+%        \label{fig:odgi_viz_color_by_inversion_rate2}
+%    \end{subfigure}
+%
+%    \caption{
+%        Visualizing the complement component 4 (C4) pangenome graph extracted from a whole human pangenome graph of 90 haplotypes.
+%        In all visualizations, 8 paths are displayed: 2 reference genomes (chm13 and grch38 on the top) and 6 haplotypes of 3 individuals.
+%        \textbf{(a)} default modality: the image shows a quite linear graph.
+%        The longer links at the bottom indicate the presence of a structural variant (long link) with another structural variant nested inside it (short link on the left).
+%        Indeed, human C4 exists as 2 functionally distinct genes, C4A and C4B, which both vary in structure and copy number \citep{Sekar_2016}. The longer link indicates that the copy number status varies across the haplotypes represented in the pangenome.
+%        Moreover, C4A and C4B genes segregate in both long and short genomic forms, distinguished by the presence or absence of a human endogenous retroviral (HERV) sequence, as also highlighted by the short nested link on the left.
+%        \textbf{(b)} color by path position: the color gradients are smooths, highlighting that its node are well sorted in 1 dimension.
+%        The top two reference genomes and 2 haplotypes (with name starting with HG01952\#2) go from left to right, while 5 haplotypes go in the opposite direction, as indicated by the black color on their left.
+%        \textbf{(c)} color by strandness: the red paths indicate the haplotypes that were assembled in reverse with respect to the 2 reference genomes.
+%        \textbf{(d)} color by path depth: using the Spectra color palette with 4 level of path depths, white indicates no depth, while grey, red, and yellow indicate depth 1, 2, and greater than or equal to 3, respectively.
+%        Coloring by path depth, we can see that the two references present two different allele copies of the C4 genes, both of them including the HERV sequence.
+%        The entirely grey paths have one copy of these genes.
+%        The path with name starting with HG01071\#2 presents 3 copies of the genes (indicated by the orange color), of which only 1 with the HERV sequence (gray color in the middle of the orange region).
+%        In the haplotype with the name starting with HG01952\#1, the HERV sequence is absent.
+%    }
+%    \label{fig:odgi_viz}
+%\end{figure*}
