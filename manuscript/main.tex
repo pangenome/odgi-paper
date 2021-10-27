@@ -269,7 +269,7 @@ Each tool focuses on a small set of related operations.
 Most read or write the native ODGI format (`og' extension) (Figure \ref{fig:operations}) and work with standard text based data formats common to bioinformatics.
 This supports the implementation of flexible, composable, graph processing pipelines based on a common data type.
 While the pangenome graph is a first-class entity in ODGI, we focus on the embedded paths to provide a universal coordinate system.
-By considering all paths in the graph as potential reference or query sequences, we make the graph invisible to downstream tools that operate on collections of sequences (e.g. bedtools, samtools, aligners).
+By considering all paths in the graph as potential reference or query sequences, we make the graph invisible to downstream tools that operate on collections of sequences (e.g. BEDTools, SAMtools \citep{Li2009}, aligners).
 This approach benefits from the information in the graph without strongly embedding our methods in this difficult new research context.
 
 %We begin with a set of HandleGraph-based algorithms first establish in the VG toolkit \citep{Garrison:2018}.
@@ -300,10 +300,10 @@ This parallelism speeds ODGI model construction by many-fold when testing agains
 ODGI maintains its own efficient binary format for storing graphs on disk.
 ODGI also supports reading and writing the textual GFA file format for interchange with other tools such as with the VG toolkit~\citep{Garrison:2018}.
 
-\textit{odgi view} can convert a graph in ODGI binary format to the standard GFAv1 format. It can reveal a graph’s internal structures for e.g. debugging processes.
+\textit{odgi view} can convert a graph in ODGI binary format to the standard GFAv1\footnote{\url{https://github.com/GFA-spec/GFA-spec/blob/master/GFA1.md} (accessed Oct 2021)}  format. It can reveal a graph’s internal structures for e.g. debugging processes.
 
 \textit{odgi stats} outputs pangenome statistics in TSV or YAML textual file formats.
-Among other metrics, it can calculate the number of nodes, edges, paths and the total nucleotide length of the graph.
+Among other metrics, it can calculate the number of nodes, edges, paths and the total nucleotide length of the graph. {\color{red} FIXME: All this information is also listed in the metrics section. How to split? No mentioning of file formats in the following sections?}
 
 \textit{odgi matrix} derives the pangenome matrix and writes the graph topology in sparse matrix formats.
 
@@ -482,7 +482,7 @@ Lifting over annotations and linearizing nested graph structures place the suite
 
 ODGI provides common operation on standard pangenomic file formats, such as GFA. ODGI aims to be a reference implementation for many pangenome related operations. In the near future we aim to improve RDF support for annotation in the in-memory graph~\citep{Yokoyama2020}, for example, and allow for federated queries on the pangenome, and FAIR data sharing.
 
-ODGI's visualization tools produce static, large-scale snapshots. Recent interactive browsers are reference centric \citep{Beyer2019, Yokoyama2019, Durant2021, Liang2021} or focusing on one dimension \citep{Wick_2015}. However, an interactive visualization solution that combines the 1D and 2D layout of a graph with annotation and read mapping information across different zoom levels is still missing. ODGI's graph layout algorithms could become a backbone of such tools, as is already the case for \textit{gfaestus}\footnote{\url{https://github.com/chfi/gfaestus}}, which currently relies on the \textit{odgi layout} output for its interactive 2D visualization.
+ODGI's visualization tools produce static, large-scale snapshots. Recent interactive browsers are reference centric \citep{Beyer2019, Yokoyama2019, Durant2021, Liang2021} or focusing on one dimension \citep{Wick_2015, Gonnella2018}. However, an interactive visualization solution that combines the 1D and 2D layout of a graph with annotation and read mapping information across different zoom levels is still missing. ODGI's graph layout algorithms could become a backbone of such tools, as is already the case for \textit{gfaestus}\footnote{\url{https://github.com/chfi/gfaestus}}, which currently relies on the \textit{odgi layout} output for its interactive 2D visualization.
 
 So far, ODGI has not been applied to graphs build from scWGS \citep{Zhuo2021} data. Each cell would be represented as a path in the graph, the path depth would be very high. As ODGI was designed to deal with the path depth of human pangenome graphs, it remains to be seen, if it will work equally well with scWGS data.
 
