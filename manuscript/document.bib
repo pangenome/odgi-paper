@@ -92,13 +92,22 @@
   year      = {2020 (accessed Oct 2021)},
 }
 
+@misc{pangenome,
+	title     = {nf-core/pangenome},
+	key       = {genomics, genetics, pangenome},
+	howpublished = {GitHub Repository},
+	author    = {Heumos, Simon and Michael, Heuer and Heumos, Lukas and Guarracino, Andrea and Philipp, Ehmele and Garrison, Erik},
+	note      = {\\\url{https://github.com/nf-core/pangenome}},
+	year      = {2021 (accessed Oct 2021)},
+}
+
 @misc{GFA,
   title     = {Graphical Fragment Assembly (GFA) Format Specification},
   key       = {genomics, genetics, pangenome},
   howpublished = {GitHub Repository},
-  author    = {GFA-consortium},
+  author    = {{The GFA Format Specification Working Group}},
   note      = {\\\url{https://github.com/GFA-spec/GFA-spec}},
-  year      = {2015 (accessed Oct 2021)},
+  year      = {2016 (accessed Oct 2021)}, #(accessed Oct 2021) -> https://github.com/GFA-spec/GFA-spec/blob/master/GFA1.md
 }
 
 @misc{Yokoyama2020,
@@ -108,6 +117,55 @@
 	howpublished = {International Conference on Intelligent Systems for Molecular Biology (2020), Online, 13.07. 2020–16.07. 2020},
 	note         = {32.02.12; LK 01},
 	language     = {english}
+}
+
+@Article{Li2009,
+	author={Li, Heng
+	and Handsaker, Bob
+	and Wysoker, Alec
+	and Fennell, Tim
+	and Ruan, Jue
+	and Homer, Nils
+	and Marth, Gabor
+	and Abecasis, Goncalo
+	and Durbin, Richard
+	and 1000 Genome Project Data Processing Subgroup},
+	title={The Sequence Alignment/Map format and SAMtools},
+	journal={Bioinformatics (Oxford, England)},
+	year={2009},
+	month={Aug},
+	day={15},
+	edition={2009/06/08},
+	publisher={Oxford University Press},
+	volume={25},
+	number={16},
+	pages={2078-2079},
+	keywords={Algorithms; Base Sequence; Computational Biology/*methods; Genome; Genomics; Molecular Sequence Data; Sequence Alignment/*methods; Sequence Analysis, DNA/*methods; *Software},
+	abstract={SUMMARY: The Sequence Alignment/Map (SAM) format is a generic alignment format for storing read alignments against reference sequences, supporting short and long reads (up to 128 Mbp) produced by different sequencing platforms. It is flexible in style, compact in size, efficient in random access and is the format in which alignments from the 1000 Genomes Project are released. SAMtools implements various utilities for post-processing alignments in the SAM format, such as indexing, variant caller and alignment viewer, and thus provides universal tools for processing read alignments. AVAILABILITY: http://samtools.sourceforge.net.},
+	note={19505943[pmid]},
+	note={PMC2723002[pmcid]},
+	note={btp352[PII]},
+	issn={1367-4811},
+	doi={10.1093/bioinformatics/btp352},
+	url={https://pubmed.ncbi.nlm.nih.gov/19505943},
+	url={https://doi.org/10.1093/bioinformatics/btp352},
+	language={eng}
+}
+
+@article{Gonnella2018,
+	author = {Gonnella, Giorgio and Niehus, Niklas and Kurtz, Stefan},
+	title = "{GfaViz: flexible and interactive visualization of GFA sequence graphs}",
+	journal = {Bioinformatics},
+	volume = {35},
+	number = {16},
+	pages = {2853-2855},
+	year = {2018},
+	month = {12},
+	abstract = "{The graphical fragment assembly (GFA) formats are emerging standard formats for the representation of sequence graphs. Although GFA 1 was primarily targeting assembly graphs, the newer GFA 2 format introduces several features, which makes it suitable for representing other kinds of information, such as scaffolding graphs, variation graphs, alignment graphs and colored metagenomic graphs. Here, we present GfaViz, an interactive graphical tool for the visualization of sequence graphs in GFA format. The software supports all new features of GFA 2 and introduces conventions for their visualization. The user can choose between two different layouts and multiple styles for representing single elements or groups. All customizations can be stored in custom tags of the GFA format itself, without requiring external configuration files. Stylesheets are supported for storing standard configuration options for groups of files. The visualizations can be exported to raster and vector graphics formats. A command line interface allows for batch generation of images.GfaViz is available at https://github.com/ggonnella/gfavizSupplementary data are available at Bioinformatics online.}",
+	issn = {1367-4803},
+	doi = {10.1093/bioinformatics/bty1046},
+	url = {https://doi.org/10.1093/bioinformatics/bty1046},
+	eprint = {https://academic.oup.com/bioinformatics/article-pdf/35/16/2853/29154711/bty1046.pdf},
 }
 
 @ARTICLE{Zhuo2021,
@@ -428,7 +486,8 @@
   key       = {genomics, genetics, pangenome},
   howpublished = {GitHub Repository},
   note      = {\\\url{https://github.com/chfi/gfaestus}},
-  year      = {2018 (accessed Jul 2021)},
+  year      = {2018 (accessed Oct 2021)},
+  author    = {Fischer, Christian and Garrison, Erik and Prins, Pjotr},
 }
 
 @misc{cactusminigraph,
