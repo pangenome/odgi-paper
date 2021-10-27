@@ -300,7 +300,7 @@ This parallelism speeds ODGI model construction by many-fold when testing agains
 ODGI maintains its own efficient binary format for storing graphs on disk.
 ODGI also supports reading and writing the textual GFA file format for interchange with other tools such as with the VG toolkit~\citep{Garrison:2018}.
 
-\textit{odgi view} can convert a graph in ODGI binary format to the standard GFAv1\footnote{\url{https://github.com/GFA-spec/GFA-spec/blob/master/GFA1.md} (accessed Oct 2021)}  format. It can reveal a graph’s internal structures for e.g. debugging processes.
+\textit{odgi view} can convert a graph in ODGI binary format to the standard GFAv1 \citep{GFA} format. It can reveal a graph’s internal structures for e.g. debugging processes.
 
 \textit{odgi stats} outputs pangenome statistics in TSV or YAML textual file formats.
 Among other metrics, it can calculate the number of nodes, edges, paths and the total nucleotide length of the graph. {\color{red} FIXME: All this information is also listed in the metrics section. How to split? No mentioning of file formats in the following sections?}
@@ -444,7 +444,7 @@ The latter one exploits the biological information in the paths for sorting the 
 Combining a series of sorts can mitigate the weaknesses of individually applied sorting algorithms.
 %In Figure \textbf{\textit{TODO MHC wgg.85}}, a comparison of an unsorted human pangenome MHC graph and a sorted one are displayed.
 
-%For the establishment of a layout in two dimensions \textit{odgi layout} applies a 2D adjusted PG-SGD algorithm. A calculated layout can be visualized statically with \textit{odgi draw} (see Figure \textit{\textbf{TODO MHC wgg.85}}) or interactively explored with the in-development \textit{gfaestus}\footnote{\url{https://github.com/chfi/gfaestus}}.
+%For the establishment of a layout in two dimensions \textit{odgi layout} applies a 2D adjusted PG-SGD algorithm. A calculated layout can be visualized statically with \textit{odgi draw} (see Figure \textit{\textbf{TODO MHC wgg.85}}) or interactively explored with the in-development \textit{gfaestus}\{\url{https://github.com/chfi/gfaestus}}.
 
 \subsection{Obtaining metrics of the pangenome graph}
 \label{sec:metrics}
@@ -456,9 +456,11 @@ Combining a series of sorts can mitigate the weaknesses of individually applied 
 Graphs statistics provide alternative ways to gain insight into pangenomes complexity revealing the overall structure, size, and features of a graph and its sequences.
 
 Applying \textit{odgi stats}, users can retrieve metrics describing the graph properties, such as the number of nodes, edges, paths, and graph length. It outputs pangenome statistics in TSV or YAML textual file formats.
-MultiQC's \citep{Ewels_2016} ODGI module\footnote{\url{https://multiqc.info/docs/\#odgi} (accessed Oct 2021)} provides an interactive way to comparatively explore the statistics of an arbitrary number of graphs.
+MultiQC's \citep{Ewels_2016} ODGI module %\footnote{\url{https://multiqc.info/docs/\#odgi} (accessed Oct 2021)} 
+provides an interactive way to comparatively explore the statistics of an arbitrary number of graphs.
 ODGI also offers more advanced tools for the interrogation of the graphs. \textit{odgi bin} summarizes the path information into bins of a specified size, enabling a summarized view of gigabase scale graphs. It provides tab delimited or JSON `bins'.
-This concept found its way into the pangenome graph ontology \cite{Yokoyama2020}. \textit{odgi depth} returns the node depth as defined by query criteria, allowing users to assess the complexity of regions in the graph.
+%This concept found its way into the pangenome graph ontology \cite{Yokoyama2020}. %maybe we want to save this up for the discussion
+\textit{odgi depth} returns the node depth as defined by query criteria, allowing users to assess the complexity of regions in the graph.
 Collapsed sequences with highly identical repeats indicate intricate loci.
 Complex motifs can be also detected with \textit{odgi degree}, which returns the node degree as defined by query criteria.
 High degree nodes can be the mirror of variation, misassemblies, or problems in the pangenome building, making the tool useful for validation.
