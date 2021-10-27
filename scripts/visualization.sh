@@ -11,7 +11,7 @@ odgi build -g ${filename_chr6_gfa} -o ${filename_chr6_gfa}.og -t 16 -P
 # Find C4 coordinates
 wget http://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/hg38.chrom.sizes
 wget https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/genes/hg38.ncbiRefSeq.gtf.gz
-zgrep 'gene_id "C4A"\|gene_id "C4B"' hg38.ncbiRefSeq.gtf.gz | awk '$1 == "chr6"' | cut -f 1,4,5 | bedtools sort | bedtools merge -d 15000 | bedtools slop -l 10000 -r 20000 -g hg38.chrom.sizes | sed 's/chr6/grch38#chr6/g' >C4.coordinates.bed
+zgrep 'gene_id "C4A"\|gene_id "C4B"' hg38.ncbiRefSeq.gtf.gz | awk '$1 == "chr6"' | cut -f 1,4,5 | bedtools sort | bedtools merge -d 15000 | bedtools slop -l 10000 -r 20000 -g hg38.chrom.sizes | sed 's/chr6/grch38#chr6/g' > C4.coordinates.bed
 
 
 # Extraction, explosion, optimization, and sorting
@@ -43,3 +43,11 @@ odgi layout -i ${filename_chr6_gfa}.C4.sorted.og -o ${filename_chr6_gfa}.C4.sort
 # odgi draw
 odgi draw -i ${filename_chr6_gfa}.C4.sorted.og -c ${filename_chr6_gfa}.C4.sorted.lay -p "$(echo ${filename_chr6_gfa} | tr '.' '_' )"_C4_sorted_layout.png -H 1000 -w 1000 -B 500
 
+
+# Get C4-GTF
+zgrep 'gene_id "C4A"\|gene_id "C4B"' hg38.ncbiRefSeq.gtf.gz | awk '$1 == "chr6" && $3 == "transcript"' | sed 's/chr6/grch38#chr6/g' | head -n 2 > chr6.C4.gtf
+#grch38#chr6	ncbiRefSeq.2021-09-09	transcript	32014795	32035418	.	+	.	gene_id "C4B"; transcript_id "NM_001002029.4_4";  gene_name "C4B";
+#grch38#chr6	ncbiRefSeq.2021-09-09	transcript	31982057	32002681	.	+	.	gene_id "C4A"; transcript_id "NM_001252204.2_3";  gene_name "C4A";
+
+# Compute Bandage annotations
+odgi position -i ${filename_chr6_gfa}.C4.sorted.og -E chr6.C4.gtf -t 16 > ${filename_chr6_gfa}.C4.sorted.anno.csv
