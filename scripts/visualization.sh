@@ -45,9 +45,14 @@ odgi draw -i ${filename_chr6_gfa}.C4.sorted.og -c ${filename_chr6_gfa}.C4.sorted
 
 
 # Get C4-GTF
-zgrep 'gene_id "C4A"\|gene_id "C4B"' hg38.ncbiRefSeq.gtf.gz | awk '$1 == "chr6" && $3 == "transcript"' | sed 's/chr6/grch38#chr6/g' | head -n 2 > chr6.C4.gtf
-#grch38#chr6	ncbiRefSeq.2021-09-09	transcript	32014795	32035418	.	+	.	gene_id "C4B"; transcript_id "NM_001002029.4_4";  gene_name "C4B";
-#grch38#chr6	ncbiRefSeq.2021-09-09	transcript	31982057	32002681	.	+	.	gene_id "C4A"; transcript_id "NM_001252204.2_3";  gene_name "C4A";
+zgrep 'gene_id "C4A"\|gene_id "C4B"' hg38.ncbiRefSeq.gtf.gz | awk '$1 == "chr6" && $3 == "transcript"' | cut -f 1 -d';' | sed 's/gene_id //g' | sed 's/"//g' | sed 's/chr6/grch38#chr6/g' | head -n 2 > chr6.C4.gtf
+#grch38#chr6	ncbiRefSeq.2021-09-09	transcript	32014795	32035418	.	+	.	C4B
+#grch38#chr6	ncbiRefSeq.2021-09-09	transcript	31982057	32002681	.	+	.	C4A
+
 
 # Compute Bandage annotations
 odgi position -i ${filename_chr6_gfa}.C4.sorted.og -E chr6.C4.gtf -t 16 > ${filename_chr6_gfa}.C4.sorted.anno.csv
+
+# Convert to GFA for Bandage
+odgi view -i ${filename_chr6_gfa}.C4.sorted.og -g > ${filename_chr6_gfa}.C4.sorted.gfa
+
