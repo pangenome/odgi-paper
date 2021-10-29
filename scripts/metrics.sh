@@ -46,7 +46,7 @@ samtools faidx chr4.pan.fa.a2fb268.e820cd3.9ea71d8.smooth.gfa.og.HTTex1.og.O.og.
 cat chr4.pan.fa.a2fb268.e820cd3.9ea71d8.smooth.gfa.og.HTTex1.og.O.og.tiny.og.fasta.fai | sort -k2 -r | head -n 24 | grep "chm13" -v | cut -f 1 > paths_to_viz
 # take care of chm13 and grch13
 echo -e "chm13\ngrch38\n$(cat paths_to_viz)" > paths_to_viz
-odgi viz -i chr4.pan.fa.a2fb268.e820cd3.9ea71d8.smooth.gfa.og.HTTex1.og.O.og.tiny.og -o chr4.pan.fa.a2fb268.e820cd3.9ea71d8.smooth.gfa.og.HTTex1.og.O.og.tiny.og.png -a 1  -p paths_to_viz
+odgi viz -i chr4.pan.fa.a2fb268.e820cd3.9ea71d8.smooth.gfa.og.HTTex1.og.O.og.tiny.og -o chr4.pan.fa.a2fb268.e820cd3.9ea71d8.smooth.gfa.og.HTTex1.og.O.og.tiny.og.png -a 3  -p paths_to_viz
 
 #### MANUAL INTERVENTION ####
 # Go to https://drububu.com/tutorial/bitmap-to-vector.html. 
