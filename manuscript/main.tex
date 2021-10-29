@@ -337,21 +337,21 @@ This visualization is computed in linear-time and offers a human-interpretable f
 Graph nodes are arranged on a single axis, from left to right, with the colored bar indicating the paths and the nodes they cross.
 White spaces indicate where paths do not traverse the nodes.
 The meaning of the colors depends on how \textit{odgi viz} is executed.
-By default, path colors has no particular meaning, but each path has its own color (Fig. \ref{fig:odgi_viz}\textbf{a}).
+By default, path colors has no particular meaning, but each path has its own color (Fig. \ref{fig:odgi_viz}\textbf{b}).
 Path names are displayed on the left of the paths.
 The black lines on the bottom indicate the edges connecting the nodes and, therefore, represent the graph topology.
 
 Nevertheless, complex, nonlinear graph structures are difficult to display and interpret in a low number of dimensions.
-To overcome such a limitation, \textit{odgi viz} supports multiple visualization modalities (Fig. \ref{fig:odgi_viz}\textbf{b-d}), making it easy to grasp the properties of the graph and its complexity.
-Graph nodes order can affects downstream analyses on pangenome graphs. With \textit{odgi viz} we can color the paths by path position (Fig. \ref{fig:odgi_viz}\textbf{b}), with light grey indicating where paths begin and dark grey where they ends.
+To overcome such a limitation, \textit{odgi viz} supports multiple visualization modalities (Fig. \ref{fig:odgi_viz}\textbf{c-e}), making it easy to grasp the properties of the graph and its complexity.
+Graph nodes order can affects downstream analyses on pangenome graphs. With \textit{odgi viz} we can color the paths by path position (Fig. \ref{fig:odgi_viz}\textbf{c}), with light grey indicating where paths begin and dark grey where they ends.
 This visualization is suitable for checking graph nodes' linear order, as smooth color gradients indicate that the graph reflects well the linear paths' coordinate system.
 Pangenome graphs represents both strand of DNA sequences.
-\textit{odgi viz} supports also coloring the paths by orientation, with paths colored in red and black where their sequence is reversed or in forward, respectively, with respect to the sequences represented by the graph nodes (Fig. \ref{fig:odgi_viz}\textbf{b}).
+\textit{odgi viz} supports also coloring the paths by orientation, with paths colored in red and black where their sequence is reversed or in forward, respectively, with respect to the sequences represented by the graph nodes (Fig. \ref{fig:odgi_viz}\textbf{d}).
 Eukaryotic genomes experience gains and losses of genetic material, resulting in copy number variation (CNV) across the population.
-With \textit{odgi viz}, we can use multiple color palettes to color the paths by path depth, highlighting the different copy number statuses in the genomes represented in the pangenome graph (Fig. \ref{fig:odgi_viz}\textbf{d}).
+With \textit{odgi viz}, we can use multiple color palettes to color the paths by path depth, highlighting the different copy number statuses in the genomes represented in the pangenome graph (Fig. \ref{fig:odgi_viz}\textbf{e}).
 
 
-\textit{odgi draw} extends the visualization in 2 dimensions (2D) by rendering the layout built by \textit{odgi layout} (\S\ref{sec:sort}). A 2D rendering is more costly to compute, but we similarly provide a linear-time scaling implementation, allowing us to apply it to large pangenome graphs.
+\textit{odgi draw} extends the visualization in 2 dimensions (2D)  (Fig. \ref{fig:odgi_viz}\textbf{a}) by rendering the layout built by \textit{odgi layout} (\S\ref{sec:sort}). A 2D rendering is more costly to compute, but we similarly provide a linear-time scaling implementation, allowing us to apply it to large pangenome graphs.
 
 
 \subsection{Extracting regions of interest}
