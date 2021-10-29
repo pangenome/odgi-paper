@@ -61,7 +61,7 @@ odgi view -i ${filename_chr6_gfa}.C4.sorted.og -g > ${filename_chr6_gfa}.C4.sort
 
 f=${filename_chr6_gfa}.C4.sorted.og
 ( echo query.name query.start query.end ref.name ref.start ref.end score inv self.cov x|
-  tr ' ' '\t'; odgi untangle -i $f -r $(odgi paths -i $f -L | grep chm13) -t 16 -m 256 |
+  tr ' ' '\t'; odgi untangle -i $f -r $(odgi paths -i $f -L | grep grch38) -t 16 -m 256 |
   bedtools sort -i - ) | awk '$8 == "-" { x=$6; $6=$5; $5=x; } { print }' |
   tr ' ' '\t'   >$f.untangle.bed.tsv
 
