@@ -249,7 +249,9 @@ Each tool focuses on a small set of related operations.
 Most read or write the native ODGI format (`og' extension) (Figure \ref{fig:operations}) and work with standard text based data formats common to bioinformatics.
 This supports the implementation of flexible and composable graph processing pipelines based on a common data type.
 While the pangenome graph is a first-class entity in ODGI, we focus on the embedded paths to provide a universal coordinate system.
-By considering all paths in the graph as potential reference or query sequence, we make the graph invisible to downstream tools that operate on collections of sequences (\textit{e.g.} BEDTools, SAMtools~\citep{Li2009}, aligners).
+Despite being recent systems, pangenome graphs are not incompatible with current standard ways of working with bioinformatics data.
+ODGI provides a set of interfaces that let us approach these graphs from the perspective of standard reference- and sequence-based data models.
+Indeed, by considering all paths in the graph as potential reference or query sequence, we make graphs invisible to downstream tools that operate on collections of sequences or rely on a reference sequence (\textit{e.g.} SAMtools~\citep{Li2009}), enabling interoperability.
 This approach benefits from the information in the graph without strongly embedding our methods in this difficult new research context.
 
 %We begin with a set of HandleGraph-based algorithms first establish in the VG toolkit \citep{Garrison:2018}.
