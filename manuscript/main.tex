@@ -78,24 +78,23 @@ ODGI can be installed via Bioconda \url{https://bioconda.github.io/recipes/odgi/
 \maketitle
 
 \section{Introduction}
-
 A pangenome models the full set of genomic elements in a given species or clade~\citep{cpang2018,Eizenga_2020}.
 In contrast to reference-based approaches which relate sequences to a single genome, these data structures encode the mutual relationships between all the genomes represented.
-In pangenome graphs~\citep{Paten:2017}, homologous regions between genomes are compressed into a single representative model of all alleles present in the pangenome.
+In pangenome graphs~\citep{Paten:2017}, homologous regions between genomes are compressed into a single representative of all alleles present in the pangenome.
 These flexible models let us encode any kind of variation, allowing the generation of comprehensive data systems on which to base analyses of genome evolution.
-Although these structures are of clear utility to researchers~\citep{cpang2018}, and have been the focus of numerous applications in read mapping~\citep{Garrison:2018,Baaijens_2019,Hickey:2020,Sibbesen_2021}, we observe that the community lacks a toolset specifically focused on graph manipulation and interrogation.
+Although these data structures are of clear utility to researchers~\citep{cpang2018}, and have been the focus of numerous applications in read mapping~\citep{Garrison:2018,Baaijens_2019,Hickey:2020,Sibbesen_2021}, the scientific community still lacks a toolset specifically focused on graph manipulation and interrogation.
 
 The Human Pangenome Reference Consortium (HPRC) and Telomere-to-Telomere (T2T) consortium~\citep{Miga:2020, Logsdon_2021, Nurk_2021} have recently demonstrated that high-quality \textit{de novo} assemblies can be routinely generated from third-generation long read sequencing data.
-We anticipate that assemblies of similar quality will become common, leading to demand for methods that allow us to create and explore pangenomes.
+We anticipate that \textit{de novo} assemblies of similar quality will become common, leading to demand for methods that allow us to create and explore pangenomes.
 Pangenome graphs are a natural model to support these kinds of analyses, but studies based on pangenome graphs are difficult due to a lack of downstream tools and standard workflows.
 
-Here, we present the Optimized Dynamic Genome/Graph Implementation (ODGI) toolkit, a pangenome graph interrogation and transformation system specifically built to handle the data scales encountered when working with pangenomes built from hundreds of haplotype-resolved genomes.
-ODGI provides a set of standard operations on the pangenome variation graph data model, generalizing ``genome arithmetic'' concepts like those found in BEDTools~\citep{Quinlan_2010} to work on genome graphs, and providing new operations, such as visualizations, sorting, and liftover projections critical to understanding and exploiting pangenome graphs.
+Here, we present the Optimized Dynamic Genome/Graph Implementation (ODGI) toolkit, a pangenome graph interrogation and transformation system specifically implemented to handle the data scales encountered when working with pangenomes built from hundreds of haplotype-resolved genomes.
+ODGI provides a set of standard operations on the variation graph data model, generalizing ``genome arithmetic'' concepts like those found in BEDTools~\citep{Quinlan_2010} to work on pangenome graphs, and providing a variety of operations, such as visualization, sorting, and liftover projections, all critical to understand and exploit pangenome graphs.
 
 %Tools in ODGI operate on an efficient dynamic HandleGraph model \citep{Eizenga_2020_BX}.
 %Algorithms written against this abstract API can be applied to the graph.% applies algorithms based on the HandleGraph API.
 %This common API lets us reuse and and extend algorithms shared with the VG toolkit (VG) \citep{Garrison:2018}.
-%We specifically develop new methodsfocused on problems encountered when building pangenome graphs at the scale of vertebrate populations.
+%We specifically develop new methods focused on problems encountered when building pangenome graphs at the scale of vertebrate populations.
 %To ease interactive use, the majority of the ODGI tools are implemented in an index-free manner, avoiding the need to create index structures at each step of complex graph processing pipelines.
 %Thanks to ODGI's efficient path representation, its tools can work with variation graphs with highly complex regions.
 %This eliminates one of the major bottlenecks when working with very large and deep variation graphs, and allows researchers to build and understand graphs of previously-inaccessible complexity and scale.
@@ -212,7 +211,7 @@ In addition to node-local features of the graph, we must maintain some global in
 Specifically, we record the start and end of paths, as well as a name to path id mapping in lock-free hashtables.
 The use of lock-free hashtables lets us avoid a global lock when looking up path or graph metadata, which would quickly become a bottleneck during parallel operations on the graph.
 By avoiding global locks, we implement many of the operations in ODGI using maximum parallelism available.
-This ``atomic'' approach to edit operations on the graph is key to enable our methods to scale to the largest genome graphs that we can currently build.
+This ``atomic'' approach to edit operations on the graph is key to enable our methods to scale to the largest pangenome graphs that we can currently build.
 
 \begin{comment}
 %\subsection{Core functionality}
