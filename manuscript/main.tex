@@ -99,46 +99,31 @@ ODGI provides a set of standard operations on the variation graph data model, ge
 %Thanks to ODGI's efficient path representation, its tools can work with variation graphs with highly complex regions.
 %This eliminates one of the major bottlenecks when working with very large and deep variation graphs, and allows researchers to build and understand graphs of previously-inaccessible complexity and scale.
 
-
 %\footnote{\url{https://humanpangenome.org/} (accessed Oct 2021)}
 %\footnote{\url{https://sites.google.com/ucsc.edu/t2tworkinggroup/home} (accessed Oct 2021)}.
 
 \section{Model}
-
-A pangenome graph is a sequence model that encodes the mutual alignment of many genomes \citep{Garrison_2019_thesis,Eizenga_2020}.
+A pangenome graph is a sequence model that encodes the mutual alignment of many genomes~\citep{Garrison_2019_thesis,Eizenga_2020}.
 In the variation graph, $V = (N, E, P)$, nodes $N = n_1\ldots n_{|N|}$ contain sequences of DNA.
-Each node $n_i$ has an identifier $i$ and an implicit reverse complement $\bar{n_i}$, and a node strand $s$ corresponds to one such orientation.
+Each node $n_i$ has an identifier $i$ and an implicit reverse complement $\bar{n_i}$, and a node strand $s$ corresponds to one such orientations.
 Edges $E = e_1\ldots e_{|E|}$ represent ordered pairs of node strands: $e_i = ( s_a, s_b )$.
 Paths $P = p_1\ldots p_{|P|}$ describe walks over node strands: $p_i = s_1 \ldots s_{|p_i|}$.
 When used as a pangenome graph, $V$ expresses sequences, haplotypes, and annotations as paths.
 %The utility of the variation graph model lies in its lossless representation of genomes and their alignment.
-By containing both the sequences and information about their relative variations, the variation graph provides a powerful foundation for many bioinformatic applications.
+By containing both the sequences and information about their relative variations, the variation graph provides a complete and powerful foundation for many bioinformatic applications.
 
-Such a graph can be constructed by multiple sequence alignment \citep{Lee_2002,Grasso_2004}, or by transitively reducing an alignment between sequences to an equivalent, labeled sequence graph \citep{Kehr_2014,Garrison_2019_thesis}.
-Current methods to build these graphs are still in development \citep{Li:2020,Armstrong:2020,pggb}, but they have largely settled on a common data model, represented in the Graphical Fragment Assembly (GFA) format \citep{GFA}).
-%\FIXME{may want to move GFA standard+VG to intro section 1}
-%The improvement of these methods depends on tools that allow us to investigate
+Pangenome graphs can be constructed by multiple sequence alignment~\citep{Lee_2002,Grasso_2004} or by transitively reducing an alignment between sequences to an equivalent, labeled sequence graph~\citep{Kehr_2014,Garrison_2019_thesis}.
+Current methods to build these graphs are still under active development~\citep{Li:2020,Armstrong:2020,pggb}, but they have largely settled on a common data model, represented in the Graphical Fragment Assembly (GFA) format \citep{GFA}).
+%\FIXME{may want to move GFA standard+VG to intro section 1}. AG: it is borderline, but it seems fine to have it here too.
 This standardization supports the development of a reference set of tools that operate on the pangenome graph model.
-Such an effort began with the VG toolkit toolkit~\citep{Garrison:2018}.
-Here we refocus it with with ODGI---a compatible, but independent set of algorithms focused on first-order interrogation and transformation of pangenome graphs.
-
-%Because ODGI uses this standard to  can be mixed with other pangenome tools, such as the VG toolkit
-%Here, we enhance ongoing efforts with the VG
-%The need to understand the graphs made by these methods motivates it.
-%We require such a toolkit to understand the graphs made by these methods.
-%\FIXME{last sentence not really clear}
-
-%The improvement of these approaches depends on scalable tools for understanding pangenome graphs, a need that our work responds to.
-
-%As a toolkit for understanding these graphs, ODGI
+Such an effort began with the VG toolkit~\citep{Garrison:2018}.
+Here we refocus it with ODGI, a compatible, but independent set of algorithms focused on visualization, interrogation, and transformation of pangenome graphs.
 
 %A more general approach is to build the graph from an alignment between sequences.
 %We first transitively collapse characters in the input sequences that align together into single character in the output genome
 %By projecting input sequences through this transformation, we obtain paths that losslessly encode the original sequences, but in the space of the graph \citep{Garrison_2019_thesis}.
-%Methods to build such graphs are in active development, and here we focus on graphs built with the PanGenome Graph Builder pipeline \citep{pggb}, a process that converts an input pangenome (in FASTA) into a combined graphical model (in the Graphical Fragment Assembly (GFA) format \citep{GFA}).
 
 \section{Implementation}
-
 The ODGI toolkit builds on existing approaches to efficiently store and manipulate variation graphs \citep{Garrison:2018}.
 Similar to other efficient libaries presenting the \textsc{HandleGraph} model \citep{Eizenga_2020_BX}, ODGI's implementation rests on three key properties which hold for most pangenome variation graphs:
 
