@@ -35,9 +35,9 @@
 
 \title[ODGI: understanding pangenome graphs]{ODGI: understanding pangenome graphs}
 \author[Guarracino, Heumos \textit{et~al}.]{
-Andrea Guarracino\,$^{\text{\sfb 1} \dagger}$,
-Simon Heumos\,$^{\text{\sfb 2} \dagger}$,
-Sven Nahnsen\,$^{\text{\sfb 2}}$,
+Andrea~Guarracino\,$^{\text{\sfb 1} \dagger}$,
+Simon~Heumos\,$^{\text{\sfb 2} \dagger}$,
+Sven~Nahnsen\,$^{\text{\sfb 2}}$,
 Pjotr~Prins\,$^{\text{\sfb 3}}$,
 and~Erik~Garrison\,$^{\text{\sfb 3}*}$
 }
@@ -58,15 +58,18 @@ $^\dagger$Contributed equally.}
 % XXX key message of the paper is that we have collected a set of algorithms that enable easy use of pangenome graphs for investigating biology
 
 \abstract{
-\textbf{Motivation:} Pangenome graphs provide a complete representation of the mutual alignment of collections of genomes.
-These models offer the opportunity to study the total genomic diversity of a population, including structurally complex regions.
-However, analyzing hundreds of gigabase-scale genomes using pangenome graphs is difficult and not well-supported by existing tools.
-%In addition, vertebrate genomes present highly repetitive regions which increase the complexity of the analysis.
-Hence, fast and versatile software is required to ask intricate questions of such data in an efficient way. \\
-\textbf{Results:} We wrote ODGI, a new suite of tools that implements scalable algorithms and has an efficient in-memory representation of DNA variation graphs. ODGI includes tools for detecting complex regions, extracting loci, removing artifacts, exploratory analysis, manipulation, validation, and visualization. Its fast parallel execution facilitates routine pangenomic tasks as well as pipelines that can quickly answer complex biological questions of gigabase-scale pangenome graphs. \\
-%ODGI supports graphs in the Graphical Fragment Assembly format version 1 (GFAv1).
-%The tools scale efficiently to large collections of eukaryotic genomes, allowing users to work easily with pangenome graphs of tens to thousands of large genomes while maintaining fast execution runtime and low memory overhead.
-\textbf{Availability:} ODGI is published as free software under the MIT open source license. Source code can be downloaded from \url{https://github.com/pangenome/odgi} and documentation is available at \url{https://odgi.readthedocs.io}.
+\textbf{Motivation:}
+Pangenome graphs provide a complete representation of the mutual alignment of collections of genomes.
+These models offer the opportunity to study the entire genomic diversity of a population, including structurally complex regions.
+Nevertheless, analyzing hundreds of gigabase-scale genomes using pangenome graphs is difficult as it is not well-supported by existing tools.
+Hence, fast and versatile software is required to ask advanced questions to such data in an efficient way. \\
+\textbf{Results:}
+We wrote ODGI, a novel suite of tools that implements scalable algorithms and has an efficient in-memory representation of DNA variation graphs.
+ODGI includes tools for detecting complex regions, extracting \textit{loci}, removing artifacts, exploratory analysis, manipulation, validation, and visualization.
+Its fast parallel execution facilitates routine pangenomic tasks as well as pipelines that can quickly answer complex biological questions of gigabase-scale pangenome graphs. \\
+\textbf{Availability:}
+ODGI is published as free software under the MIT open source license.
+Source code can be downloaded from \url{https://github.com/pangenome/odgi} and documentation is available at \url{https://odgi.readthedocs.io}.
 ODGI can be installed via Bioconda \url{https://bioconda.github.io/recipes/odgi/README.html} or GNU Guix \url{https://github.com/ekg/guix-genomics/blob/master/odgi.scm}. \\
 \textbf{Contact:} \href{egarris5@uthsc.edu}{egarris5@uthsc.edu} \\
 \textbf{Supplementary information:} Supplementary data are available at \textit{Bioinformatics} online.
@@ -76,18 +79,18 @@ ODGI can be installed via Bioconda \url{https://bioconda.github.io/recipes/odgi/
 
 \section{Introduction}
 
-A pangenome models the full set of genomic elements in a given species or clade \citep{cpang2018,Eizenga_2020}.
+A pangenome models the full set of genomic elements in a given species or clade~\citep{cpang2018,Eizenga_2020}.
 In contrast to reference-based approaches which relate sequences to a single genome, these data structures encode the mutual relationships between all the genomes represented.
-In pangenome graphs \citep{Paten:2017}, homologous regions between genomes are compressed into a single representative model of all alleles present in the pangenome.
+In pangenome graphs~\citep{Paten:2017}, homologous regions between genomes are compressed into a single representative model of all alleles present in the pangenome.
 These flexible models let us encode any kind of variation, allowing the generation of comprehensive data systems on which to base analyses of genome evolution.
-Although these structures are of clear utility to researchers \citep{cpang2018}, and have been the focus of numerous applications in read mapping \citep{Garrison:2018,Baaijens_2019,Hickey:2020,Sibbesen_2021}, we observe that the community lacks a toolset specifically focused on graph manipulation and interrogation.
+Although these structures are of clear utility to researchers~\citep{cpang2018}, and have been the focus of numerous applications in read mapping~\citep{Garrison:2018,Baaijens_2019,Hickey:2020,Sibbesen_2021}, we observe that the community lacks a toolset specifically focused on graph manipulation and interrogation.
 
-The Human Pangenome Reference Consortium (HPRC) and Telomere-to-Telomere (T2T) consortium \citep{Miga:2020, Logsdon_2021, Nurk_2021} have recently demonstrated that high-quality \textit{de novo} assemblies can be routinely generated from third-generation long read sequencing data.
+The Human Pangenome Reference Consortium (HPRC) and Telomere-to-Telomere (T2T) consortium~\citep{Miga:2020, Logsdon_2021, Nurk_2021} have recently demonstrated that high-quality \textit{de novo} assemblies can be routinely generated from third-generation long read sequencing data.
 We anticipate that assemblies of similar quality will become common, leading to demand for methods that allow us to create and explore pangenomes.
 Pangenome graphs are a natural model to support these kinds of analyses, but studies based on pangenome graphs are difficult due to a lack of downstream tools and standard workflows.
 
 Here, we present the Optimized Dynamic Genome/Graph Implementation (ODGI) toolkit, a pangenome graph interrogation and transformation system specifically built to handle the data scales encountered when working with pangenomes built from hundreds of haplotype-resolved genomes.
-ODGI provides a set of standard operations on the pangenome variation graph data model, generalizing ``genome arithmetic'' concepts like those found in BEDTools \citep{Quinlan_2010} to work on genome graphs, and providing new operations, such as visualizations, sorting, and liftover projections critical to understanding and exploiting pangenome graphs.
+ODGI provides a set of standard operations on the pangenome variation graph data model, generalizing ``genome arithmetic'' concepts like those found in BEDTools~\citep{Quinlan_2010} to work on genome graphs, and providing new operations, such as visualizations, sorting, and liftover projections critical to understanding and exploiting pangenome graphs.
 
 %Tools in ODGI operate on an efficient dynamic HandleGraph model \citep{Eizenga_2020_BX}.
 %Algorithms written against this abstract API can be applied to the graph.% applies algorithms based on the HandleGraph API.
@@ -300,7 +303,7 @@ This parallelism speeds ODGI model construction by many-fold when testing agains
 ODGI maintains its own efficient binary format for storing graphs on disk.
 ODGI also supports reading and writing the textual GFA file format for interchange with other tools such as with the VG toolkit~\citep{Garrison:2018}.
 
-\textit{odgi view} can convert a graph in ODGI binary format to the standard GFAv1 \citep{GFA} format. It can reveal a graph’s internal structures for e.g. debugging processes.
+\textit{odgi view} can convert a graph in ODGI binary format to the standard GFAv1~\citep{GFA} format. It can reveal a graph’s internal structures for e.g. debugging processes.
 
 \textit{odgi stats} outputs pangenome statistics in TSV or YAML textual file formats.
 Among other metrics, it can calculate the number of nodes, edges, paths and the total nucleotide length of the graph. {\color{red} FIXME: All this information is also listed in the metrics section. How to split? No mentioning of file formats in the following sections?}
@@ -400,7 +403,7 @@ These are commonly-needed basic operations on the topology of the graph.
 
 The key data in a pangenome graph is a representation of the alignment (or homology) relationships between sequences in the pangenome.
 Navigating and understanding the graph requires coordinate systems that we can use to link other data into the graph model, and thus to all genomes in the pangenome.
-Primarily, ODGI uses the embedded pangenome sequences to provide a set of coordinates in a standard, 1D format.	
+Primarily, ODGI uses the embedded pangenome sequences to provide a set of coordinates in a standard, 1D format.
 These coordinates depend on the sequences, and are graph-independent.
 Our for positional conversion (\textit{odgi position}), annotation liftover (\textit{odgi untangle}), breakpoint identification (\textit{odgi tips}), subgraph extraction (\textit{odgi extract}), visualization (\textit{odgi viz}), path depth (\textit{odgi depth}), and graph complexity measurement (\textit{odgi degree}) can all operate on coordinates of paths in the graph.
 
@@ -460,7 +463,7 @@ Combining a series of sorts can mitigate the weaknesses of individually applied 
 Graphs statistics provide alternative ways to gain insight into pangenomes complexity revealing the overall structure, size, and features of a graph and its sequences.
 
 Applying \textit{odgi stats}, users can retrieve metrics describing the graph properties, such as the number of nodes, edges, paths, and graph length. It outputs pangenome statistics in TSV or YAML textual file formats.
-MultiQC's \citep{Ewels_2016} ODGI module %\footnote{\url{https://multiqc.info/docs/\#odgi} (accessed Oct 2021)} 
+MultiQC's \citep{Ewels_2016} ODGI module %\footnote{\url{https://multiqc.info/docs/\#odgi} (accessed Oct 2021)}
 provides an interactive way to comparatively explore the statistics of an arbitrary number of graphs.
 ODGI also offers more advanced tools for the interrogation of the graphs. \textit{odgi bin} summarizes the path information into bins of a specified size, enabling a summarized view of gigabase scale graphs. It provides tab delimited or JSON `bins'.
 %This concept found its way into the pangenome graph ontology \cite{Yokoyama2020}. %maybe we want to save this up for the discussion
@@ -486,7 +489,7 @@ In Fig. \ref{fig:metrics}, the characteristics of a 90 haplotypes human pangenom
 
 Pangenome graphs stand to become a ubiquitous tool in genomics \citep{Eizenga_2020}. With ODGI we implemented a state-of-the-art tool suite that can transform, analyse, simplify, validate, and visualise pangenome graphs at large scale.
 %
-Lifting over annotations and linearizing nested graph structures place the suite as the bridge between traditional linear reference genome analysis and pangenome graphs. ODGI is a unique set of tools that enables scientists to explore and discover the underlying biology of pangenome graphs. Already, the tools are the backbone of pipelines such as the Pangenome Graph Builder \citep{pggb} (PGGB) or nf-core/pangenome \citep{pangenome}. %\footnote{\url{https://github.com/nf-core/pangenome} (accessed Oct 2021)}. 
+Lifting over annotations and linearizing nested graph structures place the suite as the bridge between traditional linear reference genome analysis and pangenome graphs. ODGI is a unique set of tools that enables scientists to explore and discover the underlying biology of pangenome graphs. Already, the tools are the backbone of pipelines such as the Pangenome Graph Builder \citep{pggb} (PGGB) or nf-core/pangenome \citep{pangenome}. %\footnote{\url{https://github.com/nf-core/pangenome} (accessed Oct 2021)}.
 Future work will add support for RNA and protein sequences and expand on metadata capabilities of large pangenome graphs.
 
 ODGI provides common operation on standard pangenomic file formats, such as GFA. ODGI aims to be a reference implementation for many pangenome related operations. In the near future we aim to improve RDF support for annotation in the in-memory graph~\citep{Yokoyama2020}, for example, and allow for federated queries on the pangenome, and FAIR data sharing.
