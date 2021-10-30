@@ -2,7 +2,8 @@
 
 ## resources
 
-The grch38 FASTAs we used can be found at https://hgdownload.soe.ucsc.edu/goldenPath/hg38/chromosomes/. The corresponding GTF file at https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/genes/hg38.ncbiRefSeq.gtf.gz.
+The grch38 FASTAs we used can be found at https://hgdownload.soe.ucsc.edu/goldenPath/hg38/chromosomes/.
+The corresponding GTF file at https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/genes/hg38.ncbiRefSeq.gtf.gz.
 
 ## building the manuscript
 
@@ -19,4 +20,7 @@ cd odgi-paper/manuscript && make -k
 ```
 
 ## Bx author instructions
-https://academic.oup.com/bioinformatics/pages/instructions_for_authors 
+https://academic.oup.com/bioinformatics/pages/instructions_for_authors
+
+Original papers: approximately 5,000 words
+The abstracts should be succinct and contain only material relevant to the headings. A maximum of 150 words is recommended.
