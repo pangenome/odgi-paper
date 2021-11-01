@@ -95,7 +95,7 @@ ODGI provides a set of standard operations on the variation graph data model, ge
 %Algorithms written against this abstract API can be applied to the graph.% applies algorithms based on the HandleGraph API.
 %This common API lets us reuse and and extend algorithms shared with the VG toolkit (VG) \citep{Garrison:2018}.
 %We specifically develop new methods focused on problems encountered when building pangenome graphs at the scale of vertebrate populations.
-%To ease interactive use, the majority of the ODGI tools are implemented in an index-free manner, avoiding the need to create index structures at each step of complex graph processing pipelines.
+%To ease interactive use, the majority of the ODGI's tools are implemented in an index-free manner, avoiding the need to create index structures at each step of complex graph processing pipelines.
 %Thanks to ODGI's efficient path representation, its tools can work with variation graphs with highly complex regions.
 %This eliminates one of the major bottlenecks when working with very large and deep variation graphs, and allows researchers to build and understand graphs of previously-inaccessible complexity and scale.
 
@@ -354,51 +354,32 @@ Partial order alignment, which consists of aligning sequences against a directed
 %We find that, to understanding relationships between sequences and positions in pangenome graphs, we must use context mapping to ``untangle'' complex regions found in VNTRs, segmental duplications, and centromeric repeats.
 %This approach lets use pangenome graphs as a foundation for universal liftover between any two sets of sequences in the graph.
 
-The key data in a pangenome graph is a representation of the alignment (or homology) relationships between sequences in the pangenome.
+The key data in a pangenome graph is a representation of the alignment (or homology) relationships between the sequences represented.
 Navigating and understanding the graph requires coordinate systems that we can use to link other data into the graph model, and thus to all genomes in the pangenome.
-Primarily, ODGI uses the embedded pangenome sequences to provide a set of coordinates in a standard, 1D format.
-These coordinates depend on the sequences, and are graph-independent.
-Our for positional conversion (\textit{odgi position}), annotation liftover (\textit{odgi untangle}), breakpoint identification (\textit{odgi tips}), subgraph extraction (\textit{odgi extract}), visualization (\textit{odgi viz}), path depth (\textit{odgi depth}), and graph complexity measurement (\textit{odgi degree}) can all operate on coordinates of paths in the graph.
+ODGI's tools use the embedded sequences to provide a universal coordinate space that is graph-independent, thereby remaining stable across different graphs built with the same genomes.
+%Our for positional conversion (\textit{odgi position}), annotation liftover (\textit{odgi untangle}), breakpoint identification (\textit{odgi tips}), subgraph extraction (\textit{odgi extract}), visualization (\textit{odgi viz}), path depth (\textit{odgi depth}), and graph complexity measurement (\textit{odgi degree}) can all operate on coordinates of paths in the graph.
 
-For understanding the large-scale organization of the graph, we benefit from an even simpler coordinate system.
-To provide a universal coordinate space for the graph, we project its nodes into a low-dimensional space (in practice, 1 or 2 dimensions) by learning the projection via a HOGWILD!~\citep{niu2011hogwild}, path-guided stochastic gradient descent (PG-SGD) layout algorithm that adapts SGD-based drawing to pangenome graphs \citep{zheng2018graph}.
-This approach updates node relative positions to best-match their distance in the paths running through the graph.
-Based on this projection, we can trivially generate 1D and 2D visualizations.
-We can also detect regions whose layout is distorted, and which thus may represent structural variation or assembly error.
-ODGI can project vector and matrix representations of the graph relative to these learned coordinate spaces.
-
-In addition to these projections, we use the paths in the graph to provide a universal coordinate space.
-It also supports several kinds of ``lift-over'' of coordinates between different genomes (Fig.~\ref{fig:odgi_viz}\textbf{f-g}).
-These allow for the direct translation of single coordinates and ranges, in an interactive way.
-And, they let us extract a pairwise 1:many alignment between a given set of ``query'' sequences and a given set of ``target'' or reference sequences.
-This lets us convert the graph to lift-over maps compatible with standard software for projecting annotations and alignments from one genome to another.
+A universal coordinate system allows us to support several kinds of ``lift-over'' of coordinates between different genomes in the same or different graphs.
+For basic liftover operations, \textit{odgi server} provides a basic HTTP server that can translate very efficiently a path position to a pangenomic position within the same graph.
+For more complex coordinates conversions, \textit{odgi position} translates graph and path positions between or within graphs, emitting the liftovers in BED format.
+Coordinates can be specified in BED format, but users can even specify a GFF/GTF file to project the annotations into the pangenome graph (Fig.~\ref{fig:odgi_viz}\textbf{f-g}).
 
 
-
-% position / tips
 % untangle (this follows on the jaccard graph mapping concepts in the previous section}
-%The graph is a model of an alignment of many genomes.
 %We can use coordinates in any genome to refer to it, but this requires a few basic operations ...
 %Obtaining unambiguous mappings between different genomes requires the use of a new kind of graph based mapping (path graph jaccard).
 
+Pangenome graphs model alignments of many genomes.
+With \textit{odgi untangle}, users can extract pairwise 1:many alignment information between a given set of ``query'' sequences and a given set of ``target'' sequences (used as references)
+This lets us decompose both homology and paralogy relationships by also untangling loopy motifs in the graph, and obtaining linearized pairs of regions in BEDPE or PAF format.
+Being able to work with any sets of reference sequences lets us convert the graph to lift-over maps compatible with standard software for projecting annotations and alignments from one genome to another.
+As an example, by untangling the graph we can study the variation that lies in the collapsed regions due to sequence repeats (as shown in Fig.~\ref{fig:odgi_viz}\textbf{f}).
+Indeed, to obtain a more precise overview of the \textit{locus} in Fig.~\ref{fig:odgi_viz}\textbf{b-e},
+we can apply \textit{odgi untangle} to segment paths into linear segments by breaking these segments where the paths loop back on themselves.
+In this way, we obtain information on the position and copy number status of the sequences in the collapsed \textit{locus} (Fig.~\ref{fig:odgi_viz}\textbf{h}).
+Moreover, to obtain base-level precise information on the relationships between the repeated sequences, we can use any sequence aligner to align the pairs of regions that came from the untangling (as {cite wfmash}).
 
-To obtain a more precise overview of collapsed \textit{loci}, we can apply \textit{odgi untangle} to segment paths into linear segments by breaking these segments where the paths loop back on themselves.
-In this way, we can obtain base-level information on the copy number status of the sequences in the locus.
-
-Figure showing the untangling of C4 (Fig.~\ref{fig:odgi_viz}\textbf{h})
-Figure showing tips over a single human chromosome from HPRC.
-
-\FIXME{}
-\textit{odgi position} translates graph and path positions between or within graphs emitting the liftovers in TSV format.
-
-\textit{odgi server} implements a basic HTTP server which can translate a 'path:position' to a 'pangenome:position' very efficiently.
-
-\textit{odgi position/untangle/tips} all can output the BED format.
-
-\textit{odgi untangle} outputs the Pairwise mApping Format (PAF). PAF is a text format describing the approximate mapping positions between two set of sequences.
-The odgi untangle command projects paths into a reference-relative BEDPE file, decomposing paralogy relationships.
-During this process, it is capable of untangling loopy region resulting in linearized pairs of regions in the BEDPE file. A self dotplot assists in debugging and understanding the untangle process.
-\FIXME{}
+\FIXME{odgi tips, BED format, and a figure for it showing tips over a single human chromosome from HPRC?}
 
 
 \subsection{Sorting the pangenome graph}
