@@ -336,11 +336,12 @@ Pangenome graphs can embed multiple chromosomes as separated connected component
 \subsection{Editing the graph structure}
 \label{sec:edit}
 
-Pangenome graphs can be used in a variety of applications, ranging from read mapping to variant identification and genotyping ~\citep{Eizenga_2020}.
+Pangenome graphs can be used in a variety of applications, ranging from read mapping to variant identification and genotyping~\citep{Eizenga_2020}.
 However, graphs presenting complex topology can increase the computational overhead of many downstream analyses.
 ODGI offers multiple commonly-needed basic operations on the topology of the graph and its nodes.
 
-With \textit{odgi prune} users can remove complex parts as defined by query criteria, while with \textit{odgi break} they can remove cycles in the graph, reducing the complexity of the graph topology.
+For simplifying the graph structure, users can use \textit{odgi prune} to take away complex parts as defined by query criteria,
+while with \textit{odgi break} they can remove cycles in the graph, reducing the complexity of the graph topology.
 Furthermore, \textit{odgi groom} allows removing spurious inverting links by exploring the graph from the orientation supported by most paths.
 
 To enable efficient sequence alignment against the graph, long nodes can be divided into shorter nodes at a maximum requested size using \textit{odgi chop}.
@@ -364,7 +365,6 @@ For basic liftover operations, \textit{odgi server} provides a basic HTTP server
 For more complex coordinates conversions, \textit{odgi position} translates graph and path positions between or within graphs, emitting the liftovers in BED format.
 Coordinates can be specified in BED format, but users can even specify a GFF/GTF file to project the annotations into the pangenome graph (Fig.~\ref{fig:odgi_viz}\textbf{f-g}).
 
-
 % untangle (this follows on the jaccard graph mapping concepts in the previous section}
 %We can use coordinates in any genome to refer to it, but this requires a few basic operations ...
 %Obtaining unambiguous mappings between different genomes requires the use of a new kind of graph based mapping (path graph jaccard).
@@ -377,7 +377,7 @@ As an example, by untangling the graph we can study the variation that lies in t
 Indeed, to obtain a more precise overview of the \textit{locus} in Fig.~\ref{fig:odgi_viz}\textbf{b-e},
 we can apply \textit{odgi untangle} to segment paths into linear segments by breaking these segments where the paths loop back on themselves.
 In this way, we obtain information on the position and copy number status of the sequences in the collapsed \textit{locus} (Fig.~\ref{fig:odgi_viz}\textbf{h}).
-Moreover, to obtain base-level precise information on the relationships between the repeated sequences, we can use any sequence aligner to align the pairs of regions that came from the untangling (as {cite wfmash}).
+Moreover, to obtain base-level precise information on the relationships between the repeated sequences, we can align them the pairs of regions that came from the untangling to guide the alignment~\citep{wfmash}.
 
 \FIXME{odgi tips, BED format, and a figure for it showing tips over a single human chromosome from HPRC?}
 
@@ -385,19 +385,23 @@ Moreover, to obtain base-level precise information on the relationships between 
 \subsection{Sorting the pangenome graph}
 \label{sec:sort}
 
+Pangenome graphs can hide their underlying latent structures, introducing difficulties in the analysis and interpretation (Fig.~\ref{fig:sorting}\textbf{a}).
+Among the causes of this is the correct ordering of the graph nodes in a convenient number of dimensions.
+ODGI provides a variety of sorting algorithms to find the best graph node order in 1 or 2 dimensions (1D and 2D respectively), allowing us
+to understand the sparse structures typically found in pangenome graphs and the genetic variation they represent.
 
-% sort / layout / NO tension! We keep that for the sorting paper
-
-% Allows us to understand the sparse structures typically found in pangenome graphs.
-
-%Pangenome graphs built from raw sets of alignments may have complex structures which can introduce difficulty in downstream analyses. Uncovering their latent topology allows us to understand their typical sparse structures.
-
-\textit{odgi sort} offers multiple sorting algorithms to find the best node order in one dimension. Most notably, nodes can be sorted topologically, randomly, by breaking cycles in the graph, by grooming, or by using a novel path-guided stochastic gradient descent (PG-SGD) algorithm.
+To find the best order of graph nodes in 1D, \textit{odgi sort} provides multiple sorting algorithms which can be combined into a series of sorts to take advantage of the strength of each.
+Most notably, nodes can be sorted topologically, randomly, by breaking cycles in the graph (\S\ref{sec:edit}), by grooming (\S\ref{sec:edit}), and/or by using a novel path-guided (PG) stochastic gradient descent (SGD) algorithm, also called PG-SGD.
 The latter one exploits the biological information in the paths for sorting the nodes.
-Combining a series of sorts can mitigate the weaknesses of individually applied sorting algorithms.
-%In Figure \textbf{\textit{TODO MHC wgg.85}}, a comparison of an unsorted human pangenome MHC graph and a sorted one are displayed.
-
-%For the establishment of a layout in two dimensions \textit{odgi layout} applies a 2D adjusted PG-SGD algorithm. A calculated layout can be visualized statically with \textit{odgi draw} (see Figure \textit{\textbf{TODO MHC wgg.85}}) or interactively explored with the in-development \textit{gfaestus}\{\url{https://github.com/chfi/gfaestus}}.
+%For understanding the large-scale organization of the graph, we benefit from an even simpler coordinate system.
+In particular, to provide a universal coordinate space for the graph, we project its nodes into a low-dimensional space
+by learning the projection via a HOGWILD! approach~\citep{niu2011hogwild} implemented in the PG-SGD algorithm.
+The PG-SGD adapts a SGD-based drawing to pangenome graphs~\citep{zheng2018graph}.
+This approach updates node relative positions to best-match their distance in the paths running through the graph.
+ODGI can project vector (in 1D) and matrix (2D) representations of the graph relative to these learned coordinate spaces.
+Based on this projection, we can trivially sort graph nodes in 1D. Moreover, we support the same concept in 2D in \textit{odgi layout}
+by providing a 2D implementation of the PG-SGD algorithm.
+As the PG-SGD sorts graph nodes with respect to the paths which walk through them, we can also detect regions whose layout is distorted, which may represent structural variation or assembly error.
 
 
 \subsection{Obtaining metrics of the pangenome graph}
@@ -426,9 +430,13 @@ Indeed, high depth/degree nodes can be the mirror of genetic variation (Fig.~\re
 
 \input{fig_build_time}
 
-\input{fig_odgi_viz}
+\input{fig_extract_viz_draw_position_untangle}
+
+\input{fig_sorting}
 
 \input{fig_metrics}
+
+
 
 
 % Figure: small graph with all the stats shown. A screenshot of MultiQC, visualize summary per bin somehow, R visualizations of degree and depth HTT exon 1 as tiny example graph
