@@ -443,33 +443,38 @@ Indeed, high depth/degree nodes can be the mirror of genetic variation (Fig.~\re
 % Figure: small graph with all the stats shown. A screenshot of MultiQC, visualize summary per bin somehow, R visualizations of degree and depth HTT exon 1 as tiny example graph
 
 \section{Discussion}
-% Short recap
-% Confessions
-% Future plans
-Pangenome graphs stand to become a ubiquitous model in genomics~\citep{Eizenga_2020}.
-With ODGI we implemented a state-of-the-art tool suite that enables users to explore and discover the underlying biology in pangenomes graphs, filling the gap that made pangenomic analyzes difficult.
-Indeed, with ODGI's tools users can easily transform, analyse, simplify, validate, and visualise pangenome graphs at large scale.
+Pangenome graphs stand to become a ubiquitous model in genomics thanks to their capability to represent any genetic variant without being affected by the reference-bias~\citep{Eizenga_2020}.
+However, despite this great potential, their spread is impeded by the lack of tools capable of managing and analyzing pangenome graphs easily and efficiently.
 
-ODGI's visualization tools produce static, large-scale snapshots.
-Recent interactive browsers are reference centric~\citep{Beyer2019, Yokoyama2019, Durant2021, Liang2021} or focusing on 1D~\citep{Wick_2015, Gonnella2018}.
-However, an interactive visualization solution that combines the 1D and 2D layout of a graph with annotation and read mapping information across different zoom levels is still missing.
-Nevertheless, ODGI's graph layout algorithms could become a backbone of such tools, as is already the case for \textit{gfaestus}~\citep{gfaestus} %\footnote{\url{https://github.com/chfi/gfaestus}},
-which currently relies on the \textit{odgi layout} output for its interactive 2D visualization.
-
-Lifting over annotations and linearizing nested graph structures place the suite as the bridge between traditional linear reference genome analysis and pangenome graphs.
-
-Already, the tools are the backbone of pipelines such as the Pangenome Graph Builder~\citep{pggb} (PGGB) or nf-core/pangenome~\citep{pangenome}. %\footnote{\url{https://github.com/nf-core/pangenome} (accessed Oct 2021)}.
-Future work will add support for RNA and protein sequences and expand on metadata capabilities of large pangenome graphs.
-
-ODGI aims to be a reference implementation for many pangenome related operations.
-In the near future we aim to improve RDF support for annotation in the in-memory graph~\citep{Yokoyama2020}, for example, and allow for federated queries on the pangenome, and FAIR data sharing.
-
-So far, ODGI has not been applied to graphs build from scWGS~\citep{Zhuo2021} data. Each cell would be represented as a path in the graph, the path depth would be very high.
-As ODGI was designed to deal with the path depth of human pangenome graphs, it remains to be seen, if it will work equally well with scWGS data.
-
-With the increased adoption of long read sequencing we expect pangenome tools to become increasingly common in biomedical research.
+With ODGI we implemented a state-of-the-art tool suite that enables users to explore and discover the underlying biology in pangenomes graphs, filling the gap that made pangenomic analyses difficult.
+As a result, we provides tools to easily transform, analyse, simplify, validate, and visualise pangenome graphs at large scale.
+In particular, lifting over annotations and linearizing nested graph structures place the suite as the bridge between traditional linear reference genome analysis and pangenome graphs.
+With the increased adoption of long read sequencing we expect pangenomic tools to become increasingly common in biomedical research.
 Particularly for targets that involve complex variation, such as cancer, plant genomics and metagenomics, ODGI will facilitate disentangling,
-describing and analysing a much larger set of variation than previously was possible with tools that depend on short reads and reference genomes.
+describing and analysing a much larger set of variation than previously was possible with tools that depend on short reads and reference genomes,.
+Futhermore, users can even consider ODGI as a framework, taking advantage of its algorithms to develop new and more advanced tools that work on pangenome graphs,
+thus expanding the type of possible pangenomic analyses available to the scientific community.
+
+ODGI is already the backbone of the pipelines such as the Pangenome Graph Builder~\citep{pggb} or nf-core/pangenome~\citep{pangenome}, where it is also applied for debugging purposes. %\footnote{\url{https://github.com/nf-core/pangenome} (accessed Oct 2021)}.
+Indeed, its static, large-scale 1D and 2D visualizations of the pangenome graphs allow grasping the underlying structure and any problems in the graph construction.
+However, an interactive solution that combines the 1D and 2D layout of a graph with annotation and read mapping information across different zoom levels is still missing.
+Recent interactive browsers are reference centric~\citep{Beyer2019, Yokoyama2019, Durant2021, Liang2021} or focusing on 1D~\citep{Wick_2015, Gonnella2018}.
+In ODGI, we provide a graph layout algorithm that can become a backbone of such tools, as is already the case for \textit{gfaestus}~\citep{gfaestus} %\footnote{\url{https://github.com/chfi/gfaestus}},
+which currently relies on the \textit{odgi layout} output for its interactive 2D graph visualization.
+
+ODGI aims to be a reference implementation for many pangenome related operations, thus future work will be focused on multiple directions.
+First, we will expand its metadata capabilities to annotate large pangenome graphs.
+Futhermore, we will improve RDF support for annotation in the in-memory graph~\citep{Yokoyama2020} and allow for federated queries on pangenome graphs.
+Finally, we will explore the addition of support for RNA sequences and proteins to extend the application of pangenomic approaches to other levels in the genetic information flow from DNA to phenotype.
+
+
+
+
+
+%So far, ODGI has not been applied to graphs build from scWGS~\citep{Zhuo2021} data. Each cell would be represented as a path in the graph, the path depth would be very high.
+%As ODGI was designed to deal with the path depth of human pangenome graphs, it remains to be seen, if it will work equally well with scWGS data.
+
+
 
 \section*{Funding}
 
