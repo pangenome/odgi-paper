@@ -235,8 +235,8 @@ ODGI covers common operations that we have found to be essential when working wi
 \item \textit{odgi break} removes cycles in the graph (\S\ref{sec:edit}).
 \item \textit{odgi prune} removes complex regions (\S\ref{sec:edit}).
 \item \textit{odgi groom} resolves spurious inverting links (\S\ref{sec:edit}).
-\item \textit{odgi position} lifts coordinates between path and graph positions (\S\ref{sec:untangle}).
-\item \textit{odgi server} provides a HTTP server to lift coordinates (\S\ref{sec:untangle}).
+\item \textit{odgi position} lifts coordinates between path and graph positions (\S\ref{sec:untangle}).%
+%\item \textit{odgi server} provides a HTTP server to lift coordinates (\S\ref{sec:untangle}).
 \item \textit{odgi untangle} deconvolutes paths relative to a reference (\S\ref{sec:untangle}).
 \item \textit{odgi tips} finds path end points relative to a reference (\S\ref{sec:untangle}).
 \item \textit{odgi sort} orders the graph nodes (\S\ref{sec:sort}).
@@ -362,8 +362,8 @@ ODGI's tools use the embedded sequences to provide a universal coordinate space 
 %Our for positional conversion (\textit{odgi position}), annotation liftover (\textit{odgi untangle}), breakpoint identification (\textit{odgi tips}), subgraph extraction (\textit{odgi extract}), visualization (\textit{odgi viz}), path depth (\textit{odgi depth}), and graph complexity measurement (\textit{odgi degree}) can all operate on coordinates of paths in the graph.
 
 A universal coordinate system allows us to support several kinds of ``lift-over'' of coordinates between different genomes in the same or different graphs.
-For basic liftover operations, \textit{odgi server} provides a basic HTTP server that can translate very efficiently a path position to a pangenomic position within the same graph.
-For more complex coordinates conversions, \textit{odgi position} translates graph and path positions between or within graphs, emitting the liftovers in BED format.
+%For basic liftover operations, \textit{odgi server} provides a basic HTTP server that can translate very efficiently a path position to a pangenomic position within the same graph.
+\textit{odgi position} translates graph and path positions between or within graphs, emitting the liftovers in BED format.
 Coordinates can be specified in BED format, but users can even specify a GFF/GTF file to project the annotations into the pangenome graph (Fig.~\ref{fig:odgi_viz}\textbf{f-g}). 
 
 For a precise translation process when conversing a query position to a reference position in a repeat region the \textit{path jaccard} concept is applied: It could be that the found reference node is visited several times by the reference. To ensure a precise translation, the best jaccard for the query step and each reference candidate step is calculated.
