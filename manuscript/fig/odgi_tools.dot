@@ -34,10 +34,11 @@ digraph sample {
 	draw [color = cyan]
 
 	i_GFA -> build
+	//i_GFA -> {view, validate, stats, bin, depth, degree, flatten, break, groom, chop, unchop, explode, squeeze, extract, position, viz, sort, layout, draw, untangle, matrix, paths, tips}
 	i_ODGI -> {view, validate, stats, bin, depth, degree, flatten, break, groom, chop, unchop, explode, squeeze, extract, position, viz, sort, layout, draw, untangle, matrix, paths, tips}
 	i_BED -> {depth, degree, extract, position, viz}
     i_LAY -> {draw}
-    XG -> {server}
+    //XP -> {server}
 
 	build -> o_ODGI
 	view ->  o_GFA
@@ -70,5 +71,5 @@ digraph sample {
     untangle -> o_BED
     untangle -> o_PAF
     tips -> o_BED
-    server -> TEXT
+    //server -> TEXT
 }
