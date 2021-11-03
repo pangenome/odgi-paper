@@ -33,35 +33,42 @@ digraph sample {
 	layout [color = cyan]
 	draw [color = cyan]
 
-	in_GFA -> build
-	in_ODGI -> {view, validate, stats, bin, depth, degree, break, groom, chop, unchop, explode, squeeze, extract, position, viz, sort, layout, draw, untangle, matrix, paths}
-	in_BED -> {depth, degree, extract, position, viz}
-    in_LAY -> {draw}
+	i_GFA -> build
+	i_ODGI -> {view, validate, stats, bin, depth, degree, flatten, break, groom, chop, unchop, explode, squeeze, extract, position, viz, sort, layout, draw, untangle, matrix, paths, tips}
+	i_BED -> {depth, degree, extract, position, viz}
+    i_LAY -> {draw}
+    XG -> {server}
 
-	build -> out_ODGI
-	view ->  out_GFA
+	build -> o_ODGI
+	view ->  o_GFA
+	view ->  TEXT
 	validate -> TEXT
 	stats -> TEXT
+	stats -> YAML
     matrix -> TEXT
     paths -> FASTA
+    paths -> TEXT
 	bin -> JSON
-	depth -> out_BED
-	degree -> out_BED
-    flatten -> out_BED
+	bin -> TEXT
+	depth -> o_BED
+	degree -> o_BED
+    flatten -> o_BED
     flatten -> FASTA
-	break -> out_ODGI
-	groom -> out_ODGI
-	chop -> out_ODGI
-	unchop -> out_ODGI
-	explode -> out_ODGI
-	squeeze -> out_ODGI
-	extract -> out_ODGI
-	position -> out_BED
+	break -> o_ODGI
+	groom -> o_ODGI
+	chop -> o_ODGI
+	unchop -> o_ODGI
+	explode -> o_ODGI
+	explode -> o_GFA
+	squeeze -> o_ODGI
+	extract -> o_ODGI
+	position -> o_BED
 	viz -> PNG
-	sort -> out_ODGI
-	layout -> out_LAY
+	sort -> o_ODGI
+	layout -> o_LAY
 	draw -> PNG
-    untangle -> out_BED
-    untangle -> out_PAF
-
+    untangle -> o_BED
+    untangle -> o_PAF
+    tips -> o_BED
+    server -> TEXT
 }
