@@ -382,13 +382,10 @@ we can apply \textit{odgi untangle} to segment paths into linear segments by bre
 In this way, we obtain information on the position and copy number status of the sequences in the collapsed \textit{locus} (Fig.~\ref{fig:odgi_viz}\textbf{h}).
 Moreover, to obtain base-level precise information on the relationships between the repeated sequences, we can align them by using the pairs of regions that came from the untangling to guide the alignment~\citep{wfmash}.
 
-Having build a pangenome graph from assemblies in contig state, we can ask questions like: Where do our contigs' ends match the reference(s)? An answer to this question can highlight regions that are tricky to assemble~\ref{fig:odgi_tips}. 
+Having build a pangenome graph from assemblies in contig state, we can ask questions like: Where do our contigs' ends match the reference(s)? An answer to this question can highlight regions that are tricky to assemble (Fig. ~\ref{fig:tips}). 
 \textit{odgi tips} can identify the break point positions of the contigs relative to the reference(s) in the graph by walking from the ends of each contig until a reference node is found. 
 It could be that the reference visits the node several times. Therefore, for each contig range (a tip) \textit{odgi tips} takes a look at each possible reference window and finds the most similar one using the \textit{path jaccard} concept. 
 The output is a BED file with the best reference hit and position for each of the contigs' ends. 
-
-\FIXME{add odgi tips figure: only focus on the beta-defensin cluster [p23.3-p22] or more?}
-
 
 \subsection{Sorting the pangenome graph}
 \label{sec:sort}
@@ -440,12 +437,11 @@ Indeed, high depth/degree nodes can be the mirror of genetic variation (Fig.~\re
 
 \input{fig_extract_viz_draw_position_untangle}
 
+\input{fig_tips}
+
 \input{fig_sorting}
 
 \input{fig_metrics}
-
-
-
 
 % Figure: small graph with all the stats shown. A screenshot of MultiQC, visualize summary per bin somehow, R visualizations of degree and depth HTT exon 1 as tiny example graph
 
