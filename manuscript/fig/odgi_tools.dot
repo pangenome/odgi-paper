@@ -33,6 +33,18 @@ digraph sample {
 	layout [color = cyan]
 	draw [color = cyan]
 */
+	i_GFA [color = brown]
+	i_ODGI [color = brown]
+	i_BED [color = brown]
+	i_LAY [color = brown]
+	o_GFA [color = brown]
+	o_ODGI [color = brown]
+	TEXT [color = brown]
+	YAML [color = brown]
+	FASTA [color = brown]
+	JSON [color = brown]
+	o_BED [color = brown]
+
 	i_GFA -> build
 	//i_GFA -> {view, validate, stats, bin, depth, degree, flatten, break, groom, chop, unchop, explode, squeeze, extract, position, viz, sort, layout, draw, untangle, matrix, paths, tips}
 	i_ODGI -> {view, validate, stats, bin, depth, degree, flatten, break, groom, chop, unchop, explode, squeeze, extract, position, viz, sort, layout, draw, untangle, matrix, paths, tips}
