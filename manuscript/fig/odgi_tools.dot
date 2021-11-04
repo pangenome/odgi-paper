@@ -3,7 +3,7 @@ digraph sample {
 		shape=box
 		color=black
 	]
-
+/*
 	build [color = red]
 	view [color = red]
 
@@ -32,6 +32,51 @@ digraph sample {
 	sort [color = cyan]
 	layout [color = cyan]
 	draw [color = cyan]
+*/
+
+	build [penwidth = 2]
+	view [penwidth = 2]
+
+	validate [penwidth = 2]
+
+	stats [penwidth = 2]
+	bin [penwidth = 2]
+	depth [penwidth = 2]
+	degree [penwidth = 2]
+  	matrix [penwidth = 2]
+    paths [penwidth = 2]
+    flatten [penwidth = 2]
+
+    break [penwidth = 2]
+	groom [penwidth = 2]
+	chop [penwidth = 2]
+	unchop [penwidth = 2]
+	explode [penwidth = 2]
+	squeeze [penwidth = 2]
+	extract [penwidth = 2]
+
+	position [penwidth = 2]
+    untangle [penwidth = 2]
+
+	viz [penwidth = 2]
+	sort [penwidth = 2]
+	layout [penwidth = 2]
+	draw [penwidth = 2]
+
+	i_GFA [color = cornflowerblue, penwidth = 2]
+	i_ODGI [color = cornflowerblue, penwidth = 2]
+	i_BED [color = cornflowerblue, penwidth = 2]
+	i_LAY [color = cornflowerblue, penwidth = 2]
+	o_GFA [color = darkred, penwidth = 2]
+	o_ODGI [color = darkred, penwidth = 2]
+	o_TEXT [color = darkred, penwidth = 2]
+	o_YAML [color = darkred, penwidth = 2]
+	o_FASTA [color = darkred, penwidth = 2]
+	o_JSON [color = darkred, penwidth = 2]
+	o_BED [color = darkred, penwidth = 2]
+	o_PAF [color = darkred, penwidth = 2]
+	o_LAY [color = darkred, penwidth = 2]
+	o_PNG [color = darkred, penwidth = 2]
 
 	i_GFA -> build
 	//i_GFA -> {view, validate, stats, bin, depth, degree, flatten, break, groom, chop, unchop, explode, squeeze, extract, position, viz, sort, layout, draw, untangle, matrix, paths, tips}
@@ -42,19 +87,19 @@ digraph sample {
 
 	build -> o_ODGI
 	view ->  o_GFA
-	view ->  TEXT
-	validate -> TEXT
-	stats -> TEXT
-	stats -> YAML
-    matrix -> TEXT
-    paths -> FASTA
-    paths -> TEXT
-	bin -> JSON
-	bin -> TEXT
+	view ->  o_TEXT
+	validate -> o_TEXT
+	stats -> o_TEXT
+	stats -> o_YAML
+    matrix -> o_TEXT
+    paths -> o_FASTA
+    paths -> o_TEXT
+	bin -> o_JSON
+	bin -> o_TEXT
 	depth -> o_BED
 	degree -> o_BED
     flatten -> o_BED
-    flatten -> FASTA
+    flatten -> o_FASTA
 	break -> o_ODGI
 	groom -> o_ODGI
 	chop -> o_ODGI
@@ -64,12 +109,12 @@ digraph sample {
 	squeeze -> o_ODGI
 	extract -> o_ODGI
 	position -> o_BED
-	viz -> PNG
+	viz -> o_PNG
 	sort -> o_ODGI
 	layout -> o_LAY
-	draw -> PNG
+	draw -> o_PNG
     untangle -> o_BED
     untangle -> o_PAF
     tips -> o_BED
-    //server -> TEXT
+    //server -> o_TEXT
 }
