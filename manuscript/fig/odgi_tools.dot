@@ -44,6 +44,9 @@ digraph sample {
 	FASTA [color = brown]
 	JSON [color = brown]
 	o_BED [color = brown]
+	o_PAF [color = brown]
+	o_LAY [color = brown]
+	PNG [color = brown]
 
 	i_GFA -> build
 	//i_GFA -> {view, validate, stats, bin, depth, degree, flatten, break, groom, chop, unchop, explode, squeeze, extract, position, viz, sort, layout, draw, untangle, matrix, paths, tips}
