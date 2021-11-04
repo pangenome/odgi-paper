@@ -33,6 +33,7 @@ multiqc .
 sed -i 's/"smooth">smooth/"chr4.pan.HTTex1.gfa">chr4.pan.HTTex1.gfa/g' multiqc_report.html
 #### MANUAL INTERVENTION ####
 # A manual screenshot only from the Detailed ODGI stats table. Zoom in Firefox: 200%.
+inkscape chr4_pan_HTTex1_gfa_multiqc_odgi_stats.png.svg --export-pdf=chr4_pan_HTTex1_gfa_multiqc_odgi_stats_svg.pdf
 
 odgi paths -i "$G".og.HTTex1.og.O.og -L > "$G".og.HTTex1.og.O.og.paths
 # we accidentally cut off stuff from chm13 and grch13 
