@@ -432,7 +432,7 @@ Graphs statistics provide alternative ways to gain insight into pangenomes compl
 
 Pangenome graph topology can be derived by applying \textit{odgi matrix}, obtaining information on graph nodes connections in textual sparse matrix format.
 To investigate on the genomes encoded in the graph, \textit{odgi paths} allows users to calculate pairwise overlap statistics of groupings of paths and emit all path sequences in FASTA format, and it also allows the generation of a ``pangenome matrix'' that reports the copy number (presence/absence) of each path over each node.
-\textit{odgi flatten} generate a linearization of the graph by emitting the pangenome sequence (the concatenation of all graph node sequences) in FASTA format, and the projection of all paths on the linearized sequence in BED format.
+\textit{odgi flatten} generates a linearization of the graph by emitting the pangenome sequence (the concatenation of all node sequences) in FASTA format, and the projection of all paths on the linearized sequence in BED format.
 
 Applying \textit{odgi stats}, users can retrieve metrics describing the graph properties, such as the number of nodes, edges, paths, and graph length.
 It outputs pangenome statistics in tab-separated values (TSV) or YAML textual file formats.
@@ -472,7 +472,7 @@ describing and analysing a much larger set of variation than previously was poss
 Futhermore, users can even consider ODGI as a framework, taking advantage of its algorithms to develop new and more advanced tools that work on pangenome graphs,
 thus expanding the type of possible pangenomic analyses available to the scientific community.
 
-ODGI is already the backbone of the pipelines such as the Pangenome Graph Builder~\citep{pggb}. % or nf-core/pangenome~\citep{pangenome}. %, where it is also applied for debugging purposes. %\footnote{\url{https://github.com/nf-core/pangenome} (accessed Oct 2021)}.
+ODGI is already the backbone of the pipelines such as the Pangenome Graph Builder~\citep{pggb} and its Nextflow child nf-core/pangenome~\citep{pangenome}. %, where it is also applied for debugging purposes. %\footnote{\url{https://github.com/nf-core/pangenome} (accessed Oct 2021)}.
 Its static, large-scale 1D and 2D visualizations of the pangenome graphs allow an unprecedented high-level perspective on variation in pangenomes, and have also been critical in the development of pangenome graph building methods.  %the underlying structure and any problems in graph construction.
 However, an interactive solution that combines the 1D and 2D layout of a graph with annotation and read mapping information across different zoom levels is still missing.
 Recent interactive browsers are reference centric~\citep{Beyer2019, Yokoyama2019, Durant2021, Liang2021} or focus primarily on 2D~\citep{Wick_2015, Gonnella2018}.
