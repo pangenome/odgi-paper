@@ -472,17 +472,27 @@ describing and analysing a much larger set of variation than previously was poss
 Futhermore, users can even consider ODGI as a framework, taking advantage of its algorithms to develop new and more advanced tools that work on pangenome graphs,
 thus expanding the type of possible pangenomic analyses available to the scientific community.
 
-ODGI is already the backbone of the pipelines such as the Pangenome Graph Builder~\citep{pggb} or nf-core/pangenome~\citep{pangenome}. %, where it is also applied for debugging purposes. %\footnote{\url{https://github.com/nf-core/pangenome} (accessed Oct 2021)}.
+ODGI is already the backbone of the pipelines such as the Pangenome Graph Builder~\citep{pggb}. % or nf-core/pangenome~\citep{pangenome}. %, where it is also applied for debugging purposes. %\footnote{\url{https://github.com/nf-core/pangenome} (accessed Oct 2021)}.
 Its static, large-scale 1D and 2D visualizations of the pangenome graphs allow an unprecedented high-level perspective on variation in pangenomes, and have also been critical in the development of pangenome graph building methods.  %the underlying structure and any problems in graph construction.
 However, an interactive solution that combines the 1D and 2D layout of a graph with annotation and read mapping information across different zoom levels is still missing.
-Recent interactive browsers are reference centric~\citep{Beyer2019, Yokoyama2019, Durant2021, Liang2021} or focusing on 2D~\citep{Wick_2015, Gonnella2018}.
-In ODGI, we provide a graph layout algorithm that can become a backbone of such tools, as is already the case for \textit{gfaestus}~\citep{gfaestus} %\footnote{\url{https://github.com/chfi/gfaestus}},
-which currently relies on the \textit{odgi layout} output for its interactive 2D graph visualization.
+Recent interactive browsers are reference centric~\citep{Beyer2019, Yokoyama2019, Durant2021, Liang2021} or focus primarily on 2D~\citep{Wick_2015, Gonnella2018}.
+Our graph sorting and layout algorithms can provide the foundation for future tools of this type.
+We plan to focus on using these learned models to detect structural variation and assembly errors.
+%In ODGI, we provide a graph layout algorithm that can become a backbone of such tools, as is already the case for \textit{gfaestus}~\citep{gfaestus} %\footnote{\url{https://github.com/chfi/gfaestus}},
+%which currently relies on the \textit{odgi layout} output for its interactive 2D graph visualization.
 
-ODGI aims to be a reference implementation for many pangenome related operations, thus future work will be focused on multiple directions.
-First, we will expand its metadata capabilities to annotate large pangenome graphs.
-Futhermore, we will improve RDF support for annotation in the in-memory graph~\citep{Yokoyama2020} and allow for federated queries on pangenome graphs.
-Finally, we will explore the addition of support for RNA sequences and proteins to extend the application of pangenomic approaches to other levels in the genetic information flow from DNA to phenotype.
+ODGI has allowed us to explore \textit{context mapping} via the path jaccard metric.
+This resolves a major conceptual issue that has strongly guided existing algorithms to construct pangenome graphs \citep{Li:2020}.
+Previously, great efforts have been made to prevent ``collapse'' of non-orthologous sequences in the graph topology itself.
+While our presentation is primarily qualitative, our work demonstrates that we can completely mitigate this issue by exploiting the pangenome graph not as a static reference, but as a dynamic model of the mutual alignment of many genomes.
+%Our future work will focus on further extensions of this topic.
+
+%Here, we present only qualitative evaluation of this result, but our future work will focus on exploiting this mechanism to simplify and aid the interpretation of large pangenomes.
+
+%ODGI aims to be a reference implementation for many pangenome related operations, thus future work will be focused on multiple directions.
+%First, we will expand its metadata capabilities to annotate large pangenome graphs.
+%Futhermore, we will improve RDF support for annotation in the in-memory graph~\citep{Yokoyama2020} and allow for federated queries on pangenome graphs.
+%Finally, we will explore the addition of support for RNA sequences and proteins to extend the application of pangenomic approaches to other levels in the genetic information flow from DNA to phenotype.
 
 
 
