@@ -2,8 +2,8 @@
 
 ## resources
 
-The input graphs can be found at https://s3-us-west-2.amazonaws.com/human-pangenomics/index.html?prefix=pangenomes/scratch/2021_11_04_pggb_wgg.87/.
-The grch38 FASTAs we used can be found at https://hgdownload.soe.ucsc.edu/goldenPath/hg38/chromosomes/.
+The input graphs can be found at https://s3-us-west-2.amazonaws.com/human-pangenomics/index.html?prefix=pangenomes/scratch/2021_11_04_pggb_wgg.87/. \
+The grch38 FASTAs we used can be found at https://hgdownload.soe.ucsc.edu/goldenPath/hg38/chromosomes/. \
 The corresponding GTF file at https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/genes/hg38.ncbiRefSeq.gtf.gz.
 
 ## building the manuscript
