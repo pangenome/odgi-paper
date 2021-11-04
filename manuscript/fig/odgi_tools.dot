@@ -33,20 +33,50 @@ digraph sample {
 	layout [color = cyan]
 	draw [color = cyan]
 */
-	i_GFA [color = brown]
-	i_ODGI [color = brown]
-	i_BED [color = brown]
-	i_LAY [color = brown]
-	o_GFA [color = brown]
-	o_ODGI [color = brown]
-	TEXT [color = brown]
-	YAML [color = brown]
-	FASTA [color = brown]
-	JSON [color = brown]
-	o_BED [color = brown]
-	o_PAF [color = brown]
-	o_LAY [color = brown]
-	PNG [color = brown]
+
+	build [penwidth = 2]
+	view [penwidth = 2]
+
+	validate [penwidth = 2]
+
+	stats [penwidth = 2]
+	bin [penwidth = 2]
+	depth [penwidth = 2]
+	degree [penwidth = 2]
+  	matrix [penwidth = 2]
+    paths [penwidth = 2]
+    flatten [penwidth = 2]
+
+    break [penwidth = 2]
+	groom [penwidth = 2]
+	chop [penwidth = 2]
+	unchop [penwidth = 2]
+	explode [penwidth = 2]
+	squeeze [penwidth = 2]
+	extract [penwidth = 2]
+
+	position [penwidth = 2]
+    untangle [penwidth = 2]
+
+	viz [penwidth = 2]
+	sort [penwidth = 2]
+	layout [penwidth = 2]
+	draw [penwidth = 2]
+
+	i_GFA [color = cornflowerblue, penwidth = 2]
+	i_ODGI [color = cornflowerblue, penwidth = 2]
+	i_BED [color = cornflowerblue, penwidth = 2]
+	i_LAY [color = cornflowerblue, penwidth = 2]
+	o_GFA [color = darkred, penwidth = 2]
+	o_ODGI [color = darkred, penwidth = 2]
+	o_TEXT [color = darkred, penwidth = 2]
+	o_YAML [color = darkred, penwidth = 2]
+	FASTA [color = darkred, penwidth = 2]
+	JSON [color = darkred, penwidth = 2]
+	o_BED [color = darkred, penwidth = 2]
+	o_PAF [color = darkred, penwidth = 2]
+	o_LAY [color = darkred, penwidth = 2]
+	o_PNG [color = darkred, penwidth = 2]
 
 	i_GFA -> build
 	//i_GFA -> {view, validate, stats, bin, depth, degree, flatten, break, groom, chop, unchop, explode, squeeze, extract, position, viz, sort, layout, draw, untangle, matrix, paths, tips}
@@ -57,15 +87,15 @@ digraph sample {
 
 	build -> o_ODGI
 	view ->  o_GFA
-	view ->  TEXT
-	validate -> TEXT
-	stats -> TEXT
-	stats -> YAML
-    matrix -> TEXT
+	view ->  o_TEXT
+	validate -> o_TEXT
+	stats -> o_TEXT
+	stats -> o_YAML
+    matrix -> o_TEXT
     paths -> FASTA
-    paths -> TEXT
+    paths -> o_TEXT
 	bin -> JSON
-	bin -> TEXT
+	bin -> o_TEXT
 	depth -> o_BED
 	degree -> o_BED
     flatten -> o_BED
@@ -79,12 +109,12 @@ digraph sample {
 	squeeze -> o_ODGI
 	extract -> o_ODGI
 	position -> o_BED
-	viz -> PNG
+	viz -> o_PNG
 	sort -> o_ODGI
 	layout -> o_LAY
-	draw -> PNG
+	draw -> o_PNG
     untangle -> o_BED
     untangle -> o_PAF
     tips -> o_BED
-    //server -> TEXT
+    //server -> o_TEXT
 }
