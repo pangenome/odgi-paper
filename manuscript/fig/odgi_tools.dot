@@ -3,7 +3,7 @@ digraph sample {
 		shape=box
 		color=black
 	]
-
+/*
 	build [color = red]
 	view [color = red]
 
@@ -32,7 +32,7 @@ digraph sample {
 	sort [color = cyan]
 	layout [color = cyan]
 	draw [color = cyan]
-
+*/
 	i_GFA -> build
 	//i_GFA -> {view, validate, stats, bin, depth, degree, flatten, break, groom, chop, unchop, explode, squeeze, extract, position, viz, sort, layout, draw, untangle, matrix, paths, tips}
 	i_ODGI -> {view, validate, stats, bin, depth, degree, flatten, break, groom, chop, unchop, explode, squeeze, extract, position, viz, sort, layout, draw, untangle, matrix, paths, tips}
