@@ -66,12 +66,14 @@ odgi view -i ${filename_chr6_gfa}.C4.sorted.og -g > ${filename_chr6_gfa}.C4.sort
   bedtools sort -i - ) | awk '$8 == "-" { x=$6; $6=$5; $5=x; } { print }' |
   tr ' ' '\t'   >${filename_chr6_gfa}.C4.sorted.untangle.bed
 
-# cat $f.untangle.bed | grep '^chm13\|^grch38\|^HG00438\|^HG0107\|^HG01952'
+# cat ${filename_chr6_gfa}.C4.sorted.untangle.bed | grep '^chm13\|^grch38\|^HG00438\|^HG0107\|^HG01952'
 
 # R
 library(ggplot2)
-x <- read.table('/home/guarracino/Desktop/pangenomics/odgi_pub/chr6.pan.fa.a2fb268.4030258.d9f1245.smooth.gfa.C4.sorted.og.untangle.bed.tsv', sep = '\t', header = T, comment.char="$")
+#library(knitr)
+x <- read.table('/home/guarracino/Desktop/pangenomics/odgi_pub/chr6.pan.fa.a2fb268.4030258.6a1ecc2.smooth.C4.sorted.untangle.bed', sep = '\t', header = T, comment.char="$")
 x$query.name <- gsub(":.*","",x$query.name)
+x$query.name <- gsub("#J.*","",x$query.name)
 
 ggplot(
   subset(x, query.name %in% c(
@@ -86,23 +88,29 @@ ggplot(
 
     #"chm13#chr6",
     "grch38#chr6",
-    #"HG00438#1#JAHBCB010000040.1",
-    "HG00438#2#JAHBCA010000042.1",
-    #"HG01071#1#JAHBCF010000017.1",
-    "HG01071#2#JAHBCE010000076.1",
-    "HG01952#1#JAHAME010000044.1",
-    "HG01952#2#JAHAMD010000016.1"
+    #"HG00438#1",
+    "HG00438#2",
+    #"HG01071#1",
+    "HG01071#2",
+    "HG01952#1",
+    "HG01952#2"
     )
   ), aes(x=query.start, xend=query.end, y=ref.start, yend=ref.end)) +
-    geom_segment() +
+    geom_segment(size=0.3) +
     facet_grid(. ~ query.name) +
     coord_fixed() +
+    #theme_bw() +
     theme(
       text = element_text(size = 12.6),
       axis.text.x = element_text(size = 12, angle = 90),
       axis.text.y = element_text(size = 12),
+
+      #panel.grid.minor = element_line(size = 0.125),
+      #panel.grid.major = element_line(size = 0.25)
     )  +
       xlab("Query start") +
       ylab("Reference start")
-ggsave('chr6.C4.sorted.untangle.bed.subset.tsv.pdf', width = 32, height = 8,  units = "cm", dpi = 300,  bg = "transparent")
+filename <- 'chr6_pan_fa_a2fb268_4030258_6a1ecc2_smooth_C4_sorted_untangle_bed.pdf'
+ggsave(filename, width = 32, height = 8,  units = "cm", dpi = 300,  bg = "transparent")
+knitr::plot_crop(filename)
 
