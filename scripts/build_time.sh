@@ -1,7 +1,7 @@
-wget http://hypervolu.me/~guarracino/chr6.pan.fa.a2fb268.4030258.d9f1245.smooth.gfa.gz
-gunzip chr6.pan.fa.a2fb268.4030258.d9f1245.smooth.gfa.gz
+wget https://s3-us-west-2.amazonaws.com/human-pangenomics/pangenomes/scratch/2021_11_04_pggb_wgg.87/chroms/chr6.pan.fa.a2fb268.4030258.6a1ecc2.smooth.gfa.gz
+gunzip chr6.pan.fa.a2fb268.4030258.6a1ecc2.smooth.gfa.gz
 
-G=chr6.pan.fa.a2fb268.4030258.d9f1245.smooth.gfa
+G=chr6.pan.fa.a2fb268.4030258.6a1ecc2.smooth.gfa
 
 # t1
 for i in {1..10}
