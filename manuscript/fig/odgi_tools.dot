@@ -71,8 +71,8 @@ digraph sample {
 	o_ODGI [color = darkred, penwidth = 2]
 	o_TEXT [color = darkred, penwidth = 2]
 	o_YAML [color = darkred, penwidth = 2]
-	FASTA [color = darkred, penwidth = 2]
-	JSON [color = darkred, penwidth = 2]
+	o_FASTA [color = darkred, penwidth = 2]
+	o_JSON [color = darkred, penwidth = 2]
 	o_BED [color = darkred, penwidth = 2]
 	o_PAF [color = darkred, penwidth = 2]
 	o_LAY [color = darkred, penwidth = 2]
@@ -92,14 +92,14 @@ digraph sample {
 	stats -> o_TEXT
 	stats -> o_YAML
     matrix -> o_TEXT
-    paths -> FASTA
+    paths -> o_FASTA
     paths -> o_TEXT
-	bin -> JSON
+	bin -> o_JSON
 	bin -> o_TEXT
 	depth -> o_BED
 	degree -> o_BED
     flatten -> o_BED
-    flatten -> FASTA
+    flatten -> o_FASTA
 	break -> o_ODGI
 	groom -> o_ODGI
 	chop -> o_ODGI
