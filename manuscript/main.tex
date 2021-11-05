@@ -282,7 +282,7 @@ The ODGI data structure (Algorithm~\ref{alg:structs}) allows algorithms that bui
 In \textit{odgi build}, we initially construct the node vector in a serial operation that scans across the input GFA file.
 Then, we serially add edges in the $Node.edges$ vectors of pairs of nodes.
 Finally, we create paths in serial, and extend them in parallel by obtaining the mutex $Node.lock$ for pairs of nodes and by adding the path step in their $Node.path\_steps$ vectors.
-This parallelism speeds ODGI model construction by many-fold when testing against graphs built by the HPRC (Figure~\ref{fig:build}).
+This parallelism speeds ODGI model construction by many-fold when testing against graphs made from assemblies produced by the HPRC (Figure~\ref{fig:build}).
 
 To support interchange with other pangenome tools or text-based processing, \textit{odgi view} converts a graph in ODGI binary format to GFAv1.
 %ODGI uses the ``S'' and ``L'' records to describe the graph topology, and ``P'' records to describe paths.
@@ -384,13 +384,15 @@ To ensure a precise translation, we select the reference position whose context 
 %Obtaining unambiguous mappings between different genomes requires the use of a new kind of graph based mapping (path graph jaccard).
 
 Pangenome graphs model alignments of many genomes.
-With \textit{odgi untangle}, users can extract pairwise \textit{many}:\textit{1} alignment information between a given set of ``query'' sequences and a given set of ``target'' sequences (used as references).
-This lets us decompose both homology and paralogy relationships by also untangling looping motifs in the graph, and obtaining linearized pairs of regions in BEDPE or PAF format.
+With \textit{odgi untangle}, users can extract pairwise alignment information between a given set of ``query'' sequences and a given set of ``target'' sequences (used as references).
+While pangenome graphs may contain looping structures that imply many-to-many alignments between the pangenome sequences, these untangled alignments map each segment of the queries to a single segment in the set of targets.
+%This lets us decompose both homology and paralogy relationships by also untangling looping motifs in the graph, and obtaining linearized pairs of regions in BEDPE or PAF format.
 Being able to work with any sets of reference sequences lets us convert the graph to lift-over maps compatible with standard software for projecting annotations and alignments from one genome to another.
 As an example, by untangling the graph we can study the variation that lies in regions collapsed due to ambiguous alignments over sequence repeats (as shown in Fig.~\ref{fig:odgi_viz}\textbf{f}).
 Indeed, to obtain a more precise overview of the \textit{locus} in Fig.~\ref{fig:odgi_viz}\textbf{b-e},
 we can apply \textit{odgi untangle} to segment paths into linear segments by breaking these segments where the paths loop back on themselves.
-We ``untangle'' by finding the target segment that best match each query segment using the \textit{path jaccard} context mapping model.
+We first discover segment boundaries using standard approaches for detecting repeats in sequence graphs \citep{Pevzner_2004}.
+We finally ``untangle'' by finding the target segment that best match each query segment using the \textit{path jaccard} context mapping model.
 %The \textit{path jaccard} concept ensures that the breaking is nucleotide-precise.
 In this way, we obtain information on the position and copy number status of the sequences in the collapsed \textit{locus} (Fig.~\ref{fig:odgi_viz}\textbf{h}).
 Moreover, to obtain base-level precise information on the relationships between the repeated sequences, we can align them by using the pairs of regions that came from the untangling to guide the alignment~\citep{wfmash}.
@@ -481,10 +483,15 @@ We plan to focus on using these learned models to detect structural variation an
 %In ODGI, we provide a graph layout algorithm that can become a backbone of such tools, as is already the case for \textit{gfaestus}~\citep{gfaestus} %\footnote{\url{https://github.com/chfi/gfaestus}},
 %which currently relies on the \textit{odgi layout} output for its interactive 2D graph visualization.
 
-ODGI has allowed us to explore \textit{context mapping} via the path jaccard metric.
-This resolves a major conceptual issue that has strongly guided existing algorithms to construct pangenome graphs \citep{Li:2020}.
-Previously, great efforts have been made to prevent ``collapse'' of non-orthologous sequences in the graph topology itself.
+ODGI has allowed us to explore \textit{context mapping} deconvolution of pangenome graph structures via the path jaccard metric.
+This resolves a major conceptual issue that has strongly guided existing algorithms to construct pangenome graphs.
+Previously, great efforts have been made to prevent the ``collapse'' of non-orthologous sequences in the graph topology itself  \citep{Li:2020}.
+This has been seen as essential to making these new bioinformatic models interpretable.
 While our presentation is primarily qualitative, our work demonstrates that we can mitigate this issue by exploiting the pangenome graph not as a static reference, but as a dynamic model of the mutual alignment of many genomes.
+Because pangenome graphs can contain complete genomes, we are able to query them to polarize the information they contain in easily-interpretable and reusable pairwise formats that are widely supported in bioinformatics.
+We expect that ODGI will provide a reference interface between pangenomic and genomic approaches to understanding genome variation.
+
+%To understand this model, we query it using any reference that it contains.
 
 %Our future work will focus on further extensions of this topic.
 
