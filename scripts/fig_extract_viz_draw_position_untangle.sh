@@ -1,5 +1,23 @@
 #!/bin/bash
 
+filename_chr6_gfa=chr6.pan.fa.a2fb268.4030258.6a1ecc2.smooth
+
+# Download and build the graph
+wget https://s3-us-west-2.amazonaws.com/human-pangenomics/pangenomes/scratch/2021_11_04_pggb_wgg.87/chroms/${filename_chr6_gfa}.gfa.gz
+gunzip ${filename_chr6_gfa}.gfa.gz
+odgi build -g ${filename_chr6_gfa}.gfa -o ${filename_chr6_gfa}.og -t 16 -P
+
+
+# Extraction and optimization of the MHC locus
+odgi extract -i ${filename_chr6_gfa}.og -r grch38#chr6:29000000-34000000 -o - --full-range -t 16 -P | odgi sort -i - -o ${filename_chr6_gfa}.mhc.og --optimize
+
+
+# MHC locus layout
+odgi layout -i ${filename_chr6_gfa}.mhc.og -o ${filename_chr6_gfa}.mhc.lay -T ${filename_chr6_gfa}.mhc.tsv -x 100 -t 16 -P
+odgi draw -i ${filename_chr6_gfa}.mhc.og -c ${filename_chr6_gfa}.mhc.lay -p "$(echo ${filename_chr6_gfa} | tr '.' '_' )"_mhc_H1000w10.png -H 1000 -w 120 -C -t 16 -P
+# Add red box (30px) around C4 locus using GIMP
+
+
 # Find C4 coordinates
 wget http://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/hg38.chrom.sizes
 wget https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/genes/hg38.ncbiRefSeq.gtf.gz
@@ -7,14 +25,6 @@ zgrep 'gene_id "C4A"\|gene_id "C4B"' hg38.ncbiRefSeq.gtf.gz |
   awk '$1 == "chr6"' | cut -f 1,4,5 |
   bedtools sort | bedtools merge -d 15000 | bedtools slop -l 10000 -r 20000 -g hg38.chrom.sizes |
   sed 's/chr6/grch38#chr6/g' > hg38.ncbiRefSeq.C4.coordinates.bed
-
-
-filename_chr6_gfa=chr6.pan.fa.a2fb268.4030258.6a1ecc2.smooth
-
-# Download and build the graph
-wget https://s3-us-west-2.amazonaws.com/human-pangenomics/pangenomes/scratch/2021_11_04_pggb_wgg.87/chroms/${filename_chr6_gfa}.gfa.gz
-gunzip ${filename_chr6_gfa}.gfa.gz
-odgi build -g ${filename_chr6_gfa}.gfa -o ${filename_chr6_gfa}.og -t 16 -P
 
 
 # Extraction, explosion, optimization, and sorting
@@ -41,10 +51,10 @@ odgi viz -i ${filename_chr6_gfa}.C4.sorted.og -o "$(echo ${filename_chr6_gfa} | 
 
 
 # Compute layout
-odgi layout -i ${filename_chr6_gfa}.C4.sorted.og -o ${filename_chr6_gfa}.C4.sorted.lay -T ${filename_chr6_gfa}.C4.sorted.tsv -x 300 -t 16 -P
+#odgi layout -i ${filename_chr6_gfa}.C4.sorted.og -o ${filename_chr6_gfa}.C4.sorted.lay -T ${filename_chr6_gfa}.C4.sorted.tsv -x 300 -t 16 -P
 
 # odgi draw
-odgi draw -i ${filename_chr6_gfa}.C4.sorted.og -c ${filename_chr6_gfa}.C4.sorted.lay -p "$(echo ${filename_chr6_gfa} | tr '.' '_' )"_C4_sorted_layout.png -H 1000 -w 1000 -B 500
+#odgi draw -i ${filename_chr6_gfa}.C4.sorted.og -c ${filename_chr6_gfa}.C4.sorted.lay -p "$(echo ${filename_chr6_gfa} | tr '.' '_' )"_C4_sorted_layout.png -H 1000 -w 1000 -B 500
 
 
 # Get C4-GTF
@@ -112,5 +122,5 @@ ggplot(
       ylab("Reference start")
 filename <- 'chr6_pan_fa_a2fb268_4030258_6a1ecc2_smooth_C4_sorted_untangle_bed.pdf'
 ggsave(filename, width = 32, height = 8,  units = "cm", dpi = 300,  bg = "transparent")
-knitr::plot_crop(filename)
+#knitr::plot_crop(filename)
 
