@@ -3,7 +3,8 @@
 filename_chr6_gfa=chr6.pan.fa.a2fb268.4030258.6a1ecc2.smooth
 
 # Download and build the graph
-wget https://s3-us-west-2.amazonaws.com/human-pangenomics/pangenomes/scratch/2021_11_04_pggb_wgg.87/chroms/${filename_chr6_gfa}.gfa.gz
+# FIXME with the final link
+wget wget http://hypervolu.me/~guarracino/chr6.pan.fa.a2fb268.4030258.6a1ecc2.smooth.og.gz
 gunzip ${filename_chr6_gfa}.gfa.gz
 odgi build -g ${filename_chr6_gfa}.gfa -o ${filename_chr6_gfa}.og -t 16 -P
 
