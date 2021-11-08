@@ -1,10 +1,12 @@
 #!/bin/bash
 
-wget https://s3-us-west-2.amazonaws.com/human-pangenomics/pangenomes/scratch/2021_11_04_pggb_wgg.87/chroms/chr4.pan.fa.a2fb268.4030258.6a1ecc2.smooth.gfa.gz
-gunzip chr4.pan.fa.a2fb268.4030258.6a1ecc2.smooth.gfa.gz
+#### FIXME once wgg.88 is in the HPRC repository ####
+wget wget http://hypervolu.me/~guarracino/chr4.pan.fa.a2fb268.4030258.6a1ecc2.smooth.og.gz
+gunzip chr4.pan.fa.a2fb268.4030258.6a1ecc2.smooth.og.gz
 wget https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/genes/hg38.ncbiRefSeq.gtf.gz
 
-G=chr4.pan.fa.a2fb268.4030258.6a1ecc2.smooth.gfa
+# G=chr4.pan.fa.a2fb268.4030258.6a1ecc2.smooth.gfa
+G=chr4.pan.fa.a2fb268.4030258.6a1ecc2.smooth
 
 zgrep HTT hg38.ncbiRefSeq.gtf | grep "exon_number \"1\"" | grep "gene_name \"HTT\"" | grep -P "\texon"
 #chr4	ncbiRefSeq.2021-09-09	exon	3074681	3075088	.	+	.	gene_id "HTT"; transcript_id "NM_001388492.1"; exon_number "1"; exon_id "NM_001388492.1.1"; gene_name "HTT";
@@ -59,7 +61,7 @@ odgi viz -i "$G".og.HTTex1.og.O.og.tiny.og -o "$G".og.HTTex1.og.O.og.tiny.og.png
 # check if the svg already exists, else boil out
 if [[ -f "$G".og.HTTex1.og.O.og.tiny.og.png.svg ]]
 then
-    inkscape "$G".og.HTTex1.og.O.og.tiny.og.png.svg --export-pdf=chr4_pan_fa_a2fb268_e820cd3_9ea71d8_smooth_gfa_og_HTTex1_og_O_og_tiny_og_png_svg.pdf
+    inkscape "$G".og.HTTex1.og.O.og.tiny.og.png.svg --export-pdf=chr4_pan_fa_a2fb268_4030258_6a1ecc2_smooth_gfa_og_HTTex1_og_O_og_tiny_og_png_svg.pdf
 else
     echo "Please create a perfect lossless SVG from the PNG via https://drububu.com/tutorial/bitmap-to-vector.html and save it as "$G".og.HTTex1.og.O.og.tiny.og.png.svg!"
 fi
