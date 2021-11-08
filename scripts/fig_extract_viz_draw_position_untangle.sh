@@ -1,21 +1,21 @@
 #!/bin/bash
 
-filename_chr6_gfa=chr6.pan.fa.a2fb268.4030258.6a1ecc2.smooth
+prefix_chr6_smooth=chr6.pan.fa.a2fb268.4030258.6a1ecc2.smooth
 
 # Download and build the graph
 # FIXME with the final link
-wget wget http://hypervolu.me/~guarracino/chr6.pan.fa.a2fb268.4030258.6a1ecc2.smooth.og.gz
-gunzip ${filename_chr6_gfa}.gfa.gz
-odgi build -g ${filename_chr6_gfa}.gfa -o ${filename_chr6_gfa}.og -t 16 -P
+wget wget /lizardfs/erikg/HPRC/year1v2genbank/wgg.88/chr6.pan/${prefix_chr6_smooth}.gfa.gz
+gunzip ${prefix_chr6_smooth}.gfa.gz
+odgi build -g ${prefix_chr6_smooth}.gfa -o ${prefix_chr6_smooth}.og -t 16 -P
 
 
 # Extraction and optimization of the MHC locus
-odgi extract -i ${filename_chr6_gfa}.og -r grch38#chr6:29000000-34000000 -o - --full-range -t 16 -P | odgi sort -i - -o ${filename_chr6_gfa}.mhc.og --optimize
+odgi extract -i ${prefix_chr6_smooth}.og -r grch38#chr6:29000000-34000000 -o - --full-range -t 16 -P | odgi sort -i - -o ${prefix_chr6_smooth}.mhc.og --optimize
 
 
 # MHC locus layout
-odgi layout -i ${filename_chr6_gfa}.mhc.og -o ${filename_chr6_gfa}.mhc.lay -T ${filename_chr6_gfa}.mhc.tsv -x 100 -t 16 -P
-odgi draw -i ${filename_chr6_gfa}.mhc.og -c ${filename_chr6_gfa}.mhc.lay -p "$(echo ${filename_chr6_gfa} | tr '.' '_' )"_mhc_H1000w10.png -H 1000 -w 120 -C -t 16 -P
+odgi layout -i ${prefix_chr6_smooth}.mhc.og -o ${prefix_chr6_smooth}.mhc.lay -T ${prefix_chr6_smooth}.mhc.tsv -x 100 -t 16 -P
+odgi draw -i ${prefix_chr6_smooth}.mhc.og -c ${prefix_chr6_smooth}.mhc.lay -p "$(echo ${prefix_chr6_smooth} | tr '.' '_' )"_mhc_H1000w10.png -H 1000 -w 120 -C -t 16 -P
 # Add red box (30px) around C4 locus using GIMP
 
 
@@ -29,33 +29,33 @@ zgrep 'gene_id "C4A"\|gene_id "C4B"' hg38.ncbiRefSeq.gtf.gz |
 
 
 # Extraction, explosion, optimization, and sorting
-odgi extract -i ${filename_chr6_gfa}.og -b hg38.ncbiRefSeq.C4.coordinates.bed -o - --full-range -t 16 -P |
-  odgi explode -i - --biggest 1 --sorting-criteria P --optimize -p ${filename_chr6_gfa}.C4
-odgi sort -i ${filename_chr6_gfa}.C4.0.og -o ${filename_chr6_gfa}.C4.sorted.og -p Ygs -x 100 -t 16 -P
+odgi extract -i ${prefix_chr6_smooth}.og -b hg38.ncbiRefSeq.C4.coordinates.bed -o - --full-range -t 16 -P |
+  odgi explode -i - --biggest 1 --sorting-criteria P --optimize -p ${prefix_chr6_smooth}.C4
+odgi sort -i ${prefix_chr6_smooth}.C4.0.og -o ${prefix_chr6_smooth}.C4.sorted.og -p Ygs -x 100 -t 16 -P
 
 
 # Select haplotypes
-odgi paths -i ${filename_chr6_gfa}.C4.sorted.og -L | grep 'chr6\|HG00438\|HG0107\|HG01952' > chr6.selected_paths.txt
+odgi paths -i ${prefix_chr6_smooth}.C4.sorted.og -L | grep 'chr6\|HG00438\|HG0107\|HG01952' > chr6.selected_paths.txt
 
 
 # odgi viz: default (binned) mode
-odgi viz -i ${filename_chr6_gfa}.C4.sorted.og -o "$(echo ${filename_chr6_gfa} | tr '.' '_' )"_C4_sorted.png -c 12 -w 100 -y 50 -p chr6.selected_paths.txt
+odgi viz -i ${prefix_chr6_smooth}.C4.sorted.og -o "$(echo ${prefix_chr6_smooth} | tr '.' '_' )"_C4_sorted.png -c 12 -w 100 -y 50 -p chr6.selected_paths.txt
 
 # odgi viz: color by strand
-odgi viz -i ${filename_chr6_gfa}.C4.sorted.og -o "$(echo ${filename_chr6_gfa} | tr '.' '_' )"_C4_sorted_z.png -c 12 -w 100 -y 50 -p chr6.selected_paths.txt -z
+odgi viz -i ${prefix_chr6_smooth}.C4.sorted.og -o "$(echo ${prefix_chr6_smooth} | tr '.' '_' )"_C4_sorted_z.png -c 12 -w 100 -y 50 -p chr6.selected_paths.txt -z
 
 # odgi viz: color by position
-odgi viz -i ${filename_chr6_gfa}.C4.sorted.og -o "$(echo ${filename_chr6_gfa} | tr '.' '_' )"_C4_sorted_du.png -c 12 -w 100 -y 50 -p chr6.selected_paths.txt -du
+odgi viz -i ${prefix_chr6_smooth}.C4.sorted.og -o "$(echo ${prefix_chr6_smooth} | tr '.' '_' )"_C4_sorted_du.png -c 12 -w 100 -y 50 -p chr6.selected_paths.txt -du
 
 # odgi viz: color by depth
-odgi viz -i ${filename_chr6_gfa}.C4.sorted.og -o "$(echo ${filename_chr6_gfa} | tr '.' '_' )"_C4_sorted_m.png -c 12 -w 100 -y 50 -p chr6.selected_paths.txt -m -B Spectral:4
+odgi viz -i ${prefix_chr6_smooth}.C4.sorted.og -o "$(echo ${prefix_chr6_smooth} | tr '.' '_' )"_C4_sorted_m.png -c 12 -w 100 -y 50 -p chr6.selected_paths.txt -m -B Spectral:4
 
 
 # Compute layout
-#odgi layout -i ${filename_chr6_gfa}.C4.sorted.og -o ${filename_chr6_gfa}.C4.sorted.lay -T ${filename_chr6_gfa}.C4.sorted.tsv -x 300 -t 16 -P
+#odgi layout -i ${prefix_chr6_smooth}.C4.sorted.og -o ${prefix_chr6_smooth}.C4.sorted.lay -T ${prefix_chr6_smooth}.C4.sorted.tsv -x 300 -t 16 -P
 
 # odgi draw
-#odgi draw -i ${filename_chr6_gfa}.C4.sorted.og -c ${filename_chr6_gfa}.C4.sorted.lay -p "$(echo ${filename_chr6_gfa} | tr '.' '_' )"_C4_sorted_layout.png -H 1000 -w 1000 -B 500
+#odgi draw -i ${prefix_chr6_smooth}.C4.sorted.og -c ${prefix_chr6_smooth}.C4.sorted.lay -p "$(echo ${prefix_chr6_smooth} | tr '.' '_' )"_C4_sorted_layout.png -H 1000 -w 1000 -B 500
 
 
 # Get C4-GTF
@@ -65,19 +65,19 @@ zgrep 'gene_id "C4A"\|gene_id "C4B"' hg38.ncbiRefSeq.gtf.gz | awk '$1 == "chr6" 
 
 
 # Compute Bandage annotations
-odgi position -i ${filename_chr6_gfa}.C4.sorted.og -E chr6.C4.gtf -t 16 > ${filename_chr6_gfa}.C4.sorted.anno.csv
+odgi position -i ${prefix_chr6_smooth}.C4.sorted.og -E chr6.C4.gtf -t 16 > ${prefix_chr6_smooth}.C4.sorted.anno.csv
 
 # Convert to GFA for Bandage
-odgi view -i ${filename_chr6_gfa}.C4.sorted.og -g > ${filename_chr6_gfa}.C4.sorted.gfa
+odgi view -i ${prefix_chr6_smooth}.C4.sorted.og -g > ${prefix_chr6_smooth}.C4.sorted.gfa
 
 
 # Untangle
 ( echo query.name query.start query.end ref.name ref.start ref.end score inv self.cov x|
-  tr ' ' '\t'; odgi untangle -i ${filename_chr6_gfa}.C4.sorted.og -r $(odgi paths -i ${filename_chr6_gfa}.C4.sorted.og -L | grep grch38) -t 16 -m 256 -P |
+  tr ' ' '\t'; odgi untangle -i ${prefix_chr6_smooth}.C4.sorted.og -r $(odgi paths -i ${prefix_chr6_smooth}.C4.sorted.og -L | grep grch38) -t 16 -m 256 -P |
   bedtools sort -i - ) | awk '$8 == "-" { x=$6; $6=$5; $5=x; } { print }' |
-  tr ' ' '\t'   >${filename_chr6_gfa}.C4.sorted.untangle.bed
+  tr ' ' '\t'   >${prefix_chr6_smooth}.C4.sorted.untangle.bed
 
-# cat ${filename_chr6_gfa}.C4.sorted.untangle.bed | grep '^chm13\|^grch38\|^HG00438\|^HG0107\|^HG01952'
+# cat ${prefix_chr6_smooth}.C4.sorted.untangle.bed | grep '^chm13\|^grch38\|^HG00438\|^HG0107\|^HG01952'
 
 # R
 library(ggplot2)

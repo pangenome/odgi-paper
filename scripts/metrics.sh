@@ -1,18 +1,17 @@
 #!/bin/bash
 
 #### FIXME once wgg.88 is in the HPRC repository ####
-wget wget http://hypervolu.me/~guarracino/chr4.pan.fa.a2fb268.4030258.6a1ecc2.smooth.og.gz
-gunzip chr4.pan.fa.a2fb268.4030258.6a1ecc2.smooth.og.gz
+wget wget http://hypervolu.me/~guarracino/chr4.pan.fa.a2fb268.4030258.6a1ecc2.smooth.gfa.gz
+gunzip chr4.pan.fa.a2fb268.4030258.6a1ecc2.smooth.gfa.gz
 wget https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/genes/hg38.ncbiRefSeq.gtf.gz
 
-# G=chr4.pan.fa.a2fb268.4030258.6a1ecc2.smooth.gfa
 G=chr4.pan.fa.a2fb268.4030258.6a1ecc2.smooth
 
 zgrep HTT hg38.ncbiRefSeq.gtf | grep "exon_number \"1\"" | grep "gene_name \"HTT\"" | grep -P "\texon"
 #chr4	ncbiRefSeq.2021-09-09	exon	3074681	3075088	.	+	.	gene_id "HTT"; transcript_id "NM_001388492.1"; exon_number "1"; exon_id "NM_001388492.1.1"; gene_name "HTT";
 #chr4	ncbiRefSeq.2021-09-09	exon	3074681	3075088	.	+	.	gene_id "HTT"; transcript_id "NM_002111.8"; exon_number "1"; exon_id "NM_002111.8.1"; gene_name "HTT";
 
-odgi build -g "$G" -o "$G".og -t 16 -P
+odgi build -g "$G".gfa -o "$G".og -t 16 -P
 odgi paths -L -i "$G".og > "$G".og.paths
 
 odgi extract -i "$G".og -r grch38#chr4:3074681-3075088 -o "$G".og.HTTex1.og -P -t 16 -E
