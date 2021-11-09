@@ -190,10 +190,10 @@ For efficiency, $Node_i.sequence$ is stored as a plain string, while the $edges$
 
 To allow edit operations in parallel, each node structure includes a byte-width mutex $lock$.
 All changes on the graph can involve at most two $Node$ structs at a time (both edge and path step representations are doubly-linked).
-To avoid deadlocks, we acquire the node locks in ascending $Node.id$ order and release them in desceding order.
+To avoid deadlocks, we acquire the node locks in ascending $Node.id$ order and release them in descending order.
 In addition to node-local features of the graph, we must maintain some global information.
-Specifically, we record the start and end of paths, as well as a name to path id mapping in lock-free hashtables.
-The use of lock-free hashtables lets us avoid a global lock when looking up path or graph metadata, which would quickly become a bottleneck during parallel operations on the graph.
+Specifically, we record the start and end of paths, as well as a name to path id mapping in lock-free hash tables.
+The use of lock-free hash tables lets us avoid a global lock when looking up path or graph metadata, which would quickly become a bottleneck during parallel operations on the graph.
 By avoiding global locks, we implement many of the operations in ODGI using maximum parallelism available.
 This approach is key to enable our methods to scale to the largest pangenome graphs that we can currently build (with hundreds of vertebrate genomes).
 
@@ -416,7 +416,7 @@ This exploits path information to order the graph nodes.
 %For understanding the large-scale organization of the graph, we benefit from an even simpler coordinate system.
 PG-SGD learns a 1D or 2D organization of the graph nodes that matches distances in graph paths.
 To scale to large graphs, we learn this projection in parallel via a HOGWILD! approach~\citep{niu2011hogwild}.
-Our approach can be seen as an adaptotion of SGD-based drawing to pangenome graphs~\citep{zheng2018graph}.
+Our approach can be seen as an adaptation of SGD-based drawing to pangenome graphs~\citep{zheng2018graph}.
 In parallel, each HOGWILD! thread updates node relative positions to best-match their nucleotide distance in the paths running through the graph.
 Following standard SGD approaches, a learning rate is reduced as the algorithm progresses, and execution continues until the adjustments to the model fall below a target threshold $\epsilon$.
 ODGI can project vector (in 1D) and matrix (2D) representations of the graph relative to these learned coordinate spaces.
@@ -466,18 +466,18 @@ Pangenome graphs stand to become a ubiquitous model in genomics thanks to their 
 However, despite this great potential, their spread is impeded by the lack of tools capable of managing and analyzing pangenome graphs easily and efficiently.
 
 ODGI is a state-of-the-art tool suite that enables users to explore and discover the underlying biology in pangenomes graphs, filling the gap that made pangenomic analyses difficult.
-It provides tools to easily transform, analyse, simplify, validate, and visualise pangenome graphs at large scale.
+It provides tools to easily transform, analyze, simplify, validate, and visualize pangenome graphs at large scale.
 In particular, lifting over annotations and linearizing nested graph structures place the suite as the bridge between traditional linear reference genome analysis and pangenome graphs.
 With the increased adoption of long read sequencing we expect pangenomic tools to become increasingly common in biomedical research.
 Particularly for targets that involve complex variation, such as cancer, plant genomics and metagenomics, ODGI will facilitate disentangling,
-describing and analysing a much larger set of variation than previously was possible with tools that depend on short reads and reference genomes.
-Futhermore, users can even consider ODGI as a framework, taking advantage of its algorithms to develop new and more advanced tools that work on pangenome graphs,
+describing and analyzing a much larger set of variation than previously was possible with tools that depend on short reads and reference genomes.
+Furthermore, users can even consider ODGI as a framework, taking advantage of its algorithms to develop new and more advanced tools that work on pangenome graphs,
 thus expanding the type of possible pangenomic analyses available to the scientific community.
 
 ODGI is already the backbone of the Pangenome Graph Builder pipeline~\citep{pggb}.
 Its static, large-scale 1D and 2D visualizations of the pangenome graphs allow an unprecedented high-level perspective on variation in pangenomes, and have also been critical in the development of pangenome graph building methods.  %the underlying structure and any problems in graph construction.
 However, an interactive solution that combines the 1D and 2D layout of a graph with annotation and read mapping information across different zoom levels is still missing.
-Recent interactive browsers are reference centric~\citep{Beyer2019, Yokoyama2019, Durant2021, Liang2021} or focus primarily on 2D~\citep{Wick_2015, Gonnella2018}.
+Recent interactive browsers are reference-centric~\citep{Beyer2019, Yokoyama2019, Durant2021, Liang2021} or focus primarily on 2D~\citep{Wick_2015, Gonnella2018}.
 Our graph sorting and layout algorithms can provide the foundation for future tools of this type.
 We plan to focus on using these learned models to detect structural variation and assembly errors.
 %In ODGI, we provide a graph layout algorithm that can become a backbone of such tools, as is already the case for \textit{gfaestus}~\citep{gfaestus} %\footnote{\url{https://github.com/chfi/gfaestus}},
@@ -514,7 +514,7 @@ We expect that ODGI will provide a reference interface between pangenomic and ge
 
 \section*{Acknowledgements}
 
-We thank members of the HRPC ``Pangenomes Working Group'' for their insightful discussion and feedback, and members of the HPRC production teams for their development of resources used in our exposition.
+We thank members of the HPRC ``Pangenomes Working Group'' for their insightful discussion and feedback, and members of the HPRC production teams for their development of resources used in our exposition.
 
 \section*{Funding}
 
