@@ -1,0 +1,130 @@
+\documentclass[12pt,hidelinks,letterpaper]{article}
+\usepackage[margin=0.75in,top=0.75in,footskip=0.5in]{geometry}
+\usepackage{comment}
+
+\usepackage{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+
+% use Unicode characters - try changing the option if you run into troubles with special characters (e.g. umlauts)
+\usepackage[utf8]{inputenc}
+
+% clean citations
+\usepackage{cite}
+
+% hyperref makes references clicky. use \url{www.example.com} or \href{www.example.com}{description} to add a clicky url
+\usepackage{nameref,hyperref}
+
+% line numbers
+%\usepackage[right]{lineno}
+
+% improves typesetting in LaTeX
+\usepackage{microtype}
+\DisableLigatures[f]{encoding = *, family = * }
+
+% Remove % for double line spacing
+%\usepackage{setspace} 
+%\doublespacing
+
+% use adjustwidth environment to exceed text width (see examples in text)
+\usepackage{changepage}
+
+% use \textcolor{color}{text} for colored text (e.g. highlight to-do areas)
+\usepackage{color}
+
+% this is required to include graphics
+\usepackage{graphicx}
+
+% use for have text wrap around figures
+\usepackage{wrapfig}
+
+%\usepackage{setspace}
+%\doublespacing
+\usepackage{multicol}
+
+% document begins here
+\begin{document}
+
+
+\begin{flushright}
+  Erik Garrison \\
+  egarris5@uthsc.edu \\
+  %+1 502 382 6005 \\
+  %+39 320 244 2758 \\
+  Department of Genetics, Genomics, and Informatics \\
+  University of Tennessee Health Science Center \\
+  Memphis, TN 38163, USA
+\end{flushright}
+
+%\hfill \break
+
+\begin{flushleft}
+  % madlib: replace with address
+  Bioinformatics \\
+  Oxford University Press \\
+  Great Clarendon Street \\
+  Oxford OX2 6DP, UK
+\end{flushleft}
+
+%\hfill \break
+%\hfill \break
+
+Dear editors,
+%\hfill \break
+%\hfill \break
+
+In the included manuscript, we present the Optimized Dynamic Genome/Graph Implementation (ODGI) toolkit.
+This system of interoperable methods provides researchers with a coherent set of approaches to understand the structure and significance of genome alignments encoded in pangenome graphs.
+In addition to exposing the features of pangenome graphs to standard bioinformatic approaches based on pairwise comparisons, ranges, positions, feature vector and matrix models, ODGI provides unique methods to visualize and label large pangenome graphs like those currently being constructed in the Human Pangenome Project (HPP/HPRC).
+
+Our description of ODGI is intended to describe a practical modality for working with pangenomes that ODGI implements.
+As such, it is largely qualitative and theoretical.
+As our focus is primarily conceptual, we have omitted performance based comparisons with the vg toolkit, which is the only similar existing system to ODGI.
+However, we do demonstrate that ODGI is capable of efficiently working with large, complex pangenomes.
+This high-level focus on the toolkit necessitates the omission of deep algorithmic details that might be of formal interest to the community.
+Likewise, there are enough small pieces to the toolkit that a full description of all parts may not be helpful.
+We hope that through review we can strike a suitable balance of focus on such detail.
+
+To exposit this system, we take a handful of examples from the ongoing work in the HPP/HPRC.
+As members of this project, we have followed the data usage agreement and contacted the steering committee to indicate this use, and obtained authorization to submit this manuscript to you and as a public preprint.
+The discussion of how methods papers published before the main project analysis should reflect the HPP/HPRC is ongoing, and some changes, such as the potential inclusion of an HPRC ``banner author'' may eventually be required should \textit{Bioinformatics} choose to publish a version of our manuscript.
+
+ODGI has provided us with a critical resource during the initial phase of the HPP/HPRC.
+It is a fundamentally practical system that we have developed to answer basic questions about the pangenome graphs that the community is still learning how to build.
+We trust that this toolkit will be of wide interest to the ``pangenomic'' community that is now building up methods to understand variation between hundreds of complete genome assemblies in many species.
+
+%\hfill \break
+\hfill \break
+
+
+%\begin{flushright}
+%\hspace*{100mm}
+\indent Sincerely,\\
+\hfill \break
+\includegraphics[width=0.38\textwidth]{signature_Erik_Garrison.pdf}
+\hfill \break
+\indent Erik Garrison
+%\end{flushright}
+
+
+
+\begin{comment}
+\hfill \break
+\begingroup
+\let\oldthebibliography\thebibliography
+\let\endoldthebibliography\endthebibliography
+\renewenvironment{thebibliography}[1]{
+  \begin{oldthebibliography}{#1}
+    \setlength{\itemsep}{0em}
+    \setlength{\parskip}{0em}
+}
+{
+  \end{oldthebibliography}
+}
+\renewcommand{\section}[2]{}%
+\bibliographystyle{unsrt}
+%\subsection*{References}
+{\small \bibliography{references}}
+\endgroup
+\end{comment}
+
+\end{document}
