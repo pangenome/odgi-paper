@@ -4,7 +4,7 @@ prefix_chr6_smooth=chr6.pan.fa.a2fb268.4030258.6a1ecc2.smooth
 
 # Download and build the graph
 # FIXME with the final link
-wget wget /lizardfs/erikg/HPRC/year1v2genbank/wgg.88/chr6.pan/${prefix_chr6_smooth}.gfa.gz
+wget http://hypervolu.me/~guarracino/${prefix_chr6_smooth}.gfa.gz
 gunzip ${prefix_chr6_smooth}.gfa.gz
 odgi build -g ${prefix_chr6_smooth}.gfa -o ${prefix_chr6_smooth}.og -t 16 -P
 
