@@ -3,8 +3,7 @@
 prefix_chr6_smooth=chr6.pan.fa.a2fb268.4030258.6a1ecc2.smooth
 
 # Download and build the graph
-# FIXME with the final link
-wget http://hypervolu.me/~guarracino/${prefix_chr6_smooth}.gfa.gz
+wget https://s3-us-west-2.amazonaws.com/human-pangenomics/pangenomes/scratch/2021_11_16_pggb_wgg.88/chroms/${prefix_chr6_smooth}.gfa.gz
 gunzip ${prefix_chr6_smooth}.gfa.gz
 odgi build -g ${prefix_chr6_smooth}.gfa -o ${prefix_chr6_smooth}.og -t 16 -P
 

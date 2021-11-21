@@ -1,7 +1,6 @@
 #!/bin/bash
 
-#### FIXME once wgg.88 is in the HPRC repository ####
-wget wget http://hypervolu.me/~guarracino/chr4.pan.fa.a2fb268.4030258.6a1ecc2.smooth.gfa.gz
+wget https://s3-us-west-2.amazonaws.com/human-pangenomics/pangenomes/scratch/2021_11_16_pggb_wgg.88/chroms/chr4.pan.fa.a2fb268.4030258.6a1ecc2.smooth.gfa.gz
 gunzip chr4.pan.fa.a2fb268.4030258.6a1ecc2.smooth.gfa.gz
 wget https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/genes/hg38.ncbiRefSeq.gtf.gz
 
