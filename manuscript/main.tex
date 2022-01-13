@@ -22,6 +22,7 @@
 \newcommand{\vocab}{\textbf}
 \newcommand{\red}[1]{{\textcolor{Red}{#1}}}
 \newcommand{\FIXME}[1]{\red{[FIXME: #1]}}
+\newcommand{\REVIEWED}[1]{{\textcolor{Red}{#1}}}
 
 \def\labelitemi{--}
 
@@ -67,7 +68,7 @@ These models offer the opportunity to study the entire genomic diversity of a po
 Nevertheless, analyzing hundreds of gigabase-scale genomes using pangenome graphs is difficult as it is not well-supported by existing tools.
 Hence, fast and versatile software is required to ask advanced questions to such data in an efficient way. \\
 \textbf{Results:}
-We wrote ODGI, a novel suite of tools that implements scalable algorithms and has an efficient in-memory representation of DNA variation graphs.
+We wrote ODGI, a novel suite of tools that implements scalable algorithms and has an efficient in-memory representation of DNA \REVIEWED{pangenome graphs in the form of variation graphs}.
 ODGI includes tools for detecting complex regions, extracting \textit{loci}, removing artifacts, exploratory analysis, manipulation, validation, and visualization.
 Its fast parallel execution facilitates routine pangenomic tasks, as well as pipelines that can quickly answer complex biological questions of gigabase-scale pangenome graphs. \\
 \textbf{Availability:}
@@ -83,7 +84,12 @@ ODGI can be installed via Bioconda \url{https://bioconda.github.io/recipes/odgi/
 \section{Introduction}
 A pangenome models the full set of genomic elements in a given species or clade~\citep{cpang2018,Eizenga_2020}.
 In contrast to reference-based approaches which relate sequences to a single genome, these data structures encode the mutual relationships between all the genomes represented.
-In pangenome graphs~\citep{Paten:2017}, homologous regions between genomes are compressed into a single representative of all alleles present in the pangenome.
+%In pangenome graphs~\citep{Paten:2017}, homologous regions between genomes are compressed into a single representative of all alleles present in the pangenome.
+\REVIEWED{A class of methods to represent pangenomes involves the sequence graphs~\citep{Hein1989, Paten:2017}, where homologous regions between genomes are compressed into a single representative of all alleles present in the pangenome.
+In node-labeled sequence graphs, nodes indicate DNA sequences, with edges connecting the nodes that are concatenated in the sequences represented in the graph.
+A bidirected sequence graph represents both strands of DNA.
+On this model, variation graphs add the concept of path to embed linear sequences (e.g., genomes or haplotypes) into the graph~\citep{Garrison:2018}.
+}
 These flexible models let us encode any kind of variation, allowing the generation of comprehensive data systems that builds the basis for the analyses of genome evolution.
 Although these data structures are of utility to researchers~\citep{cpang2018,Garrison:2018,Baaijens_2019,Hickey:2020,Sibbesen_2021}, the scientific community still lacks a toolset specifically focused on graph manipulation and interrogation.
 
@@ -128,8 +134,8 @@ Here we refocus it with ODGI, a compatible, but independent set of algorithms fo
 %By projecting input sequences through this transformation, we obtain paths that losslessly encode the original sequences, but in the space of the graph \citep{Garrison_2019_thesis}.
 
 \section{Implementation}
-The ODGI toolkit builds on existing approaches to efficiently store and manipulate variation graphs~\citep{Garrison:2018}.
-Similar to other efficient libraries presenting the \textsc{HandleGraph} model~\citep{Eizenga_2020_BX}, the implementation of ODGI's tools rests on three key properties which hold for most pangenome variation graphs:
+The ODGI toolkit builds on existing approaches to efficiently store and manipulate \REVIEWED{pangenome graphs in the form of} variation graphs~\citep{Garrison:2018}.
+Similar to other efficient libraries presenting the \textsc{HandleGraph} model~\citep{Eizenga_2020_BX}, the implementation of ODGI's tools rests on three key properties which hold for most pangenome graphs:
 
 \begin{enumerate}
 \item They are relatively sparse, with low average node degree.
@@ -155,7 +161,7 @@ We store the graph in a vector of node structures, each of which presents a node
 Expressed in terms of the variation graph $V$, ODGI's core $Node$ structure includes a decoder that maps the neighbors of each node to a dense range of integers.
 For a given $Node_i$ and neighbor $Node_j$, the decoder itself does not store the $id$ of $Node_j$, but rather a compact representation of the relative difference between the node ids: $\delta = Node_i.id - Node_j.id$.
 %The $\delta between two nodes is computed as their distance in the graph vector (i.e., the difference between the node offsets).
-This keeps the size of the encoding small, per common variation graph property (2).
+This keeps the size of the encoding small, per common pangenome graph property (2).
 We define the edges and path steps traversing the node in terms of this alphabet of $\delta$'s.
 The structures in Algorithm~\ref{alg:structs} describes our encoding.
 
