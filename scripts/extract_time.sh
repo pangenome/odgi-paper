@@ -41,8 +41,8 @@ do
       fi
     done < "$G"."$H"haps.og.gfa
 
-    odgi build -g "$G"."$H"haps.og.gfa -o "$G"."$H"haps.og.gfa.og -t 16 -P
-    vg convert -g -x -t 16 "$G"."$H"haps.og.gfa > "$G"."$H"haps.og.gfa.xg
+    odgi build -g "$G"."$H"haps.og.gfa.orig.gfa -o "$G"."$H"haps.og.gfa.og -t 16 -P
+    vg convert -g -x -t 16 "$G"."$H"haps.og.gfa.orig.gfa > "$G"."$H"haps.og.gfa.xg
 done
 
 for H in 1 2 4 8 16 32 64
@@ -53,7 +53,6 @@ do
         do
             echo "H: ""$H"" T: ""$T"" i: ""$i"
             /usr/bin/time --verbose odgi extract -i "$G"."$H"haps.og.gfa.og -t "$T" -c 10 -r grch38#chr6:58553888-59829934 -o "$G"."$H"haps.og.gfa.og.centromeres.og 2> chr6_odgi_extract_time_"$T"_"$H"_"$i"
-            # TODO this never finished with 28 threads so far, maybe we can't run it!
             /usr/bin/time --verbose vg chunk -x "$G"."$H"haps.og.gfa.xg -t "$T" -p grch38#chr6:58553888-59829934 -c 10 2> chr6_vg_chunk_time_"$T"_"$H"_"$i" 1> "$G"."$H"haps.og.gfa.xg.centromeres.vg
         done
     done
