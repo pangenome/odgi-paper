@@ -7,6 +7,7 @@ for T in 1 2 4 8 16
 do
     for i in {1..10}
     do
+        echo "T: ""$T"" i: ""$i"
         /usr/bin/time --verbose odgi build -g "$G" -o "$G".og -t "$T" 2> chr6_odgi_build_time_"$T"_"$i"
         /usr/bin/time --verbose vg convert -g -x -t "$T" "$G" 2> chr6_vg_convert_time_"$T"_"$i" 1> "$G".xg
     done    
@@ -31,7 +32,11 @@ done
 # TODO
 #Rscript time.R mean_build_time.csv mean_build_time.pdf
 
-odgi paths -i "$G" -L -l -t 16 > "$G".paths
+odgi build -g "$G" -o "$G".og -t 16 -P
+odgi paths -i "$G".og -L -l -t 16 > "$G".paths
+grep -E 'grch38|chm13' "$G".paths -v > "$G".non_ref.paths
+cut -f 1,2 "$G".non_ref.paths -d '#' | sort| uniq > "$G".non_ref.haps
+
 
 if [ -f odgi_build_haps_time.csv ] ; then
     rm odgi_build_haps_time.csv
@@ -41,23 +46,27 @@ if [ -f vg_convert_haps_time.csv ] ; then
 fi
 
 for H in 1 2 4 8 16 32 64
-do
-    if [[ H == 1 ]]; then
+do  
+    echo "hap: ""$H" 
+    if [[ "$H" == 1 ]]; then
+        echo "H == 1"
         grep grch38 "$G".paths | sed 's/\t1\t/\t0\t/g' > "$G"."$H"haps.bed
         cut -f 1 "$G"."$H"haps.bed > "$G"."$H"haps
-    elif [[ H == 2 ]]; then
+    elif [[ "$H" == 2 ]]; then
+        echo "H == 2"
         grep -E 'grch38|chm13' "$G".paths | sed 's/\t1\t/\t0\t/g' > "$G"."$H"haps.bed
         cut -f 1 "$G"."$H"haps.bed > "$G"."$H"haps
     else
         grep -E $(echo $(head -n $(expr "$H" - 2) "$G".non_ref.haps | sed -z 's/\n/\|/g')"grch38|chm13") "$G".paths | sed 's/\t1\t/\t0\t/g' > "$G"."$H"haps.bed
         cut -f 1 "$G"."$H"haps.bed > "$G"."$H"haps
     fi
-    odgi extract -i "$G" -o - -b "G$"."$H"haps.bed -p "$G"."$H"haps -t 16 -P | odgi sort -i - -O -o "$G"."$H"haps.og
+    odgi extract -i "$G".og -o - -b "$G"."$H"haps.bed -p "$G"."$H"haps -t 16 -P | odgi sort -i - -O -o "$G"."$H"haps.og
     odgi view -i "$G"."$H"haps.og -g > "$G"."$H"haps.og.gfa
     for i in {1..10}
     do
-        /usr/bin/time --verbose odgi build -g "$G"."$H"haps.og.gfa -o "$G"."$H"haps.og.gfa.og -t 16 2> chr6_odgi_build_time_"$H"_"$i"
-        /usr/bin/time --verbose vg convert -g -x -t 16 "$G"."$H"haps.og.gfa 2> chr6_vg_convert_time_"$H"_"$i" 1> "$G"."$H"haps.og.gfa.xg
+        echo "H: ""$H"" i: ""$i"
+        /usr/bin/time --verbose odgi build -g "$G"."$H"haps.og.gfa -o "$G"."$H"haps.og.gfa.og -t 16 2> chr6_odgi_build_time_haps_"$H"_"$i"
+        /usr/bin/time --verbose vg convert -g -x -t 16 "$G"."$H"haps.og.gfa 2> chr6_vg_convert_time_haps_"$H"_"$i" 1> "$G"."$H"haps.og.gfa.xg
     done
 done
 
@@ -65,8 +74,8 @@ for H in 1 2 4 8 16 32 64
 do
     for i in {1..10}
     do
-      echo "$H","$i",$(grep Elapsed chr6_odgi_build_time_"$H"_"$i" | cut -f 8 -d ' ' | awk -F: '{ print ($1 * 60) + ($2) + $3 }'),$(grep "Maximum" chr6_odgi_build_time_"$H"_"$i" | cut -f 6 -d ' ') >> odgi_build_haps_time.csv
-      echo "$H","$i",$(grep Elapsed chr6_vg_convert_time_"$H"_"$i" | cut -f 8 -d ' ' | awk -F: '{ print ($1 * 60) + ($2) + $3 }'),$(grep "Maximum" chr6_vg_convert_time_"$H"_"$i" | cut -f 6 -d ' ') >> vg_convert_haps_time.csv
+      echo "$H","$i",$(grep Elapsed chr6_odgi_build_time_haps_"$H"_"$i" | cut -f 8 -d ' ' | awk -F: '{ print ($1 * 60) + ($2) + $3 }'),$(grep "Maximum" chr6_odgi_build_time_haps_"$H"_"$i" | cut -f 6 -d ' ') >> odgi_build_haps_time.csv
+      echo "$H","$i",$(grep Elapsed chr6_vg_convert_time_haps_"$H"_"$i" | cut -f 8 -d ' ' | awk -F: '{ print ($1 * 60) + ($2) + $3 }'),$(grep "Maximum" chr6_vg_convert_time_haps_"$H"_"$i" | cut -f 6 -d ' ') >> vg_convert_haps_time.csv
     done
 done
 
