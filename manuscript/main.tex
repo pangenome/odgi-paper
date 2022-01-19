@@ -1,7 +1,8 @@
 \PassOptionsToPackage{utf8}{inputenc}
 \documentclass{bioinfo}
 
-\usepackage[draft]{hyperref}
+\usepackage[]{hyperref}
+\hypersetup{colorlinks=true,urlcolor=black,linkcolor=black,citecolor=black}
 \usepackage{makecell}
 \usepackage{comment}
 
@@ -12,6 +13,8 @@
 
 \usepackage{algorithm2e}
 \usepackage[usenames,dvipsnames]{xcolor}
+
+\usepackage{orcidlink}
 
 % we squeeze our figures even more together
 \captionsetup{belowskip=-2pt}
@@ -38,11 +41,11 @@
 
 \title[ODGI: understanding pangenome graphs]{ODGI: understanding pangenome graphs}
 \author[Guarracino, Heumos \textit{et~al}.]{
-Andrea~Guarracino\,$^{\text{\sfb 1} \dagger}$,
-Simon~Heumos\,$^{\text{\sfb 2} \dagger}$,
-Sven~Nahnsen\,$^{\text{\sfb 2,3}}$,
-Pjotr~Prins\,$^{\text{\sfb 4}}$,
-and~Erik~Garrison\,$^{\text{\sfb 4}*}$
+Andrea~Guarracino\orcidlink{0000-0001-9744-131X}\,$^{\text{\sfb 1} \dagger}$,
+Simon~Heumos\orcidlink{0000-0003-3326-817X},$^{\text{\sfb 2} \dagger}$
+Sven~Nahnsen\orcidlink{https://orcid.org/0000-0002-4375-0691}$^{\text{\sfb 2,3}}$,
+Pjotr \\Prins\orcidlink{0000-0002-8021-9162}$^{\text{\sfb 4}}$,
+and~Erik~Garrison\orcidlink{0000-0003-3821-631X}$^{\text{\sfb 4}*}$
 }
 
 \address{
