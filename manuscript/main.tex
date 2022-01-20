@@ -29,7 +29,7 @@
 
 \def\labelitemi{--}
 
-\copyrightyear{2021} \pubyear{XXXX}
+\copyrightyear{2022} \pubyear{XXXX}
 
 \access{Advance Access Publication Date: Day Month Year}
 \appnotes{Genome Analysis}
@@ -89,20 +89,22 @@ ODGI can be installed via Bioconda \url{https://bioconda.github.io/recipes/odgi/
 \section{Introduction}
 A pangenome models the full set of genomic elements in a given species or clade~\REVIEWED{\citep{cpang2018,Eizenga_2020}}.
 In contrast to reference-based approaches which relate sequences to a single genome, these data structures encode the mutual relationships between all the genomes represented.
-%In pangenome graphs~\citep{Paten:2017}, homologous regions between genomes are compressed into a single representative of all alleles present in the pangenome.
 \REVIEWED{[2,5] A class of methods to represent pangenomes involves the sequence graphs~\citep{Hein1989, Paten:2017}, where homologous regions between genomes are compressed into a single representative of all alleles present in the pangenome.
 In node-labeled sequence graphs, nodes indicate DNA sequences, with edges connecting the nodes that are concatenated in the sequences represented in the graph.
 A bidirected sequence graph represents both strands of DNA.
-On this model, variation graphs add the concept of paths representing linear sequences as traversals through the nodes of the graph~\citep{Garrison:2018}. A path can be a genome, haplotype, contig, or read. [2,5]
-}
-These flexible models let us encode any kind of variation, allowing the generation of comprehensive data systems that builds the basis for the analyses of genome evolution.
-Although these data structures are of utility to researchers~\citep{cpang2018,Garrison:2018,Baaijens_2019,Hickey:2020,Sibbesen_2021}, the scientific community still lacks a toolset specifically focused on graph manipulation and interrogation.
+On this model, variation graphs add the concept of paths representing linear sequences as traversals through the nodes of the graph~\citep{Garrison:2018}. A path can be a genome, haplotype, contig, or read. [2,5]}
 
+\REVIEWED{Pangenome graphs can be constructed by multiple sequence alignment~\citep{Lee_2002,Grasso_2004} or by transitively reducing an alignment between sequences to an equivalent, labeled sequence graph~\citep{Kehr_2014,Garrison_2019_thesis}.
+Current methods to build these graphs are still under active development~\citep{Li:2020,Armstrong:2020,pggb}, but they have largely settled on a common data model, represented in the Graphical Fragment Assembly (GFA) format~\citep{GFA}.
+This standardization supports the development of a reference set of tools that operate on the pangenome graph model.}
+
+Pangenome graphs let us encode any kind of variation, allowing the generation of comprehensive data systems that builds the basis for the analyses of genome evolution.
 The Human Pangenome Reference Consortium (HPRC) and Telomere-to-Telomere (T2T) consortium~\citep{Miga:2020, Logsdon_2021, Nurk_2021} have recently demonstrated that high-quality \textit{de novo} assemblies can be routinely generated from third-generation long read sequencing data.
-We anticipate that \textit{de novo} assemblies of similar quality will become common, leading to demand for methods that allow us to create and explore pangenomes.
-%Pangenome graphs are a natural model to support these kinds of analyses, but studies based on pangenome graphs are difficult due to a lack of downstream tools and standard workflows.
+We anticipate that \textit{de novo} assemblies of similar quality will become common, leading to demand for methods to \REVIEWED{analyze} pangenomes.
 
-Here, we present the Optimized Dynamic Genome/Graph Implementation (ODGI) toolkit, a pangenome graph interrogation and transformation system specifically implemented to handle the data scales encountered when working with pangenomes built from hundreds of haplotype-resolved genomes.
+Although \REVIEWED{pangenome graphs} are data structures of utility to researchers~\citep{cpang2018,Garrison:2018,Baaijens_2019,Hickey:2020,Sibbesen_2021}, the scientific community still lacks a toolset \REVIEWED{capable of operating on gigabase-scale pangenomes built from whole-genome assemblies}.
+Such an effort began with the VG toolkit~\citep{Garrison:2018}\REVIEWED{, but its tools do not handle efficiently pangenome graphs presenting complex motifs that result from repetitive sequences like centromeres.}
+Here we refocus it with the Optimized Dynamic Genome/Graph Implementation (ODGI) toolkit, a compatible, but independent pangenome graph interrogation and transformation system specifically implemented to handle the data scales encountered when working with pangenomes built from hundreds of haplotype-resolved genomes.
 ODGI provides a set of standard operations on the variation graph data model, generalizing ``genome arithmetic'' concepts like those found in BEDTools~\citep{Quinlan_2010} to work on pangenome graphs,
 and providing a variety of operations, such as visualization, sorting, and liftover projections, all critical to understand and exploit pangenome graphs.
 
@@ -126,13 +128,6 @@ Paths $P = p_1\ldots p_{|P|}$ describe walks over node strands: $p_i = s_1 \ldot
 When used as a pangenome graph, $V$ expresses sequences, haplotypes, contigs, and annotations as paths.
 %The utility of the variation graph model lies in its lossless representation of genomes and their alignment.
 By containing both the sequences and information about their relative variations, the variation graph provides a complete and powerful foundation for many bioinformatic applications.
-
-Pangenome graphs can be constructed by multiple sequence alignment~\citep{Lee_2002,Grasso_2004} or by transitively reducing an alignment between sequences to an equivalent, labeled sequence graph~\citep{Kehr_2014,Garrison_2019_thesis}.
-Current methods to build these graphs are still under active development~\citep{Li:2020,Armstrong:2020,pggb}, but they have largely settled on a common data model, represented in the Graphical Fragment Assembly (GFA) format~\citep{GFA}.
-%\FIXME{may want to move GFA standard+VG to intro section 1}. AG: it is borderline, but it seems fine to have it here too.
-This standardization supports the development of a reference set of tools that operate on the pangenome graph model.
-Such an effort began with the VG toolkit~\citep{Garrison:2018}.
-Here we refocus it with ODGI, a compatible, but independent set of algorithms focused on visualization, interrogation, and transformation of pangenome graphs.
 
 %A more general approach is to build the graph from an alignment between sequences.
 %We first transitively collapse characters in the input sequences that align together into single character in the output genome
@@ -532,10 +527,9 @@ We thank members of the HPRC Pangenome Working Group for their insightful discus
 We gratefully acknowledge support from NIH/NIDA U01DA047638 (EG) and NIH/NIGMS R01GM123489 (EG and PP).
 SH acknowledges funding from the Central Innovation Programme (ZIM) for SMEs of the Federal Ministry for Economic Affairs and Energy of Germany. SN acknowleges Germany’s Excellence Strategy (CMFI), EXC-2124 and (iFIT) - EXC 2180 – 390900677.
 This work was supported by the BMBF-funded de.NBI Cloud within the German Network for Bioinformatics Infrastructure (de.NBI) (031A537B, 031A533A, 031A538A, 031A533B, 031A535A, 031A537C, 031A534A, 031A532B).
-
-\REVIEWED{\section*{Conflict of Interest}}
-
-\REVIEWED{The authors declare that they have no competing interests.}
+\linebreak
+\linebreak
+\REVIEWED{\textit{Conflict of Interest}: the authors declare no competing interests.}
 
 
 \section*{Data availability}
