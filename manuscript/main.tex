@@ -90,8 +90,8 @@ ODGI can be installed via Bioconda \url{https://bioconda.github.io/recipes/odgi/
 A pangenome models the full set of genomic elements in a given species or clade~\REVIEWED{\citep{cpang2018,Eizenga_2020}}.
 In contrast to reference-based approaches which relate sequences to a single genome, these data structures encode the mutual relationships between all the genomes represented.
 \REVIEWED{[2,5] A class of methods to represent pangenomes involves the sequence graphs~\citep{Hein1989, Paten:2017}, where homologous regions between genomes are compressed into a single representative of all alleles present in the pangenome.
-In node-labeled sequence graphs, nodes indicate DNA sequences, with edges connecting the nodes that are concatenated in the sequences represented in the graph.
-A bidirected sequence graph represents both strands of DNA.
+In node-labeled sequence graphs, nodes indicate \REVIEWED{[1,2] genomic sequences [1,2]}, with edges connecting the nodes that are concatenated in the sequences represented in the graph.
+A bidirected sequence graph can \REVIEWED{[1,2] represent both strands of the genomic sequences of the DNA. [1,2]}
 On this model, variation graphs add the concept of paths representing linear sequences as traversals through the nodes of the graph~\citep{Garrison:2018}. A path can be a genome, haplotype, contig, or read. [2,5]}
 
 \REVIEWED{Pangenome graphs can be constructed by multiple sequence alignment~\citep{Lee_2002,Grasso_2004} or by transitively reducing an alignment between sequences to an equivalent, labeled sequence graph~\citep{Kehr_2014,Garrison_2019_thesis}.
@@ -121,7 +121,7 @@ and providing a variety of operations, such as visualization, sorting, and lifto
 
 \section{Model}
 A pangenome graph is a sequence model that encodes the mutual alignment of many genomes~\citep{Garrison_2019_thesis,Eizenga_2020}.
-In the variation graph, $V = (N, E, P)$, nodes $N = n_1\ldots n_{|N|}$ contain sequences of DNA.
+In the variation graph, $V = (N, E, P)$, nodes $N = n_1\ldots n_{|N|}$ contain \REVIEWED{[1,2] genomic sequences. [1,2]}
 Each node $n_i$ has an identifier $i$ and an implicit reverse complement $\bar{n_i}$, and a node strand $s$ corresponds to one such orientations.
 Edges $E = e_1\ldots e_{|E|}$ represent ordered pairs of node strands: $e_i = ( s_a, s_b )$.
 Paths $P = p_1\ldots p_{|P|}$ describe walks over node strands: $p_i = s_1 \ldots s_{|p_i|}$.
@@ -169,7 +169,7 @@ The structures in Algorithm~\ref{alg:structs} describes our encoding.
 \MyStruct{Node}{
     \textbf{id} $\in \mathbb{N}$ \tcp{an identifier}
     \textbf{lock} \tcp{atomic locking primitive}
-    \textbf{sequence} $= [$A$|$T$|$G$|$C$|$N$]*$ \tcp{DNA}
+    \textbf{sequence} $= [$A$|$T$|$G$|$C$|$N$]*$ \REVIEWED{[1,2] \tcp{genomic} [1,2]}
     \tcp{bit-packed vector of edges}
     \textbf{edges} $= (x_i,x_j)* : (i, j) \in [1\ldots \Sigma]^2$ \\
     \tcp{bit-packed vector of id deltas}
@@ -317,7 +317,7 @@ To overcome such a limitation, \textit{odgi viz} supports multiple visualization
 Graph node order can affect downstream analyses on pangenome graphs.
 With \textit{odgi viz} we can color the paths by path position (Fig.~\ref{fig:odgi_viz}\textbf{c}), with light grey indicating where paths begin and dark grey where they end.
 This visualization is suitable for understanding graph node order, as smooth color gradients indicate that the graph order respects the linear paths' coordinate systems.
-Pangenome graphs represent both strands of DNA sequences.
+Pangenome graphs represent both strands \REVIEWED{[1,2] of the genomic sequences of the DNA. [1,2]}
 \textit{odgi viz} supports also coloring the paths by orientation, with paths colored where their sequence is reverse-complemented (red) or in direct orientation (black) with respect to the sequences of the graph nodes (Fig.~\ref{fig:odgi_viz}\textbf{d}).
 Eukaryotic genomes experience gains and losses of genetic material, resulting in copy number variation (CNV) across the population.
 With \textit{odgi viz}, we can use multiple color palettes to color the paths by path depth, highlighting the different copy number statuses in the genomes represented in the pangenome graph (Fig.~\ref{fig:odgi_viz}\textbf{e}).
