@@ -282,7 +282,7 @@ This approach benefits from the information in the graph without strongly embedd
 \label{sec:build}
 ODGI maintains its own efficient binary format for storing graphs on disk.
 We begin by transforming the storage model of the standard GFAv1~\citep{GFA} format (in which nodes, edges, and paths are described independently) into the ODGI node-centric encoding with \textit{odgi build}.
-This construction step can be a significant bottleneck, in particular as the size of the path set of the graph increases.
+This construction step can be a significant bottleneck, in particular as the size of the path set of the graph increases. \REVIEWED{[1,5] The process itself is lossless. A graph in ODGI format represents everything that is in the input GFAv1 graph, without any loss of information. [1,5]}
 
 The ODGI data structure (Algorithm~\ref{alg:structs}) allows algorithms that build and modify the graph to operate in parallel, without any global locks.
 In \textit{odgi build}, we initially construct the node vector in a serial operation that scans across the input GFA file.
