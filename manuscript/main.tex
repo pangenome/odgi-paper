@@ -102,10 +102,10 @@ Pangenome graphs let us encode any kind of variation, allowing the generation of
 The Human Pangenome Reference Consortium (HPRC) and Telomere-to-Telomere (T2T) consortium~\citep{Miga:2020, Logsdon_2021, Nurk_2021} have recently demonstrated that high-quality \textit{de novo} assemblies can be routinely generated from third-generation long read sequencing data.
 We anticipate that \textit{de novo} assemblies of similar quality will become common, leading to demand for methods to \REVIEWED{analyze} pangenomes.
 
-Although \REVIEWED{pangenome graphs} are data structures of utility to researchers~\citep{cpang2018,Garrison:2018,Baaijens_2019,Hickey:2020,Sibbesen_2021}, the scientific community still lacks a toolset \REVIEWED{capable of operating on gigabase-scale pangenomes built from whole-genome assemblies}.
+Although \REVIEWED{pangenome graphs} are data structures of utility to researchers~\citep{cpang2018,Garrison:2018,Baaijens_2019,Hickey:2020,Sibbesen_2021}, the scientific community still lacks a toolset \REVIEWED{capable of operating on gigabase-scale pangenome graphs constructed from whole-genome assemblies}.
 Such an effort began with the VG toolkit~\citep{Garrison:2018}\REVIEWED{, but its tools do not handle efficiently pangenome graphs presenting complex motifs that result from repetitive sequences like centromeres.}
-Here we refocus it with the Optimized Dynamic Genome/Graph Implementation (ODGI) toolkit, a compatible, but independent pangenome graph interrogation and transformation system specifically implemented to handle the data scales encountered when working with pangenomes built from hundreds of haplotype-resolved genomes.
-ODGI provides a set of standard operations on the variation graph data model, generalizing ``genome arithmetic'' concepts like those found in BEDTools~\citep{Quinlan_2010} to work on pangenome graphs,
+Here we refocus it with the Optimized Dynamic Genome/Graph Implementation (ODGI) toolkit, a compatible, but independent pangenome graph interrogation and transformation system specifically implemented to handle the data scales encountered when working \REVIEWED{[1,10]with previously constructed pangenomes comprising hundreds of haplotype-resolved genomes.[1,10]}
+ODGI offers a set of standard operations on the variation graph data model, generalizing ``genome arithmetic'' concepts like those found in BEDTools~\citep{Quinlan_2010} to work on pangenome graphs,
 and providing a variety of operations, such as visualization, sorting, and liftover projections, all critical to understand and exploit pangenome graphs.
 
 %Tools in ODGI operate on an efficient dynamic HandleGraph model \citep{Eizenga_2020_BX}.
@@ -282,7 +282,7 @@ This approach benefits from the information in the graph without strongly embedd
 \label{sec:build}
 ODGI maintains its own efficient binary format for storing graphs on disk.
 We begin by transforming the storage model of the standard GFAv1~\citep{GFA} format (in which nodes, edges, and paths are described independently) into the ODGI node-centric encoding with \textit{odgi build}.
-This construction step can be a significant bottleneck, in particular as the size of the path set of the graph increases. \REVIEWED{[1,5] The process itself is lossless. A graph in ODGI format represents everything that is in the input GFAv1 graph, without any loss of information. [1,5]}
+This construction step can be a significant bottleneck, in particular as the size of the path set of the graph increases. \REVIEWED{[1,5]The process itself is lossless. A graph in ODGI format represents everything that is in the input GFAv1 graph, without any loss of information.[1,5]} \REVIEWED{[2,1]ODGI does not support GFAv2 nor rGFA. The less popular GFAv2 format was specifically designed for assembly graphs. rGFA requires a genomic sequence to be the reference sequence, but in GFAv1 we don't have that limitation which is fundamental to implement reference-free approaches.[2,1]}
 
 The ODGI data structure (Algorithm~\ref{alg:structs}) allows algorithms that build and modify the graph to operate in parallel, without any global locks.
 In \textit{odgi build}, we initially construct the node vector in a serial operation that scans across the input GFA file.
@@ -480,7 +480,7 @@ describing and analyzing a much larger set of variation than previously was poss
 Furthermore, users can even consider ODGI as a framework, taking advantage of its algorithms to develop new and more advanced tools that work on pangenome graphs,
 thus expanding the type of possible pangenomic analyses available to the scientific community.
 
-ODGI is already the backbone of the Pangenome Graph Builder pipeline~\citep{pggb}.
+\REVIEWED{[1,10]While ODGI does not construct graphs from scratch nor is is capable of extending them, ODGI[1,10]} is already the backbone of the Pangenome Graph Builder pipeline~\citep{pggb}.
 Its static, large-scale 1D and 2D visualizations of the pangenome graphs allow an unprecedented high-level perspective on variation in pangenomes, and have also been critical in the development of pangenome graph building methods.  %the underlying structure and any problems in graph construction.
 However, an interactive solution that combines the 1D and 2D layout of a graph with annotation and read mapping information across different zoom levels is still missing.
 Recent interactive browsers are reference-centric~\citep{Beyer2019, Yokoyama2019, Durant2021, Liang2021} or focus primarily on 2D~\citep{Wick_2015, Gonnella2018}.
