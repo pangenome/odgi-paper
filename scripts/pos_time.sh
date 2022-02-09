@@ -8,6 +8,27 @@ odgi paths -i "$G".og -L -l -t 16 > "$G".paths
 grep -E 'grch38|chm13' "$G".paths -v > "$G".non_ref.paths
 cut -f 1,2 "$G".non_ref.paths -d '#' | sort| uniq > "$G".non_ref.haps
 
+vg_find_helper="#!/bin/bash
+
+if [ -f \"\$G\".\"\$H\"haps.og.gfa.xg.find ] ; then
+    rm \"\$G\".\"\$H\"haps.og.gfa.xg.find
+fi
+
+G=\"\$1\"
+H=\"\$2\"
+T=\"\$3\"
+n=\"\$4\"
+
+while IFS= read -r pos
+    do
+    if [[ \"\$pos\" != *\"strand.vs.ref\" ]]; then
+        vg find -x \"\$G\".\"\$H\"haps.og.gfa.xg -P \$(echo \"\$pos\" | cut -f 2 | grep \"target.path.pos\" -v | cut -f 1 -d ',') -n \"\$n\" >> \"\$G\".\"\$H\"haps.og.gfa.xg.find
+    fi
+done < \"\$G\".\"\$H\"haps.og.gfa.og.pos"
+
+echo "$vg_find_helper" > vg_find_helper.sh
+chmod +x vg_find_helper.sh
+
 for H in 1 2 4 8 16 32 64
 do  
     echo "hap: ""$H" 
@@ -47,21 +68,21 @@ done
 
 for H in 1 2 4 8 16 32 64
 do
+    # we take a position relative to the middle of graphs with more than 1 haplotype
+    odgi position -i "$G"."$H"haps.og.gfa.og -p grch38#chr6,147658481,+ -t 1 -v > "$G"."$H"haps.og.gfa.og.graphpos
     for T in 1 2 4 8 16
     do
-        for i in {1..2}
+        for i in 1 2 3 4 5 6 7 8 9 10
         do
-            # 4701798 nodes, so we take the one in the middle
             echo "H: ""$H"" T: ""$T"" i: ""$i"
-            /usr/bin/time --verbose odgi position -i "$G"."$H"haps.og.gfa.og -g 2350000 -I -t "$T" 2> chr6_odgi_position_time_"$T"_"$H"_"$i" 1> "$G"."$H"haps.og.gfa.og.pos
-            # TODO this won't work with one haplotype
-            /usr/bin/time --verbose vg find -x "$G"."$H"haps.og.gfa.xg -P $(cut -f 2 "$G"."$H"haps.og.gfa.og.pos | grep "target.path.pos" -v | cut -f 1 -d ',') -n 2350000 2> chr6_vg_find_time_"$T"_"$H"_"$i" 1> "$G"."$H"haps.og.gfa.xg.find
+            /usr/bin/time --verbose odgi position -i "$G"."$H"haps.og.gfa.og -g $(cat "$G"."$H"haps.og.gfa.og.graphpos | grep -v "target.graph.pos" | cut -f 2 | cut -f 1 -d ',') -t "$T" -I 2> chr6_odgi_position_time_"$T"_"$H"_"$i" 1> "$G"."$H"haps.og.gfa.og.pos
+            /usr/bin/time --verbose ./vg_find_helper.sh "$G" "$H" "$T" $(cat "$G"."$H"haps.og.gfa.og.graphpos | grep -v "target.graph.pos" | cut -f 2 | cut -f 1 -d ',') 2> chr6_vg_find_time_"$T"_"$H"_"$i"
         done
     done
 done
 
 if [ -f odgi_position_time.csv ] ; then
-    rm odgi_position_time.csv.csv
+    rm odgi_position_time.csv
 fi
 if [ -f vg_find_time.csv ] ; then
     rm vg_find_time.csv 
@@ -71,7 +92,7 @@ for H in 1 2 4 8 16 32 64
 do
     for T in 1 2 4 8 16
     do
-        for i in {1..2}
+        for i in 1 2 3 4 5 6 7 8 9 10
         do
             echo "$T","$H","$i",$(grep Elapsed chr6_odgi_position_time_"$T"_"$H"_"$i" | cut -f 8 -d ' ' | awk -F: '{ print ($1 * 60) + ($2) + $3 }'),$(grep "Maximum" chr6_odgi_position_time_"$T"_"$H"_"$i" | cut -f 6 -d ' ') >> odgi_position_time.csv
             #TODO if we can actually produce something...
@@ -79,6 +100,8 @@ do
         done
     done
 done
+
+rm vg_find_helper.sh
 
 #TODO
 #Rscript ...

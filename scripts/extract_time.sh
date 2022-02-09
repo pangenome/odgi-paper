@@ -49,7 +49,7 @@ for H in 1 2 4 8 16 32 64
 do
     for T in 1 2 4 8 16
     do
-        for i in {1..2}
+        for i in 1 2 3 4 5 6 7 8 9 10
         do
             echo "H: ""$H"" T: ""$T"" i: ""$i"
             /usr/bin/time --verbose odgi extract -i "$G"."$H"haps.og.gfa.og -t "$T" -c 10 -r grch38#chr6:58553888-59829934 -o "$G"."$H"haps.og.gfa.og.centromeres.og 2> chr6_odgi_extract_time_"$T"_"$H"_"$i"
@@ -69,7 +69,7 @@ for H in 1 2 4 8 16 32 64
 do
     for T in 1 2 4 8 16
     do
-        for i in {1..2}
+        for i in 1 2 3 4 5 6 7 8 9 10
         do
             echo "$T","$H","$i",$(grep Elapsed chr6_odgi_extract_time_"$T"_"$H"_"$i" | cut -f 8 -d ' ' | awk -F: '{ print ($1 * 60) + ($2) + $3 }'),$(grep "Maximum" chr6_odgi_extract_time_"$T"_"$H"_"$i" | cut -f 6 -d ' ') >> odgi_extract_time.csv
             echo "$T","$H","$i",$(grep Elapsed chr6_vg_chunk_time_"$T"_"$H"_"$i" | cut -f 8 -d ' ' | awk -F: '{ print ($1 * 60) + ($2) + $3 }'),$(grep "Maximum" chr6_vg_chunk_time_"$T"_"$H"_"$i" | cut -f 6 -d ' ') >> vg_chunk_time.csv 
