@@ -308,10 +308,14 @@ We pursue a novel approach to visualization with \textit{odgi viz} and \textit{o
 This visualization is computed in linear-time and offers a human-interpretable format suitable for understanding the topology and genome relationships in the pangenome graph (Fig.~\ref{fig:odgi_viz}).
 Graph nodes are arranged on a single axis, from left to right, with the colored bar indicating the paths and the nodes they cross.
 White spaces indicate where paths do not traverse the nodes.
+\REVIEWED{Directly consecutive nodes are displayed with no white space between the two.}
 The meaning of the colors depends on how \textit{odgi viz} is executed.
 By default, path colors are derived from the path names (Fig.~\ref{fig:odgi_viz}\textbf{b}).
 Path names are displayed on the left of the paths.
 The black lines on the bottom indicate the edges connecting the nodes and, therefore, represent the graph topology.
+\REVIEWED{Given a path X traversing two nodes A and B, the corresponding edge is represented by a black line starting from the left or right of node A if this node is traversed in reverse or forward, respectively, by path X;
+the black line ends to the left or right of node B if this node is traversed in forward or reverse, respectively, by path X.
+Consequently, if two consecutive nodes are linked both in forward, no edge is shown (it would be 0 pixels long, as it would start from the right of the first node and ends to the left of the second one).}
 
 Nevertheless, complex, nonlinear graph structures are difficult to display and interpret in a low number of dimensions.
 To overcome such a limitation, \textit{odgi viz} supports multiple visualization modalities (Fig.~\ref{fig:odgi_viz}\textbf{c-e}), making it easy to grasp the properties and shape of the graph.
