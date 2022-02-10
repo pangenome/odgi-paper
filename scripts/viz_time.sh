@@ -35,7 +35,7 @@ do
     for i in 1 2 3 4 5 6 7 8 9 10
     do
         /usr/bin/time --verbose odgi viz -i "$G"."$H"haps.og.gfa.og -o "$G"."$H"haps.og.gfa.og.png 2> chr6_odgi_viz_time_"$H"_"$i"
-        #TODO if we can actually produce something...
+        # if we can actually produce something...
         /usr/bin/time --verbose vg viz -D -x "$G"."$H"haps.og.gfa.xg -o "$G"."$H"haps.og.gfa.xg.svg 2> chr6_vg_viz_time_"$H"_"$i"
     done
 done
@@ -52,10 +52,10 @@ do
     for i in 1 2 3 4 5 6 7 8 9 10
     do
         echo "$H","$i",$(grep Elapsed chr6_odgi_viz_time_"$H"_"$i" | cut -f 8 -d ' ' | awk -F: '{ print ($1 * 60) + ($2) + $3 }'),$(grep "Maximum" chr6_odgi_viz_time_"$H"_"$i" | cut -f 6 -d ' ') >> odgi_viz_time.csv
-        #TODO if we can actually produce something...
+        # if we can actually produce something...
         echo "$H","$i",$(grep Elapsed chr6_vg_viz_time_"$H"_"$i" | cut -f 8 -d ' ' | awk -F: '{ print ($1 * 60) + ($2) + $3 }'),$(grep "Maximum" chr6_vg_viz_time_"$H"_"$i" | cut -f 6 -d ' ') >> vg_viz_time.csv 
     done
 done
 
-#TODO
 #Rscript ...
+Rscript viz.R odgi_viz_time.csv vg_viz_time.csv viz_eval.pdf viz_supp.csv
