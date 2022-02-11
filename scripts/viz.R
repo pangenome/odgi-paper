@@ -86,7 +86,7 @@ vh_p_m
 grid.arrange(arrangeGrob(vh_p_t, vh_p_m, nrow = 1), legend, nrow = 2, heights = c(1,0.05))
 
 viz <- arrangeGrob(arrangeGrob(vh_p_t, vh_p_m, nrow = 1), legend, nrow = 2, heights = c(1,0.05))
-ggsave(file=viz_pdf, viz, width = 7, height = 5)
+ggsave(file=viz_pdf, viz, width = 7, height = 3.5)
 file.remove("Rplots.pdf")
 
 viz_supp <- rbind(odgi_viz, vg_viz)
@@ -94,4 +94,17 @@ viz_supp$memory <- viz_supp$memory/1000000
 viz_supp <- aggregate(cbind(memory,time) ~haps+tool, data=viz_supp, FUN=mean)
 viz_supp <- viz_supp[order(viz_supp$haps),]
 
-write.table(viz_supp, file = viz_csv, sep = ",", row.names = F, quote = F)
+viz_latex <- setNames(data.frame(matrix(ncol = 5, nrow = 0)), 
+                      c("haps", "time_odgi_viz", "time_vg_viz", "memory_odgi_viz", "memory_vg_viz"))
+i <- 1
+j <- i + 1
+
+while(i < dim(viz_supp)[1]) {
+  row_row_row_your_boat <- c(viz_supp[i,1], viz_supp[i,4], viz_supp[j,4], viz_supp[i,3], viz_supp[j,3])
+  viz_latex <- rbind(viz_latex, row_row_row_your_boat)
+  i <- i + 2
+  j <- i + 1
+}
+colnames(viz_latex) <-  c("haps", "time_odgi_viz", "time_vg_viz", "memory_odgi_viz", "memory_vg_viz")
+
+write.table(viz_latex, file = viz_csv, sep = ",", row.names = F, quote = F)

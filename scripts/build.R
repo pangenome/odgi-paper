@@ -97,4 +97,17 @@ construct_supp$memory <- construct_supp$memory/1000000
 construct_supp <- aggregate(cbind(memory,time) ~threads+haps+tool, data=construct_supp, FUN=mean)
 construct_supp <- construct_supp[order(construct_supp$threads, construct_supp$haps),]
 
-write.table(construct_supp, file = build_csv, sep = ",", row.names = F, quote = F)
+construct_latex <- setNames(data.frame(matrix(ncol = 6, nrow = 0)), 
+                            c("threads", "haps", "time_odgi_build", "time_vg_convert", "memory_odgi_build", "memory_vg_convert"))
+i <- 1
+j <- i + 1
+
+while(i < dim(construct_supp)[1]) {
+  row_row_row_your_boat <- c(construct_supp[i,1], construct_supp[i,2], construct_supp[i,5], construct_supp[j,5], construct_supp[i,4], construct_supp[j,4])
+  construct_latex <- rbind(construct_latex, row_row_row_your_boat)
+  i <- i + 2
+  j <- i + 1
+}
+colnames(construct_latex) <-  c("threads", "haps", "time_odgi_build", "time_vg_convert", "memory_odgi_build", "memory_vg_convert")
+
+write.table(construct_latex, file = build_csv, sep = ",", row.names = F, quote = F)

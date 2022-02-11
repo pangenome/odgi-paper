@@ -15,6 +15,7 @@
 \usepackage[usenames,dvipsnames]{xcolor}
 
 \usepackage{orcidlink}
+\usepackage{paralist}
 
 % we squeeze our figures even more together
 \captionsetup{belowskip=-2pt}
@@ -289,12 +290,10 @@ The ODGI data structure (Algorithm~\ref{alg:structs}) allows algorithms that bui
 In \textit{odgi build}, we initially construct the node vector in a serial operation that scans across the input GFA file.
 Then, we serially add edges in the $Node.edges$ vectors of pairs of nodes.
 Finally, we create paths in serial, and extend them in parallel by obtaining the mutex $Node.lock$ for pairs of nodes and by adding the path step in their $Node.path\_steps$ vectors.
-This parallelism speeds ODGI model construction by many-fold when testing against graphs made from assemblies produced by the HPRC (Figure~\ref{fig:build}).
+This parallelism speeds ODGI model construction by many-fold when testing against graphs made from assemblies produced by the HPRC (\autoref{Evaluation}).
 
 To support interchange with other pangenome tools or text-based processing, \textit{odgi view} converts a graph in ODGI binary format to GFAv1.
 %ODGI uses the ``S'' and ``L'' records to describe the graph topology, and ``P'' records to describe paths.
-
-\input{fig_build_time}
 
 \subsection{Visualizing pangenome graphs}
 \label{sec:viz}
@@ -457,8 +456,25 @@ Both tools emit the output in BED format, allowing users to assess the complexit
 Indeed, high depth/degree nodes can be the mirror of genetic variation (Fig.~\ref{fig:metrics}), but also misassemblies or problems in the pangenome building, making the tools further useful for graph validation.
 %In Fig.~\ref{fig:metrics}, the characteristics of a 90 haplotypes human pangenome graph of the exon 1 huntingtin gene~\citep{Sathasivam2013,Neueder2017} (\textit{HTTexon1}) are shown.
 
+\subsection{Evaluation}
+\label{Evaluation}
+
+We measured the efficiency of ODGI (VERSION!) and VG (VERSION) for routine pangenome tasks. In particular, we measured the execution time and memory usage 
+\begin{inparaenum}[(i)]
+	\item of transforming a GFAv1 into the tool's native format,
+	\item the visualization of a pangenome graph, 
+	\item the extraction of a subgraph, and
+	\item the finding of path positions in a pangenome graph.
+\end{inparaenum}
+key graph operations, why
+deNBI
+data
+threads (64haps), haps (16 threads)
+general findings: VG sucks, hehehe
 
 \input{fig_extract_viz_draw_position_untangle}
+
+\input{fig_evaluation}
 
 %\input{fig_tips}
 
