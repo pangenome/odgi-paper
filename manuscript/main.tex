@@ -27,6 +27,12 @@
 \newcommand{\red}[1]{{\textcolor{Red}{#1}}}
 \newcommand{\FIXME}[1]{\red{[FIXME: #1]}}
 \newcommand{\REVIEWED}[1]{{\textcolor{Red}{#1}}}
+\newcommand{\beginsupplement}{%
+	\setcounter{table}{0}
+	\renewcommand{\thetable}{S\arabic{table}}%
+	\setcounter{figure}{0}
+	\renewcommand{\thefigure}{S\arabic{figure}}%
+}
 
 \def\labelitemi{--}
 
@@ -81,7 +87,7 @@ ODGI is published as free software under the MIT open source license.
 Source code can be downloaded from \url{https://github.com/pangenome/odgi} and documentation is available at \url{https://odgi.readthedocs.io}.
 ODGI can be installed via Bioconda \url{https://bioconda.github.io/recipes/odgi/README.html} or GNU Guix \url{https://github.com/ekg/guix-genomics/blob/master/odgi.scm}. \\
 \textbf{Contact:} \href{egarris5@uthsc.edu}{egarris5@uthsc.edu} \\
-%\textbf{Supplementary information:} Supplementary data are available at \textit{Bioinformatics} online.
+%\textbf{ information:} Supplementary data are available at \textit{Bioinformatics} online.
 \\
 \REVIEWED{\textbf{Keywords:} Navigating Variation Graphs. Pangenomic Liftover. Gigabase-Scale Pangenome Visualization. T2T Pangenome Graph Exploration.}
 }
@@ -459,18 +465,22 @@ Indeed, high depth/degree nodes can be the mirror of genetic variation (Fig.~\re
 \subsection{Evaluation}
 \label{Evaluation}
 
-We measured the efficiency of ODGI (VERSION!) and VG (VERSION) for routine pangenome tasks. In particular, we measured the execution time and memory usage 
+We compared the efficiency of ODGI (v0.6.3-56-gebc493f "Pulizia") and VG (v1.37.0 "Monchio") for routine pangenome tasks. In particular, we measured the execution time and memory usage
 \begin{inparaenum}[(i)]
-	\item of transforming a GFAv1 into the tool's native format,
-	\item the visualization of a pangenome graph, 
-	\item the extraction of a subgraph, and
+	\item of transforming a GFAv1 into a tool's native format, 
+	\item the extraction of a subgraph,
+	\item the visualization of a pangenome graph, and
 	\item the finding of path positions in a pangenome graph.
 \end{inparaenum}
-key graph operations, why
-deNBI
-data
-threads (64haps), haps (16 threads)
-general findings: VG sucks, hehehe
+These graph operations are key when it comes to the understanding of pangenome graphs. We ran these operations for a varying number of threads and haplotypes in the graph for a scaling analysis. We ran each evaluation configuration 10 times and report the mean of each run.
+All evaluations were performed on a VM in the German Network for Bioinformatics Infrastructure (deNBI) cloud. It came with 28 cores and 256GB of RAM.
+The presented results are from a 90 haplotypes chromosome 6 human pangenome graph from the HPRC. Specifically, the graph contains the human references GRCH38, CHM13, and the contigs of 44 individuals encoding all possible variation including telomeres and centromeres. 
+
+When transforming a GFAv1 with VG, we went for the XG file format, because all downstream tools involved in the evaluation require this static graph representation model in VG.
+
+Our general findings are that ODGI makes comparatively better use of multithreading and requires much less memory (Fig.~\ref{fig:evaluation}, \REVIEWED{TODO: Link to the results of finding path positions in the supplementary.}) across all operations. With raising number of haplotypes in the graph, ODGI scales much butter than VG. For example, extracting a subgraph (Fig.~\ref{fig:eval-extract}), ODGI is up to 40 times faster and requires 8 times less memory than VG. Surprisingly, \textit{odgi build} occupies less memory with more threads. We don't have an explanation for that. 
+
+Both visualization tools can only make use of a single thread. For a 1 haplotype graph \textit{vg viz} produces a 816MB SVG which can't be opened by any program. For example, GIMP2 fails with "cannot load more than 1000000 XML elements". For larger graphs, \textit{vg viz} runs through and produces SVGs with only the XML header. This makes it unusable for larger graphs.
 
 \input{fig_extract_viz_draw_position_untangle}
 
@@ -496,6 +506,8 @@ Particularly for targets that involve complex variation, such as cancer\REVIEWED
 describing and analyzing a much larger set of variation than previously was possible with tools that depend on short reads and reference genomes.
 Furthermore, users can even consider ODGI as a framework, taking advantage of its algorithms to develop new and more advanced tools that work on pangenome graphs,
 thus expanding the type of possible pangenomic analyses available to the scientific community.
+
+\REVIEWED{The performance analysis showed that ODGI clearly outperforms VG when handling large, complex pangenome graphs. This is one major achievement, because VG's XG data structure is actually static, compared to ODGI's dynamic graph implementation. Across the evaluation of key graph operations, ODGI's memory peak was 10GB. This makes it perfectly suited to be run interactively on a recent laptop. VG has limitations here. We expect that ODGI will be able to handle the next phase of the HPRC, constructing a pangenome graph from 300 individuals, without any problems.}
 
 \REVIEWED{[1,10]While ODGI does not construct graphs from scratch nor is is capable of extending them, ODGI[1,10]} is already the backbone of the Pangenome Graph Builder pipeline~\citep{pggb}.
 Its static, large-scale 1D and 2D visualizations of the pangenome graphs allow an unprecedented high-level perspective on variation in pangenomes, and have also been critical in the development of pangenome graph building methods.  %the underlying structure and any problems in graph construction.
@@ -601,4 +613,12 @@ Code and links to data resources used to build this manuscript and its figures, 
 % institution, Paris, France.
 
 % \end{thebibliography}
+\clearpage
+\beginsupplement
+
+\section{Supplementary}
+
+\subsection{Evaluation}
+\input{table_viz}
+
 \end{document}

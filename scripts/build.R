@@ -34,20 +34,20 @@ construct$haps <- factor(construct$haps, levels=unique(construct$haps))
 construct$memory <- as.numeric(construct$memory)/1000000
 
 construct_64haps <- construct[construct$haps == 64,]
+construct_64haps_m <- aggregate(cbind(memory,time) ~threads+haps+tool, data=construct_64haps, FUN=mean)
 construct_16threads <- construct[construct$threads == 16,]
+construct_16threads_m <- aggregate(cbind(memory,time) ~threads+haps+tool, data=construct_16threads, FUN=mean)
 
-dodge <- position_dodge(width = 0.0)
-
-ct_p_t <- ggplot(construct_64haps, aes(x=threads, y=time, fill=tool, color = tool)) +
-  geom_violin(position = dodge) +
+ct_p_t <- ggplot(construct_64haps_m, aes(x=threads, y=time, fill=tool, color = tool, group=tool)) +
+  geom_point() + geom_line() +
   #geom_beeswarm(size=0.5) +
   labs(x = "number of threads", y = "time in seconds") +
   expand_limits(x = 0, y = 0) + 
   theme(legend.position = "none")
-#ct_p_t
+ct_p_t
 
-ch_p_t <- ggplot(construct_16threads, aes(x=haps, y=time, fill=tool, color = tool)) +
-    geom_violin(position = dodge) +
+ch_p_t <- ggplot(construct_16threads_m,aes(x=haps, y=time, fill=tool, color = tool, group=tool)) +
+  geom_point() + geom_line() +
     #geom_beeswarm(size=0.5) +
     labs(x = "number of haplotypes", y = "time in seconds") +
     expand_limits(x = 0, y = 0) + theme(legend.direction = "horizontal") + 
@@ -55,7 +55,7 @@ ch_p_t <- ggplot(construct_16threads, aes(x=haps, y=time, fill=tool, color = too
     labs(fill = "tool   ") + 
     theme(legend.title = element_text(size=15)) +
     theme(legend.key.size = unit(0.4, 'cm'))
-#ch_p_t
+ch_p_t
 
 get_legend <- function(a.gplot) {
   tmp <- ggplot_gtable(ggplot_build(a.gplot))
@@ -68,25 +68,23 @@ legend <- get_legend(ch_p_t)
 ch_p_t <- ch_p_t + theme(legend.position = "none")
 
 # collapse memory by run and take the mean
-construct_64haps_m <- aggregate(cbind(memory,time) ~threads+haps+tool, data=construct_64haps, FUN=mean)
 ct_p_m <- ggplot(construct_64haps_m, aes(x=threads, y=memory, fill=tool, color = tool, group = tool)) +
   geom_point() + geom_line() +
   #geom_beeswarm(size=0.5) +
   labs(x = "number of threads", y = "memory in gigabytes") +
   expand_limits(x = 0, y = 0) +
   theme(legend.position = "none")
-#ct_p_m
+ct_p_m
 
-construct_16threads_m <- aggregate(cbind(memory,time) ~threads+haps+tool, data=construct_16threads, FUN=mean)
 ch_p_m <- ggplot(construct_16threads_m, aes(x=haps, y=memory, fill=tool, color = tool, group = tool)) +
   geom_point() + geom_line() +
   #geom_beeswarm(size=0.5) +
   labs(x = "number of haplotypes", y = "memory in gigabytes") +
   expand_limits(x = 0, y = 0) +
   theme(legend.position = "none")
-#ch_p_m
+ch_p_m
 
-#grid.arrange(arrangeGrob(ct_p_t, ch_p_t, nrow = 1), arrangeGrob(ct_p_m, ch_p_m, nrow = 1), legend, nrow = 3, heights = c(1,1,0.1))
+grid.arrange(arrangeGrob(ct_p_t, ch_p_t, nrow = 1), arrangeGrob(ct_p_m, ch_p_m, nrow = 1), legend, nrow = 3, heights = c(1,1,0.1))
 
 build <- arrangeGrob(arrangeGrob(ct_p_t, ch_p_t, nrow = 1), arrangeGrob(ct_p_m, ch_p_m, nrow = 1), legend, nrow = 3, heights = c(1,1,0.1))
 suppressGraphics(ggsave(file=build_pdf, build, width = 7, height = 5))

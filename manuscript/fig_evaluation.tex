@@ -6,6 +6,13 @@
 		\includegraphics[width=1.0\linewidth, trim=0cm 1.25cm 0cm 0cm]{fig/performance/build_eval.pdf}
 		\label{fig:eval-build}
 	\end{subfigure}
+	\begin{subfigure}{\linewidth}
+	\caption{}
+	\centering
+	% include second image
+	\includegraphics[width=\linewidth, trim=0cm 1.25cm 0cm 0cm]{fig/performance/extract_eval.pdf}
+	\label{fig:eval-extract}
+	\end{subfigure}
 	\begin{subfigure}{1\linewidth}
 		\caption{}
 		\centering
@@ -13,13 +20,6 @@
 		\includegraphics[width=\linewidth, trim=0cm 1.25cm 0cm 0cm]{fig/performance/viz_eval.pdf}
 		\label{fig:eval-viz}
 	\end{subfigure}
-	\begin{subfigure}{\linewidth}
-		\caption{}
-		\centering
-		% include second image
-		\includegraphics[width=\linewidth, trim=0cm 1.25cm 0cm 0cm]{fig/performance/extract_eval.pdf}
-		\label{fig:eval-extract}
-	\end{subfigure}
-	\caption{TODO}
+	\caption{\REVIEWED{Performance on a graph of human chromosome 6 from the HPRC. Clearly, ODGI compares favorably to VG across all routine pangenomic tasks. Evaluations across threads were done using a 64 human haplotype graph. Evaluations across haplotypes were done using 16 threads. \textbf{(a)} Performance evaluation when translating a graph into the tools' respective native formats. \textit{odgi build}: Transformation time decreases as parallelism increases, but with diminishing per-thread processing rates. Transformation time increases as haplotypes increase, but in a sub-linear relationship. Surprisingly, less memory consumption with increasing number of threads. Sub-linear relationship of transformation memory and number of haplotypes. \textit{vg convert}: Transformation time barely decreases as parallelism increases. Basically linear relationship of transformation time and number of haplotypes. The number of threads do not influence the memory consumption. Basically linear relationship of transformation memory and number of haplotypes. \textbf{(b)} Performance evaluation when extracting the centromeric region from the HPRC graph. \textit{odgi extract}: Extraction time decreases as parallelism increases. Extraction time increases as haplotypes increase, but in a sub-linear relationship. The memory consumption is stable across the number of threads. Sub-linear relationship of extraction memory and number of haplotypes. \textit{vg chunk}: Extraction time barely decreases as parallelism increases. Basically linear relationship of extraction time and number of haplotypes. The number of threads do not influence the memory consumption. Basically linear relationship of extraction memory and number of haplotypes. \textbf{(c)} Performance evaluation when visualizing a graph. Both tools were run with only one thread. \textit{odgi viz}: Visualization time increases as haplotypes increase, but in a sub-linear relationship. The number of haplotypes has very little influence on the memory consumption. \textit{vg viz}: \textbf{*}A 816MB SVG was produced which can't be opened by any program. \textbf{**}All produced SVGs only contain an XML header, nothing else.}}
 	\label{fig:evaluation}
 \end{figure}

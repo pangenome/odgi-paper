@@ -33,20 +33,20 @@ extract$haps <- factor(extract$haps, levels=unique(extract$haps))
 extract$memory <- as.numeric(extract$memory)/1000000
 
 extract_64haps <- extract[extract$haps == 64,]
+extract_64haps_m <- aggregate(cbind(memory,time) ~threads+haps+tool, data=extract_64haps, FUN=mean)
 extract_16threads <- extract[extract$threads == 16,]
+extract_16threads_m <- aggregate(cbind(memory,time) ~threads+haps+tool, data=extract_16threads, FUN=mean)
 
-dodge <- position_dodge(width = 0.0)
-
-et_p_t <- ggplot(extract_64haps, aes(x=threads, y=time, fill=tool, color = tool)) +
-  geom_violin(position = dodge) +
+et_p_t <- ggplot(extract_64haps_m, aes(x=threads, y=time, fill=tool, color = tool, group=tool)) +
+  geom_point() + geom_line() +
   #geom_beeswarm(size=0.5) +
   labs(x = "number of threads", y = "time in seconds") +
   expand_limits(x = 0, y = 0) + 
   theme(legend.position = "none")
 et_p_t
 
-eh_p_t <- ggplot(extract_16threads, aes(x=haps, y=time, fill=tool, color = tool)) +
-  geom_violin(position = dodge) +
+eh_p_t <- ggplot(extract_16threads_m, aes(x=haps, y=time, fill=tool, color = tool, group=tool)) +
+  geom_point() + geom_line() +
   #geom_beeswarm(size=0.5) +
   labs(x = "number of haplotypes", y = "time in seconds") +
   expand_limits(x = 0, y = 0) + theme(legend.direction = "horizontal") + 
@@ -67,7 +67,6 @@ legend <- get_legend(eh_p_t)
 eh_p_t <- eh_p_t + theme(legend.position = "none")
 
 # collapse memory by run and take the mean
-extract_64haps_m <- aggregate(cbind(memory,time) ~threads+haps+tool, data=extract_64haps, FUN=mean)
 et_p_m <- ggplot(extract_64haps_m, aes(x=threads, y=memory, fill=tool, color = tool, group = tool)) +
   geom_point() + geom_line() +
   #geom_beeswarm(size=0.5) +
@@ -76,7 +75,6 @@ et_p_m <- ggplot(extract_64haps_m, aes(x=threads, y=memory, fill=tool, color = t
   theme(legend.position = "none")
 et_p_m
 
-extract_16threads_m <- aggregate(cbind(memory,time) ~threads+haps+tool, data=extract_16threads, FUN=mean)
 eh_p_m <- ggplot(extract_16threads_m, aes(x=haps, y=memory, fill=tool, color = tool, group = tool)) +
   geom_point() + geom_line() +
   #geom_beeswarm(size=0.5) +

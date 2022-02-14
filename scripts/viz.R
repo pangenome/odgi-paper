@@ -37,9 +37,10 @@ second_column <- c("*", "**", "**", "**", "**", "**", "**")
 df <- data.frame(first_column, second_column)
 colnames(df) <- c("haps", "label")
 
+viz_m <- aggregate(cbind(memory,time) ~haps+tool, data=viz, FUN=mean)
 
-vh_p_t <- ggplot(viz, aes(x=haps, y=time, fill=tool, color = tool)) +
-  geom_violin(position = dodge) +
+vh_p_t <- ggplot(viz_m, aes(x=haps, y=time, fill=tool, color = tool, group=tool)) +
+  geom_point() + geom_line() +
   #geom_beeswarm(size=0.5) +
   labs(x = "number of haplotypes", y = "time in seconds") +
   expand_limits(x = 0, y = 0) + theme(legend.direction = "horizontal") + 
@@ -67,11 +68,10 @@ legend <- get_legend(vh_p_t)
 vh_p_t <- vh_p_t + theme(legend.position = "none")
 
 # collapse memory by run and take the mean
-viz_m <- aggregate(cbind(memory,time) ~haps+tool, data=viz, FUN=mean)
 vh_p_m <- ggplot(viz_m, aes(x=haps, y=memory, fill=tool, color = tool, group = tool)) +
   geom_point() + geom_line() +
   #geom_beeswarm(size=0.5) +
-  labs(x = "number of threads", y = "memory in gigabytes") +
+  labs(x = "number of haplotypes", y = "memory in gigabytes") +
   expand_limits(x = 0, y = 0) +
   theme(legend.position = "none")+
   annotate("text", label = "*", x =1, y = (5 + max(viz[viz$tool == "vg viz" & viz$haps == 1,]$memory)), size = 7.5, colour = "black") +
@@ -107,4 +107,4 @@ while(i < dim(viz_supp)[1]) {
 }
 colnames(viz_latex) <-  c("haps", "time_odgi_viz", "time_vg_viz", "memory_odgi_viz", "memory_vg_viz")
 
-write.table(viz_latex, file = viz_csv, sep = ",", row.names = F, quote = F)
+write.table(format(viz_latex, digits=2, scientific=T), file = viz_csv, sep = ",", row.names = F, quote = F)
