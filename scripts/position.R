@@ -43,4 +43,4 @@ while(i < dim(position_supp)[1]) {
 }
 colnames(position_latex) <-  c("threads", "haps", "time_odgi_position", "time_vg_find", "memory_odgi_position", "memory_vg_find")
 
-write.table(position_latex, file = position_csv, sep = ",", row.names = F, quote = F)
+write.table(round(position_latex, 2), file = position_csv, sep = ",", row.names = F, quote = F)

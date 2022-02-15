@@ -108,4 +108,4 @@ while(i < dim(construct_supp)[1]) {
 }
 colnames(construct_latex) <-  c("threads", "haps", "time_odgi_build", "time_vg_convert", "memory_odgi_build", "memory_vg_convert")
 
-write.table(construct_latex, file = build_csv, sep = ",", row.names = F, quote = F)
+write.table(round(construct_latex,2), file = build_csv, sep = ",", row.names = F, quote = F)

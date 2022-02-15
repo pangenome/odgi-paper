@@ -107,4 +107,4 @@ while(i < dim(viz_supp)[1]) {
 }
 colnames(viz_latex) <-  c("haps", "time_odgi_viz", "time_vg_viz", "memory_odgi_viz", "memory_vg_viz")
 
-write.table(format(viz_latex, digits=2, scientific=T), file = viz_csv, sep = ",", row.names = F, quote = F)
+write.table(round(viz_latex, 2), file = viz_csv, sep = ",", row.names = F, quote = F)

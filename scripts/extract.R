@@ -107,4 +107,4 @@ while(i < dim(extract_supp)[1]) {
 }
 colnames(extract_latex) <-  c("threads", "haps", "time_odgi_extract", "time_vg_chunk", "memory_odgi_extract", "memory_vg_chunk")
 
-write.table(extract_latex, file = extract_csv, sep = ",", row.names = F, quote = F)
+write.table(round(extract_latex,2), file = extract_csv, sep = ",", row.names = F, quote = F)
