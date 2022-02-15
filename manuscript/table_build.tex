@@ -1,0 +1,44 @@
+\begin{table}[!ht]
+	\centering
+	\ra{1.3}
+	\caption{\label{tab:build} Performance measurements when transforming a graph of human chromosome 6 from the HPRC into the tool's native format. \textbf{haps} is the number of haplotypes in the graph. Displayed are the mean results after 10 runs.}
+	\begin{tabular}{@{}SSSSSS@{}}
+		& & \multicolumn{2}{c}{$\mathbf{time\ in\ seconds}$} & \multicolumn{2}{c}{$\mathbf{memory\ in\ gigabytes}$} \\ \cmidrule(lr){3-4} \cmidrule(lr){5-6}
+		{$\mathbf{threads}$} & $\mathbf{haps}$ &{$\mathbf{odgi\ build}$} & {$\mathbf{vg\ convert}$} & {$\mathbf{odgi\ build}$} & $\mathbf{vg\ convert}$ \\ \hline
+		1 & 1 & \textbf{10.78} & 21.92 & 1.15 & \textbf{0.56} \\ 
+		1 & 2 & \textbf{14.55} & 28.71 & 1.48 & \textbf{0.78} \\ 
+		1 & 4 & \textbf{22.28} & 45.02 & 1.82 & \textbf{1.51} \\ 
+		1 & 8 & \textbf{43.41} & 78.67 & \textbf{2.52} & 3.01 \\ 
+		1 & 16 & \textbf{76.60} & 133.27 & \textbf{3.57} & 5.54 \\ 
+		1 & 32 & \textbf{176.55} & 292.32 & \textbf{5.90} & 11.29 \\ 
+		1 & 64 & \textbf{322.50} & 497.51 & \textbf{10.19} & 21.3 \\ \midrule
+		2 & 1 & \textbf{10.56} & 21.18 & 1.15 & \textbf{0.56} \\ 
+		2 & 2 & \textbf{12.79} & 27.51 & 1.48 & \textbf{0.78} \\ 
+		2 & 4 & \textbf{17.08} & 43.64 & 1.81 & \textbf{1.51} \\ 
+		2 & 8 & \textbf{28.90} & 75.52 & 2.42 & 3.01 \\ 
+		2 & 16 & \textbf{47.93} & 126.71 & 3.46 & 5.54 \\ 
+		2 & 32 & \textbf{102.67} & 280.12 & 5.58 & 11.29 \\ 
+		2 & 64 & \textbf{171.31} & 457.37 & 9.52 & 21.3 \\ \midrule
+		4 & 1 & \textbf{10.54} & 20.69 & 1.15 & \textbf{0.56} \\ 
+		4 & 2 & \textbf{12.63} & 27.90 & 1.48 & \textbf{0.78} \\ 
+		4 & 4 & \textbf{14.80} & 42.36 & 1.88 & \textbf{1.51} \\ 
+		4 & 8 & \textbf{21.00} & 74.80 & 2.18 & 3.01 \\ 
+		4 & 16 & \textbf{32.69} & 123.41 & 3.08 & 5.54 \\ 
+		4 & 32 & \textbf{65.30} & 271.10 & 4.87 & 11.29 \\ 
+		4 & 64 & \textbf{105.51} & 451.54 & 8.70 & 21.3 \\ \midrule
+		8 & 1 & \textbf{11.53} & 20.33 & 1.15 & \textbf{0.56} \\ 
+		8 & 2 & \textbf{13.16} & 27.18 & 1.48 & \textbf{0.78} \\ 
+		8 & 4 & \textbf{15.61} & 41.77 & 1.85 & \textbf{1.51} \\ 
+		8 & 8 & \textbf{19.63} & 73.09 & \textbf{2.20} & 3.01 \\ 
+		8 & 16 & \textbf{28.43} & 131.82 & \textbf{2.87} & 5.54 \\ 
+		8 & 32 & \textbf{46.23} & 256.74 & \textbf{4.30} & 11.29 \\ 
+		8 & 64 & \textbf{71.55} & 441.59 & \textbf{6.91} & 21.30 \\ \midrule
+		16 & 1 & \textbf{11.18} & 21.14 & 1.15 & \textbf{0.56} \\ 
+		16 & 2 & \textbf{13.27} & 26.74 & 1.48 & \textbf{0.78} \\ 
+		16 & 4 & \textbf{15.55} & 41.90 & 1.87 & \textbf{1.51} \\ 
+		16 & 8 & \textbf{21.16} & 73.36 & \textbf{2.24} & 3.01 \\ 
+		16 & 16 & \textbf{29.09} & 136.96 & \textbf{2.92} & 5.54 \\ 
+		16 & 32 & \textbf{46.58} & 269.61 & \textbf{4.36} & 11.29 \\ 
+		16 & 64 & \textbf{70.84} & 442.71 & \textbf{6.89} & 21.30 \\ \bottomrule
+	\end{tabular}
+\end{table}
