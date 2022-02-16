@@ -57,5 +57,5 @@ do
     done
 done
 
-#TODO
 #Rscript ...
+Rscript build.R odgi_build_threads_haps_time.csv vg_convert_threads_haps_time.csv build_eval.pdf build_supp.csv

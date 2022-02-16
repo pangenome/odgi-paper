@@ -1,0 +1,44 @@
+\begin{table}[!ht]
+	\centering
+	\ra{1.3}
+	\caption{\label{tab:extract} Performance measurements when extracting the centromeric region of a graph of human chromosome 6 from the HPRC. \textbf{haps} is the number of haplotypes in the graph. Displayed are the mean results after 10 runs.}
+	\begin{tabular}{@{}SSSSSS@{}}
+		& & \multicolumn{2}{c}{$\mathbf{time\ in\ seconds}$} & \multicolumn{2}{c}{$\mathbf{memory\ in\ gigabytes}$} \\ \cmidrule(lr){3-4} \cmidrule(lr){5-6}
+		{$\mathbf{threads}$} & {$\mathbf{haps}$} & {$\mathbf{odgi\ extract}$} & {$\mathbf{vg\ chunk}$} & {$\mathbf{odgi\ extract}$} & {$\mathbf{vg\ chunk}$} \\ \hline
+		1 & 1 & 3.65 & \textbf{3.34} & 1.07 & \textbf{0.42} \\ 
+		1 & 2 & \textbf{6.08} & 14.25 & 1.22 & \textbf{0.95} \\ 
+		1 & 4 & \textbf{15.96} & 58.67 & 1.51 & 3.06 \\ 
+		1 & 8 & \textbf{37.16} & 170.63 & 1.91 & 8.12 \\ 
+		1 & 16 & \textbf{67.47} & 364.98 & 2.49 & 15.25 \\ 
+		1 & 32 & \textbf{161.32} & 968.71 & 4.00 & 33.65 \\ 
+		1 & 64 & \textbf{313.05} & 1897.00 & 6.96 & 60.37 \\ \midrule
+		2 & 1 & 3.67 & \textbf{3.33} & 1.07 & \textbf{0.42} \\ 
+		2 & 2 & \textbf{5.50} & 13.57 & 1.22 & \textbf{0.96} \\ 
+		2 & 4 & \textbf{12.33} & 56.44 & 1.51 & 3.06 \\ 
+		2 & 8 & \textbf{24.06} & 170.62 & 1.92 & 8.12 \\ 
+		2 & 16 & \textbf{43.49} & 376.67 & 2.51 & 15.25 \\ 
+		2 & 32 & \textbf{97.03} & 987.85 & 4.03 & 33.65 \\ 
+		2 & 64 & \textbf{187.51} & 1907.98 & 7.00 & 60.37 \\ \midrule
+		4 & 1 & 3.64 & \textbf{3.32} & 1.07 & \textbf{0.42} \\ 
+		4 & 2 & \textbf{5.59} & 13.40 & 1.22 & \textbf{0.96} \\ 
+		4 & 4 & \textbf{9.93} & 57.67 & 1.52 & 3.06 \\ 
+		4 & 8 & \textbf{16.58} & 174.94 & 1.94 & 8.11 \\ 
+		4 & 16 & \textbf{27.99} & 374.99 & 2.52 & 15.26 \\ 
+		4 & 32 & \textbf{56.94} & 992.85 & 4.06 & 33.65 \\ 
+		4 & 64 & \textbf{108.34} & 1885.91 & 7.04 & 60.37 \\ \midrule
+		8 & 1 & 3.61 & \textbf{3.30} & 1.07 & \textbf{0.42} \\ 
+		8 & 2 & \textbf{5.47} & 14.01 & 1.22 & \textbf{0.96} \\ 
+		8 & 4 & \textbf{8.43} & 58.69 & 1.53 & 3.06 \\ 
+		8 & 8 & \textbf{12.40} & 180.51 & 1.98 & 8.11 \\ 
+		8 & 16 & \textbf{19.11} & 379.25 & 2.55 & 15.26 \\ 
+		8 & 32 & \textbf{36.35} & 991.09 & 4.11 & 33.65 \\ 
+		8 & 64 & \textbf{68.54} & 1841.57 & 7.11 & 60.37 \\ \midrule
+		16 & 1 & 3.64 & \textbf{3.34} & 1.07 & \textbf{0.42} \\ 
+		16 & 2 & \textbf{5.53} & 14.67 & 1.22 & \textbf{0.95} \\ 
+		16 & 4 & \textbf{7.62} & 58.22 & 1.54 & 3.06 \\ 
+		16 & 8 & \textbf{10.55} & 171.90 & 2.03 & 8.12 \\ 
+		16 & 16 & \textbf{14.80} & 373.70 & 2.60 & 15.26 \\ 
+		16 & 32 & \textbf{25.51} & 981.79 & 4.27 & 33.65 \\ 
+		16 & 64 & \textbf{46.87} & 1838.51 & 7.23 & 60.37 \\ \bottomrule
+	\end{tabular}
+\end{table}

@@ -103,5 +103,4 @@ done
 
 rm vg_find_helper.sh
 
-#TODO
-#Rscript ...
+Rscript position.R odgi_position_time.csv vg_find_time.csv position_supp.csv

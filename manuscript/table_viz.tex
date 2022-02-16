@@ -1,0 +1,16 @@
+\begin{table}[!ht]
+	\centering
+	\ra{1.2}
+	\caption{\label{tab:viz} Performance measurements when visualizing a graph of human chromosome 6 from the HPRC. \textbf{haps} is the number of haplotypes in the graph. Both \textit{odgi viz} and \textit{vg viz} were run with 1 thread. Displayed are the mean results after 10 runs. \textbf{*}A 816MB SVG was produced which can't be opened by any program. \textbf{**}All produced SVGs were empty except for an XML header.}
+	\begin{tabular}{@{}SSSSS@{}}
+		& \multicolumn{2}{c}{$\mathbf{time\ in\ seconds}$} & \multicolumn{2}{c}{$\mathbf{memory\ in\ gigabytes}$} \\ \cmidrule(lr){2-3} \cmidrule(lr){4-5}
+		{$\mathbf{haps}$} & {$\mathbf{odgi\ viz}$} & {$\mathbf{vg\ viz}$} & {$\mathbf{odgi\ viz}$} & {$\mathbf{vg\ viz}$} \\ \hline
+		1 & \textbf{4.14} & 43.40\ \ * & \textbf{1.04} & 7.09\ \ * \\ 
+		2 & \textbf{5.30} & 57.94\ \ ** & \textbf{1.14} & 9.69\ \ ** \\ 
+		4 & \textbf{7.85} & 76.15\ \ ** & \textbf{1.27} & 14.05\ \ ** \\ 
+		8 & \textbf{12.95} & 109.16** & \textbf{1.53} & 21.84\ \ ** \\ 
+		16 & \textbf{22.33} & 170.72** & \textbf{1.88} & 36.97\ \ ** \\ 
+		32 & \textbf{49.24} & 303.40** & \textbf{2.87} & 69.88\ \ ** \\ 
+		64 & \textbf{102.82} & 543.50** & \textbf{4.78} & 127.36** \\ \bottomrule
+	\end{tabular}
+\end{table}

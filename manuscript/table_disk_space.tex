@@ -1,0 +1,16 @@
+\begin{table}[!ht]
+	\centering
+	\ra{1.2}
+	\caption{\label{tab:disk_space} Disk space measurements of GFAv1 and the respective tools' binary formats. \textbf{haps} is the number of haplotypes in the graph. For VG, the file size of the XG format was measured.}
+	\begin{tabular}{@{}rr|rr@{}}
+		& \multicolumn{3}{c}{$\mathbf{disk\ space\ in\ megabytes}$} \\ \cmidrule(lr){2-4}
+		{$\mathbf{haps}$} & {$\mathbf{GFAv1}$} & {$\mathbf{ODGI}$} & {$\mathbf{VG}$} \\ \hline
+		1 & 283 & 604 & \textbf{189} \\ 
+		2 & 333 & 660 & \textbf{237} \\ 
+		4 & 432 & 745 & \textbf{394} \\ 
+		8 & 622 & 968 & \textbf{706} \\ 
+		16 & 947 & 1277 & \textbf{1200} \\ 
+		32 & 1657 & \textbf{2131} & 2388 \\ 
+		64 & 2913 & \textbf{3745} & 4426 \\ \bottomrule
+	\end{tabular}
+\end{table}
