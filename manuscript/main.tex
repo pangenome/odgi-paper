@@ -487,9 +487,11 @@ The presented results are from a 90 haplotypes chromosome 6 human pangenome grap
 
 When transforming a GFAv1 with VG, we went for the XG file format, because all downstream tools involved in the evaluation require this static graph representation model in VG.
 
-Our general findings are that ODGI makes comparatively better use of multithreading and requires much less memory (Fig.~\ref{fig:evaluation}, \REVIEWED{TODO: Link to the results of finding path positions in the supplementary.}) across all operations. With raising number of haplotypes in the graph, ODGI scales much butter than VG. For example, extracting a subgraph (Fig.~\ref{fig:eval-extract}), ODGI is up to 40 times faster and requires 8 times less memory than VG. Surprisingly, \textit{odgi build} occupies less memory with more threads. We don't have an explanation for that. 
+Our general findings are that ODGI makes comparatively better use of multithreading and requires much less memory (Fig.~\ref{fig:evaluation}, Tab.~\ref{tab:position}}) across all operations. With raising number of haplotypes in the graph, ODGI scales much butter than VG. For example, extracting a subgraph (Fig.~\ref{fig:eval-extract}), ODGI is up to 40 times faster and requires 8 times less memory than VG. Surprisingly, \textit{odgi build} occupies less memory with more threads. We don't have an explanation for that. 
 
 Both visualization tools can only make use of a single thread. For a 1 haplotype graph \textit{vg viz} produces a 816MB SVG which can't be opened by any program. For example, GIMP2 fails with "cannot load more than 1000000 XML elements". For larger graphs, \textit{vg viz} runs through and produces SVGs with only the XML header. This makes it unusable for larger graphs.
+
+We also measured the disk space usage of GFAv1, ODGI's, and VG's binary format (Tab. \ref{tab:disk_space}). While VG's XG occupies less disk space for smaller graphs, ODGI requires less space for graphs having 32 haplotypes or more. With increasing number of haplotypes the centromeric sequence in the pangenome graph also increases which can be better compressed by ODGI's id delta encoding schema. 
 
 \input{fig_extract_viz_draw_position_untangle}
 
@@ -635,5 +637,7 @@ Code and links to data resources used to build this manuscript and its figures, 
 \input{table_viz}
 \clearpage
 \input{table_position}
+\clearpage
+\input{table_disk_space}
 
 \end{document}
