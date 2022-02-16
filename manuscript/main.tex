@@ -376,7 +376,9 @@ ODGI offers multiple commonly-needed basic operations on the topology of the gra
 
 For simplifying the graph structure, users can use \textit{odgi prune} to take away complex parts as defined by query criteria,
 while with \textit{odgi break} they can remove cycles in the graph, reducing the complexity of the graph topology.
-Furthermore, \textit{odgi groom} allows removing spurious inverting links by exploring the graph from the orientation supported by most paths.
+Furthermore, \textit{odgi groom} allows removing spurious inverting links by exploring the graph from the orientation supported by most paths\REVIEWED{;
+the process does not remove any genetic information, but only edits how the sequences are represented in the graph.}
+
 
 To enable efficient sequence alignment against the graph, long nodes can be divided into shorter nodes at a maximum requested size using \textit{odgi chop}.
 Partial order alignment, which consists of aligning sequences against a directed acyclic graph (DAG), is frequently used in pangenome building pipelines~\citep{pggb}, but the current implementations return DAGs with 1-bp long nodes.
