@@ -239,7 +239,7 @@ key message of the paper is that we have collected a set of algorithms that enab
 
 \input{fig_operations}
 
-\section{Results}
+\section{Overview}
 
 ODGI provides a set of interrogative and manipulative operations on pangenome graphs.
 We have established these tools to support our exploration of graphs built from hundreds of large eukaryotic genomes.
@@ -310,12 +310,16 @@ This parallelism speeds ODGI model construction by many-fold when testing agains
 To support interchange with other pangenome tools or text-based processing, \textit{odgi view} converts a graph in ODGI binary format to GFAv1.
 %ODGI uses the ``S'' and ``L'' records to describe the graph topology, and ``P'' records to describe paths.
 
+\section{Results}
+
+\REVIEWED{Understanding pangenome graphs is not trivial. In the following, we highlight how ODGI's tools can assist in exploring the biological features of any pangenome graph.}
+
 \subsection{Visualizing pangenome graphs}
 \label{sec:viz}
 
 % interesting that we don't go base-level at all... we use vg for that, or STM
 
-Pangenome graph visualization is one of the first steps to gain insight into the mutual relationship between the sequences in the graph and their variation.
+\REVIEWED{Pangenome graph visualization is one of the first steps to gain insight into the mutual relationship between the sequences in the graph and their variation, understanding the higher-level biology of a graph.}
 We pursue a novel approach to visualization with \textit{odgi viz} and \textit{odgi draw}, two tools which provide scalable ways of generating \REVIEWED{static} pictures of the high-level structure of large pangenome graphs.
 
 \textit{odgi viz} supports a binned, linearized rendering in 1 dimension (1D) (that is, all graph nodes lie on the same axis).
@@ -474,24 +478,24 @@ Indeed, high depth/degree nodes can be the mirror of genetic variation (Fig.~\re
 \subsection{Evaluation}
 \label{Evaluation}
 
-We compared the efficiency of ODGI (v0.6.3-56-gebc493f "Pulizia") and VG (v1.37.0 "Monchio") for routine pangenome tasks. In particular, we measured the execution time and memory usage
+\REVIEWED{We compared the efficiency of ODGI (v0.6.3-56-gebc493f "Pulizia") and VG (v1.37.0 "Monchio") for routine pangenome tasks. In particular, we measured the execution time and memory usage}
 \begin{inparaenum}[(i)]
-	\item of transforming a GFAv1 into a tool's native format, 
-	\item the extraction of a subgraph,
-	\item the visualization of a pangenome graph, and
-	\item the finding of path positions in a pangenome graph.
+	\item \REVIEWED{of transforming a GFAv1 into a tool's native format, }
+	\item \REVIEWED{the extraction of a subgraph,}
+	\item \REVIEWED{the visualization of a pangenome graph, and}
+	\item \REVIEWED{the finding of path positions in a pangenome graph.}
 \end{inparaenum}
-These graph operations are key when it comes to the understanding of pangenome graphs. We ran these operations for a varying number of threads and haplotypes in the graph for a scaling analysis. We ran each evaluation configuration 10 times and report the mean of each run.
+\REVIEWED{These graph operations are key when it comes to the understanding of pangenome graphs. We ran these operations for a varying number of threads and haplotypes in the graph for a scaling analysis. We ran each evaluation configuration 10 times and report the mean of each run.
 All evaluations were performed on a VM in the German Network for Bioinformatics Infrastructure (deNBI) cloud. It came with 28 cores and 256GB of RAM.
-The presented results are from a 90 haplotypes chromosome 6 human pangenome graph from the HPRC. Specifically, the graph contains the human references GRCH38, CHM13, and the contigs of 44 individuals encoding all possible variation including telomeres and centromeres. 
+The presented results are from a 90 haplotypes chromosome 6 human pangenome graph from the HPRC. Specifically, the graph contains the human references GRCH38, CHM13, and the contigs of 44 individuals encoding all possible variation including telomeres and centromeres. }
 
-When transforming a GFAv1 with VG, we went for the XG file format, because all downstream tools involved in the evaluation require this static graph representation model in VG.
+\REVIEWED{When transforming a GFAv1 with VG, we went for the XG file format, because all downstream tools involved in the evaluation require this static graph representation model in VG.}
 
-Our general findings are that ODGI makes comparatively better use of multithreading and requires much less memory (Fig.~\ref{fig:evaluation}, Tab.~\ref{tab:position}}) across all operations. With raising number of haplotypes in the graph, ODGI scales much butter than VG. For example, extracting a subgraph (Fig.~\ref{fig:eval-extract}), ODGI is up to 40 times faster and requires 8 times less memory than VG. Surprisingly, \textit{odgi build} occupies less memory with more threads. We don't have an explanation for that. 
+\REVIEWED{Our general findings are that ODGI makes comparatively better use of multithreading and requires much less memory (Fig.~\ref{fig:evaluation}, Tab.~\ref{tab:position}) across all operations. With raising number of haplotypes in the graph, ODGI scales much butter than VG. For example, extracting a subgraph (Fig.~\ref{fig:eval-extract}), ODGI is up to 40 times faster and requires 8 times less memory than VG. Surprisingly, \textit{odgi build} occupies less memory with more threads. We don't have an explanation for that. 
+}
+\REVIEWED{Both visualization tools can only make use of a single thread. For a 1 haplotype graph \textit{vg viz} produces a 816MB SVG which can't be opened by any program. For example, GIMP2 fails with "cannot load more than 1000000 XML elements". For larger graphs, \textit{vg viz} runs through and produces SVGs with only the XML header. This makes it unusable for larger graphs.}
 
-Both visualization tools can only make use of a single thread. For a 1 haplotype graph \textit{vg viz} produces a 816MB SVG which can't be opened by any program. For example, GIMP2 fails with "cannot load more than 1000000 XML elements". For larger graphs, \textit{vg viz} runs through and produces SVGs with only the XML header. This makes it unusable for larger graphs.
-
-We also measured the disk space usage of GFAv1, ODGI's, and VG's binary format (Tab. \ref{tab:disk_space}). While VG's XG occupies less disk space for smaller graphs, ODGI requires less space for graphs having 32 haplotypes or more. With increasing number of haplotypes the centromeric sequence in the pangenome graph also increases which can be better compressed by ODGI's id delta encoding schema. 
+\REVIEWED{We also measured the disk space usage of GFAv1, ODGI's, and VG's binary format (Tab. \ref{tab:disk_space}). While VG's XG occupies less disk space for smaller graphs, ODGI requires less space for graphs having 32 haplotypes or more. With increasing number of haplotypes the centromeric sequence in the pangenome graph also increases which can be better compressed by ODGI's id delta encoding schema. }
 
 \input{fig_extract_viz_draw_position_untangle}
 
