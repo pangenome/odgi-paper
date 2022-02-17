@@ -520,9 +520,9 @@ ODGI is a state-of-the-art tool suite that enables users to explore and discover
 It provides tools to easily transform, analyze, simplify, validate, and visualize pangenome graphs at large scale.
 In particular, lifting over annotations and linearizing nested graph structures place the suite as the bridge between traditional linear reference genome analysis and pangenome graphs.
 With the increased adoption of long read sequencing we expect pangenomic tools to become increasingly common in \REVIEWED{the genomic studies at different taxonomic levels and} in biomedical research.
-Particularly for targets that involve complex variation, such as cancer\REVIEWED{~\citep{CompPan2016}}, plant pangenomics\REVIEWED{~\citep{Bayer2020, Liu2020, Qin2021, Li2022}}, and metagenomics\REVIEWED{~\citep{Zhong2021}}. \REVIEWED{Also, when studying animals like bovine~\citep{Leonard2021, BPC}.} 
+Particularly for targets that involve complex variation, such as cancer\REVIEWED{~\citep{CompPan2016}}, plant pangenomics\REVIEWED{~\citep{Bayer2020, Liu2020, Qin2021, Li2022}}, and metagenomics\REVIEWED{~\citep{Zhong2021}}. \REVIEWED{Also, when studying animals like bovine~\citep{Leonard2021, Talenti2022, BPC}.} 
 
-\REVIEWED{Currently, bacterial pangenomes are best handled by specialized tools like PPanGGolin~\citep{Gautreau2020} or PanX~\citep{Wei2017}. The latter one doesn't build a graphical representation of  a pangenome. But, it already has a very developed eco-system, which allows a detailed analysis of bacterial pangenomes using an interactive GUI. ODGI does not come with such sophisticated tools, but it can serve as a strong basis to explore viral and bacterial pangenomes on a very large scale.}
+\REVIEWED{Currently, bacterial pangenomes are best handled by specialized tools like PPanGGolin~\citep{Gautreau2020} or PanX~\citep{Wei2017}. The latter one doesn't build a graphical representation of  a pangenome. But, it already has a very developed eco-system, which allows a detailed analysis of bacterial pangenomes using an interactive GUI. ODGI does not come with such sophisticated tooling, but it can serve as a strong basis to explore viral and bacterial pangenomes on a very large scale.}
 
 ODGI will facilitate disentangling,
 describing and analyzing a much larger set of variation than previously was possible with tools that depend on short reads and reference genomes.
@@ -651,6 +651,9 @@ Code and links to data resources used to build this manuscript and its figures, 
 \clearpage
 \input{table_disk_space}
 
+\subsection{Path Jaccard Index}
+\textit{odgi tips}, \textit{odgi untangle}, and \textit{odgi position} all need to translate a query path position to a target path position. In a repeat region, it could be that the node of the query path position is visited several times by the target path. We use the graph \textit{path jaccard} concept to infer the best target position for a query path position. For each query position we look at each possible target window and find the most-similar one. 
+ The \textit{path jaccard} context mapping ensures a precise position translation process. It explores the nucleotide context 
 
 %\subsection{Sorting}
 \input{fig_sorting}
