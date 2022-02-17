@@ -438,7 +438,7 @@ The output is a BED file with the best reference hit and position for each of th
 Pangenome graphs can hide their underlying latent structures, introducing difficulties in the analysis and interpretation. % (Fig.~\ref{fig:sorting}\textbf{a}).
 Among the causes of this is the correct ordering of the graph nodes in a convenient number of dimensions.
 ODGI provides a variety of sorting algorithms to find the best graph node order in 1 or 2 dimensions, allowing us
-to understand the sparse structures typically found in pangenome graphs and the genetic variation they represent.
+to understand the sparse structures typically found in pangenome graphs and the genetic variation they represent \REVIEWED{(Figure~\ref{fig:sorting})}.
 
 To find the best order of graph nodes in 1D, \textit{odgi sort} provides multiple sorting algorithms which can be combined into a sorting pipeline to take advantage of the strength of each.
 Most notably, nodes can be sorted topologically, randomly, by breaking cycles in the graph (\S\ref{sec:edit}), by grooming (\S\ref{sec:edit}), and/or by using a novel path-guided (PG) stochastic gradient descent (SGD) algorithm: PG-SGD.
