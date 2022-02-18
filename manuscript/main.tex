@@ -17,6 +17,8 @@
 \usepackage{orcidlink}
 \usepackage{paralist}
 
+\usepackage{amsmath}
+
 % table stuff
 \usepackage{amsfonts}
 \usepackage{booktabs}
@@ -520,9 +522,9 @@ ODGI is a state-of-the-art tool suite that enables users to explore and discover
 It provides tools to easily transform, analyze, simplify, validate, and visualize pangenome graphs at large scale.
 In particular, lifting over annotations and linearizing nested graph structures place the suite as the bridge between traditional linear reference genome analysis and pangenome graphs.
 With the increased adoption of long read sequencing we expect pangenomic tools to become increasingly common in \REVIEWED{the genomic studies at different taxonomic levels and} in biomedical research.
-Particularly for targets that involve complex variation, such as cancer\REVIEWED{~\citep{CompPan2016}}, plant pangenomics\REVIEWED{~\citep{Bayer2020, Liu2020, Qin2021, Li2022}}, and metagenomics\REVIEWED{~\citep{Zhong2021}}. \REVIEWED{Also, when studying animals like bovine~\citep{Leonard2021, BPC}.} 
+Particularly for targets that involve complex variation, such as cancer\REVIEWED{~\citep{CompPan2016}}, plant pangenomics\REVIEWED{~\citep{Bayer2020, Liu2020, Qin2021, Li2022}}, and metagenomics\REVIEWED{~\citep{Zhong2021}}. \REVIEWED{Also, when studying animals like bovine~\citep{Leonard2021, Talenti2022, BPC}.} 
 
-\REVIEWED{Currently, bacterial pangenomes are best handled by specialized tools like PPanGGolin~\citep{Gautreau2020} or PanX~\citep{Wei2017}. The latter one doesn't build a graphical representation of  a pangenome. But, it already has a very developed eco-system, which allows a detailed analysis of bacterial pangenomes using an interactive GUI. ODGI does not come with such sophisticated tools, but it can serve as a strong basis to explore viral and bacterial pangenomes on a very large scale.}
+\REVIEWED{Currently, bacterial pangenomes are best handled by specialized tools like PPanGGolin~\citep{Gautreau2020} or PanX~\citep{Wei2017}. The latter one doesn't build a graphical representation of  a pangenome. But, it already has a very developed eco-system, which allows a detailed analysis of bacterial pangenomes using an interactive GUI. ODGI does not come with such sophisticated tooling, but it can serve as a strong basis to explore viral and bacterial pangenomes on a very large scale.}
 
 ODGI will facilitate disentangling,
 describing and analyzing a much larger set of variation than previously was possible with tools that depend on short reads and reference genomes.
@@ -651,6 +653,36 @@ Code and links to data resources used to build this manuscript and its figures, 
 \clearpage
 \input{table_disk_space}
 
+\subsection{Path Jaccard Concept}
+\textit{odgi tips}, \textit{odgi untangle}, and \textit{odgi position} all translate a query path position to a target path position. In a repeat region, it could be that the node of the query path position ($N_q$) is visited several times by the target path. We use the graph \textit{path jaccard} concept to infer the best target position for a given query path position. For the query position we look at each possible target window and find the most-similar one:
+\begin{enumerate}
+	\item~Starting from $N_q$ and we follow the steps of one target path position a certain nucleotide distance to the left and a certain nucleotide distance to the right, also called context. The ODGI default distance is 10kbp for each direction. 
+	\item~We collect all node identifiers that are visited this way in a multi-set.
+	\item~Repeat the same process when following the query path position steps.
+\end{enumerate}
+Now we have two multi-sets of node identifiers, the target path position $T$ one, and the query path position $Q$ one. We apply the Jaccard measure to estimate the similarity between these two multi-sets (Equ.~\ref{eq:jaccard}).
+\begin{equation}
+	J(T,Q)=\frac{|T\cap Q|}{|T\cup Q|}
+	\label{eq:jaccard}
+\end{equation}
+The "$|$" indicate that, after we joined our sets together, we actually calculate the total length in nucleotides represented by the intersection node set in the nominator, and by the union node set in the denominator, respectively. The division of the two nucleotide lengths then gives us the jaccard measure for the two path positions.
+We collect these jaccard measurements for all possible target path positions. The largest \textit{path jaccard} determines the actual target path position for the translation.
+
+Dependent on how repeat-streaked the graph is and how it was constructed, one might want to adjust context size, to get an even more precise positional translation. If we can't follow the full distance to one direction, because we are at an end of a sequence, we also adjust this for all other context evaluating windows.
+
+In the following an example which is based on the graph in Figure~\ref{fig:jaccard}.
+\input{fig_jaccard}
+Let's assume, we want to translate the query path position \textit{query:3} to a path position in path \textit{target} with a context distance of 2 nucleotides per direction. Node \textit{2} is where \textit{query:3} is located. The node is traversed two times by \textit{target}. Therefore, we apply the \textit{path jaccard} concept to do a precise position translation. Starting from node \textit{2}, we collect nodes $\{1,2,4\}$ for path \textit{query}. For path \textit{target} we have two possible steps to start our collection from: The first or the second step in node \textit{2}. We obtain the node sets $T_1=\{1,2,2\}$ and $T_2=\{2,2,3\}$.
+\begin{multline}
+	J_1(T_1,Q)=\frac{|T_1\cap Q|}{|T_1\cup Q|}=\frac{|\{1,2,2\}\cap \{1,2,4\}|}{|\{1,2,2\}\cup \{1,2,4\}|}\\=\frac{|\{1,2\}|}{|\{1,2,2,4\}|}=\frac{3+4}{3+4+4+1}\approx0.58
+	\label{eq:jaccard_t1}
+\end{multline}
+\begin{multline}
+	J_2(T_2,Q)=\frac{|T_2\cap Q|}{|T_2\cup Q|}=\frac{|\{2,2,3\}\cap \{1,2,4\}|}{|\{2,2,3\}\cup \{1,2,4\}|}\\=\frac{|\{2\}|}{|\{1,2,2,3,4\}|}=\frac{4}{3+4+4+2+1}\approx0.29
+	\label{eq:jaccard_t2}
+\end{multline}
+We observe a \textit{path jaccard} of $0.58$ for $T_1/Q$ (Equ.~\ref{eq:jaccard_t1}) and $0.28$ for $T_2Q$ (Equ.~\ref{eq:jaccard_t2}).
+Therefore, we translate query path position \textit{query:3} to the target path position \textit{target:3}.
 
 %\subsection{Sorting}
 \input{fig_sorting}
