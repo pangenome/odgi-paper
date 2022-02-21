@@ -108,10 +108,10 @@ ODGI can be installed via Bioconda \url{https://bioconda.github.io/recipes/odgi/
 \section{Introduction}
 A pangenome models the full set of genomic elements in a given species or clade~\REVIEWED{\citep{cpang2018,Eizenga_2020}}.
 In contrast to reference-based approaches which relate \REVIEWED{samples} to a single genome, these data structures encode the mutual relationships between all the genomes represented\REVIEWED{~\citep{Ballouz2019}}.
-\REVIEWED{[2,5] A class of methods to represent pangenomes involves the sequence graphs~\citep{Hein1989, Paten:2017}, where homologous regions between genomes are compressed into a single representative of all alleles present in the pangenome.
-In node-labeled sequence graphs, nodes indicate \REVIEWED{[1,2] genomic sequences [1,2]}, with edges connecting the nodes that are concatenated in the sequences represented in the graph.
-A bidirected sequence graph can \REVIEWED{[1,2] represent both strands of the genomic sequences [1,2]}.
-On this model, variation graphs add the concept of paths representing linear \REVIEWED{[1,2] genomic [1,2]} sequences as traversals through the nodes of the graph~\citep{Garrison:2018}. \REVIEWED{[1,2] For example, a [1,2]} path can be a genome, haplotype, contig, or read. [2,5]}
+\REVIEWED{[2,5] A class of methods to represent pangenomes involves sequence graphs~\citep{Hein1989, Paten:2017} where homologous regions between genomes are compressed into a single representative \FIXME{representation?} of all alleles present in the pangenome.
+In node-labeled \FIXME{?} sequence graphs, nodes indicate \REVIEWED{[1,2] genomic sequences [1,2]} with edges connecting those nodes.
+A bidirected sequence graph can \REVIEWED{[1,2] represent both strands of DNA [1,2]}.
+On this model, variation graphs add the concept of paths representing linear \REVIEWED{[1,2] DNA [1,2]} sequences as traversals through the nodes of the graph~\citep{Garrison:2018}. \REVIEWED{[1,2] For example, a [1,2]} path can be a genome, haplotype, contig, or read. [2,5]}
 
 \REVIEWED{Pangenome graphs can be constructed by multiple sequence alignment~\citep{Lee_2002,Grasso_2004} or by transitively reducing an alignment between sequences to an equivalent, labeled sequence graph~\citep{Kehr_2014,Garrison_2019_thesis}.
 Current methods to build these graphs are still under active development~\citep{Li:2020,Armstrong:2020,pggb}, but they have largely settled on a common data model, represented in the Graphical Fragment Assembly (GFA) format~\citep{GFA}.
@@ -122,8 +122,8 @@ The Human Pangenome Reference Consortium (HPRC) and Telomere-to-Telomere (T2T) c
 We anticipate that \textit{de novo} assemblies of similar quality will become common, leading to demand for methods to \REVIEWED{analyze} pangenomes.
 
 Although \REVIEWED{pangenome graphs} are data structures of utility to researchers~\citep{cpang2018,Garrison:2018,Baaijens_2019,Hickey:2020,Sibbesen_2021}, the scientific community still lacks a toolset \REVIEWED{capable of operating on gigabase-scale pangenome graphs constructed from whole-genome assemblies}.
-Such an effort began with the VG toolkit~\citep{Garrison:2018}\REVIEWED{, but its tools do not handle efficiently pangenome graphs presenting complex motifs that result from repetitive sequences like centromeres.}
-Here we refocus it with the Optimized Dynamic Genome/Graph Implementation (ODGI) toolkit, a compatible, but independent pangenome graph interrogation and transformation system specifically implemented to handle the data scales encountered when working \REVIEWED{[1,10]with previously constructed pangenomes comprising hundreds of haplotype-resolved genomes.[1,10]}
+Such an effort began with the VG toolkit~\citep{Garrison:2018}\REVIEWED{, but its tools do not efficiently handle pangenome graphs presenting complex motifs that result from repetitive sequences (see Fig.~\ref{fig:1}).}
+Here we refocus it \FIXME{the effort?} with the Optimized Dynamic Genome/Graph Implementation (ODGI) toolkit, a compatible, but independent pangenome graph interrogation and transformation system specifically implemented to handle the data scales encountered when working \REVIEWED{[1,10]with previously constructed pangenomes comprising hundreds of haplotype-resolved genomes.[1,10]}
 ODGI offers a set of standard operations on the variation graph data model, generalizing ``genome arithmetic'' concepts like those found in BEDTools~\citep{Quinlan_2010} to work on pangenome graphs,
 and providing a variety of operations, such as visualization, sorting, and liftover projections, all critical to understand and exploit pangenome graphs.
 
@@ -342,7 +342,7 @@ To overcome such a limitation, \textit{odgi viz} supports multiple visualization
 Graph node order can affect downstream analyses on pangenome graphs.
 With \textit{odgi viz} we can color the paths by path position (Fig.~\ref{fig:odgi_viz}\textbf{c}), with light grey indicating where paths begin and dark grey where they end.
 This visualization is suitable for understanding graph node order, as smooth color gradients indicate that the graph order respects the linear paths' coordinate systems.
-Pangenome graphs represent both strands \REVIEWED{[1,2] of the genomic sequences [1,2]}.
+Pangenome graphs represent both strands \REVIEWED{[1,2] of genomic sequences \FIXME{DNA?}[1,2]}.
 \textit{odgi viz} supports also coloring the paths by orientation, with paths colored where their sequence is reverse-complemented (red) or in direct orientation (black) with respect to the sequences of the graph nodes (Fig.~\ref{fig:odgi_viz}\textbf{d}).
 Eukaryotic genomes experience gains and losses of genetic material, resulting in copy number variation (CNV) across the population.
 With \textit{odgi viz}, we can use multiple color palettes to color the paths \REVIEWED{by how many times they traverse a node, the so-called node depth,} highlighting the different copy number statuses in the \REVIEWED{[1,2] genomic sequences [1,2]} represented in the pangenome graph (Fig.~\ref{fig:odgi_viz}\textbf{e}).
@@ -496,10 +496,10 @@ Indeed, high depth/degree nodes can be the mirror of genetic variation (Fig.~\re
 All evaluations were performed on a VM in the German Network for Bioinformatics Infrastructure (deNBI) cloud. It came with 28 cores and 256GB of RAM.
 The presented results are from a 90 haplotypes chromosome 6 human pangenome graph from the HPRC. Specifically, the graph contains the human references GRCH38, CHM13, and the contigs of 44 individuals encoding all possible variation including telomeres and centromeres. }
 
-\REVIEWED{When transforming a GFAv1 with VG, we went for the XG file format, because all downstream tools involved in the evaluation require this static graph representation model in VG.}
+\REVIEWED{When transforming a GFAv1 with VG, we used the XG file format because all downstream tools involved in the evaluation required this static graph representation model of VG.} \FIXME{Funny grammar, can be shorter}.
 
 \REVIEWED{Our general findings are that ODGI makes comparatively better use of multithreading and requires much less memory (Fig.~\ref{fig:evaluation}, Tab.~\ref{tab:position}) across all operations. With raising number of haplotypes in the graph, ODGI scales much butter than VG. For example, extracting a subgraph (Fig.~\ref{fig:eval-extract}), ODGI is up to 40 times faster and requires 8 times less memory than VG. Surprisingly, \textit{odgi build} occupies less memory with more threads. We don't have an explanation for that.
-}
+} \FIXME{I would leave that statement out}
 \REVIEWED{Both visualization tools can only make use of a single thread. For a 1 haplotype graph \textit{vg viz} produces a 816MB SVG which can't be opened by any program. For example, GIMP2 fails with "cannot load more than 1000000 XML elements". For larger graphs, \textit{vg viz} runs through and produces SVGs with only the XML header. This makes it unusable for larger graphs.}
 
 \REVIEWED{We also measured the disk space usage of GFAv1, ODGI's, and VG's binary format (Tab. \ref{tab:disk_space}). While VG's XG occupies less disk space for smaller graphs, ODGI requires less space for graphs having 32 haplotypes or more. With increasing number of haplotypes the centromeric sequence in the pangenome graph also increases which can be better compressed by ODGI's id delta encoding schema. }
@@ -531,7 +531,7 @@ describing and analyzing a much larger set of variation than previously was poss
 Furthermore, users can even consider ODGI as a framework, taking advantage of its algorithms to develop new and more advanced tools that work on pangenome graphs,
 thus expanding the type of possible pangenomic analyses available to the scientific community.
 
-\REVIEWED{The performance analysis shows that ODGI clearly outperforms VG when handling large, complex pangenome graphs. This is one major achievement, because VG's XG data structure is actually static, compared to ODGI's dynamic graph implementation. Across the evaluation of key graph operations, ODGI's memory peak was 10GB. This makes it perfectly suited to be run interactively on a recent laptop. VG has limitations here. We expect that ODGI will be able to handle the next phase of the HPRC, constructing a pangenome graph from 300 individuals, without any problems.}
+\REVIEWED{The performance analysis shows that ODGI clearly outperforms VG when handling large, complex pangenome graphs. This is a major achievement, because VG's XG data structure is static, compared to ODGI's dynamic graph implementation. Across the evaluation of key graph operations, ODGI's memory peak was 10GB. This makes it perfectly suited to be run interactively on a recent laptop. VG has limitations here. We expect that ODGI will be able to handle the next phase of the HPRC, constructing a pangenome graph from 300 individuals, without any problems.}
 
 \REVIEWED{[1,10]While ODGI does not construct graphs from scratch nor is is capable of extending them, ODGI[1,10]} is already the backbone of the Pangenome Graph Builder pipeline~\citep{pggb}.
 Its static, large-scale 1D and 2D visualizations of the pangenome graphs allow an unprecedented high-level perspective on variation in pangenomes, and have also been critical in the development of pangenome graph building methods.  %the underlying structure and any problems in graph construction.
