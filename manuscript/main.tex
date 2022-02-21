@@ -61,8 +61,8 @@
 \author[Guarracino, Heumos \textit{et~al}.]{
 Andrea~Guarracino\orcidlink{0000-0001-9744-131X}\,$^{\text{\sfb 1} \dagger}$,
 Simon~Heumos\orcidlink{0000-0003-3326-817X},$^{\text{\sfb 2} \dagger}$
-Sven~Nahnsen\orcidlink{https://orcid.org/0000-0002-4375-0691}$^{\text{\sfb 2,3}}$,
-Pjotr \\Prins\orcidlink{0000-0002-8021-9162}$^{\text{\sfb 4}}$,
+Sven~Nahnsen\orcidlink{0000-0002-4375-0691}$^{\text{\sfb 2,3}}$, \\
+Pjotr~Prins\orcidlink{0000-0002-8021-9162}$^{\text{\sfb 4}}$,
 and~Erik~Garrison\orcidlink{0000-0003-3821-631X}$^{\text{\sfb 4}*}$
 }
 
@@ -522,7 +522,7 @@ ODGI is a state-of-the-art tool suite that enables users to explore and discover
 It provides tools to easily transform, analyze, simplify, validate, and visualize pangenome graphs at large scale.
 In particular, lifting over annotations and linearizing nested graph structures place the suite as the bridge between traditional linear reference genome analysis and pangenome graphs.
 With the increased adoption of long read sequencing we expect pangenomic tools to become increasingly common in \REVIEWED{the genomic studies at different taxonomic levels and} in biomedical research.
-Particularly for targets that involve complex variation, such as cancer\REVIEWED{~\citep{CompPan2016}}, plant pangenomics\REVIEWED{~\citep{Bayer2020, Liu2020, Qin2021, Li2022}}, and metagenomics\REVIEWED{~\citep{Zhong2021}}. \REVIEWED{Also, when studying animals like bovine~\citep{Leonard2021, Talenti2022, BPC}.} 
+Particularly for targets that involve complex variation, such as cancer\REVIEWED{~\citep{CompPan2016}}, plant pangenomics\REVIEWED{~\citep{Bayer2020, Liu2020, Qin2021, Li2022}}, and metagenomics\REVIEWED{~\citep{Zhong2021}}. \REVIEWED{Also, when studying animals like bovine~\citep{Leonard2021, Talenti2022, BPC}.}
 
 \REVIEWED{Currently, bacterial pangenomes are best handled by specialized tools like PPanGGolin~\citep{Gautreau2020} or PanX~\citep{Wei2017}. The latter one doesn't build a graphical representation of  a pangenome. But, it already has a very developed eco-system, which allows a detailed analysis of bacterial pangenomes using an interactive GUI. ODGI does not come with such sophisticated tooling, but it can serve as a strong basis to explore viral and bacterial pangenomes on a very large scale.}
 
@@ -656,7 +656,7 @@ Code and links to data resources used to build this manuscript and its figures, 
 \subsection{Path Jaccard Concept}
 \textit{odgi tips}, \textit{odgi untangle}, and \textit{odgi position} all translate a query path position to a target path position. In a repeat region, it could be that the node of the query path position ($N_q$) is visited several times by the target path. We use the graph \textit{path jaccard} concept to infer the best target position for a given query path position. For the query position we look at each possible target window and find the most-similar one:
 \begin{enumerate}
-	\item~Starting from $N_q$ and we follow the steps of one target path position a certain nucleotide distance to the left and a certain nucleotide distance to the right, also called context. The ODGI default distance is 10kbp for each direction. 
+	\item~Starting from $N_q$ and we follow the steps of one target path position a certain nucleotide distance to the left and a certain nucleotide distance to the right, also called context. The ODGI default distance is 10kbp for each direction.
 	\item~We collect all node identifiers that are visited this way in a multi-set.
 	\item~Repeat the same process when following the query path position steps.
 \end{enumerate}
@@ -685,7 +685,7 @@ We observe a \textit{path jaccard} of $0.58$ for $T_1/Q$ (Equ.~\ref{eq:jaccard_t
 Therefore, we translate query path position \textit{query:3} to the target path position \textit{target:3}.
 
 \subsection{Graph Sorting}
-Most subcommands in ODGI require and verify that the input graph’s node identifiers (IDs) are optimized. If this assumption is violated, \textit{odgi sort} provides functionality to optimize the graph. This means that the first node identifier (ID) starts at 1 and the last node ID is the number of nodes. The graph is then updated in place: First, the node identifiers are normalized (from 1 to the number of nodes) including the adjustment of the edges. Second, path information, specifically each step of a path, is updated, too.  
+Most subcommands in ODGI require and verify that the input graph’s node identifiers (IDs) are optimized. If this assumption is violated, \textit{odgi sort} provides functionality to optimize the graph. This means that the first node identifier (ID) starts at 1 and the last node ID is the number of nodes. The graph is then updated in place: First, the node identifiers are normalized (from 1 to the number of nodes) including the adjustment of the edges. Second, path information, specifically each step of a path, is updated, too.
 
 When we sort a graph, we switch the node IDs of the nodes according to the result of the sorting algorithm. For example, if a random sort was applied, all existing node IDs would be replaced with new, random ones (the largest node ID would still correspond to the number of nodes on the graph). We would update the edge and path information as described in the paragraph above. The reordering of nodes has a great influence on how the pangenome looks like (Fig.~\ref{fig:sorting}).
 \input{fig_sorting}
