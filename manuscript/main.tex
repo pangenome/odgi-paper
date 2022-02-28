@@ -681,12 +681,13 @@ Let's assume, we want to translate the query path position \textit{query:3} to a
 	J_2(T_2,Q)=\frac{|T_2\cap Q|}{|T_2\cup Q|}=\frac{|\{2,2,3\}\cap \{1,2,4\}|}{|\{2,2,3\}\cup \{1,2,4\}|}\\=\frac{|\{2\}|}{|\{1,2,2,3,4\}|}=\frac{4}{3+4+4+2+1}\approx0.29
 	\label{eq:jaccard_t2}
 \end{multline}
-We observe a \textit{path jaccard} of $0.58$ for $T_1/Q$ (Equ.~\ref{eq:jaccard_t1}) and $0.28$ for $T_2/Q$ (Equ.~\ref{eq:jaccard_t2}).
+We observe a \textit{path jaccard} of $0.58$ for $T_1/Q$ (Equ.~\ref{eq:jaccard_t1}) and $0.29$ for $T_2/Q$ (Equ.~\ref{eq:jaccard_t2}).
 Therefore, we translate query path position \textit{query:3} to the target path position \textit{target:3}.
 
 \subsection{Graph Sorting}
 Most subcommands in ODGI require and verify that the input graph’s node identifiers (IDs) are optimized. If this assumption is violated, \textit{odgi sort} provides functionality to optimize the graph. This means that the first node identifier (ID) starts at 1 and the last node ID is the number of nodes. The graph is then updated in place: First, the node identifiers are normalized (from 1 to the number of nodes) including the adjustment of the edges. Second, path information, specifically each step of a path, is updated, too.
 
 When we sort a graph, we switch the node IDs of the nodes according to the result of the sorting algorithm. For example, if a random sort was applied, all existing node IDs would be replaced with new, random ones (the largest node ID would still correspond to the number of nodes on the graph). We would update the edge and path information as described in the paragraph above. The reordering of nodes has a great influence on how the pangenome looks like (Fig.~\ref{fig:sorting}).
+\input{fig_sorting}
 
 \end{document}
