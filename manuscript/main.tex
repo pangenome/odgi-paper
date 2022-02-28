@@ -522,9 +522,9 @@ ODGI is a state-of-the-art tool suite that enables users to explore and discover
 It provides tools to easily transform, analyze, simplify, validate, and visualize pangenome graphs at large scale.
 In particular, lifting over annotations and linearizing nested graph structures place the suite as the bridge between traditional linear reference genome analysis and pangenome graphs.
 With the increased adoption of long read sequencing we expect pangenomic tools to become increasingly common in \REVIEWED{the genomic studies at different taxonomic levels and} in biomedical research.
-Particularly for targets that involve complex variation, such as cancer\REVIEWED{~\citep{CompPan2016}}, plant pangenomics\REVIEWED{~\citep{Bayer2020, Liu2020, Qin2021, Li2022}}, and metagenomics\REVIEWED{~\citep{Zhong2021}}. \REVIEWED{Also, when studying animals like bovine~\citep{Leonard2021, Talenti2022, BPC}.}
+Particularly for targets that involve complex variation, such as cancer\REVIEWED{~\citep{CompPan2016}}, plant pangenomics\REVIEWED{~\citep{Bayer2020, Liu2020, Qin2021, Li2022, Bayer2022}}, and metagenomics\REVIEWED{~\citep{Zhong2021}}. \REVIEWED{Also, when studying animals like bovine~\citep{Leonard2021, Talenti2022, BPC}.}
 
-\REVIEWED{Currently, bacterial pangenomes are best handled by specialized tools like PPanGGolin~\citep{Gautreau2020} or PanX~\citep{Wei2017}. The latter one doesn't build a graphical representation of  a pangenome. But, it already has a very developed eco-system, which allows a detailed analysis of bacterial pangenomes using an interactive GUI. ODGI does not come with such sophisticated tooling, but it can serve as a strong basis to explore viral and bacterial pangenomes on a very large scale.}
+\REVIEWED{Currently, bacterial pangenomes are best handled by specialized tools like PPanGGolin~\citep{Gautreau2020}, PanGraph~\citep{Noll2022} or PanX~\citep{Wei2017}. The latter one doesn't build a graphical representation of  a pangenome. But, it already has a very developed eco-system, which allows a detailed analysis of bacterial pangenomes using an interactive GUI. ODGI does not come with such sophisticated tooling, but it can serve as a strong basis to explore viral and bacterial pangenomes on a very large scale.}
 
 ODGI will facilitate disentangling,
 describing and analyzing a much larger set of variation than previously was possible with tools that depend on short reads and reference genomes.
@@ -536,7 +536,7 @@ thus expanding the type of possible pangenomic analyses available to the scienti
 \REVIEWED{[1,10]While ODGI does not construct graphs from scratch nor is is capable of extending them, ODGI[1,10]} is already the backbone of the Pangenome Graph Builder pipeline~\citep{pggb}.
 Its static, large-scale 1D and 2D visualizations of the pangenome graphs allow an unprecedented high-level perspective on variation in pangenomes, and have also been critical in the development of pangenome graph building methods.  %the underlying structure and any problems in graph construction.
 However, an interactive solution that combines the 1D and 2D layout of a graph with annotation and read mapping information across different zoom levels is still missing.
-\REVIEWED{Recent interactive pangenome graph browsers are reference-centric}~\citep{Beyer2019, Yokoyama2019, Durant2021} or focus primarily on 2D~\citep{Wick_2015, Gonnella2018}.
+\REVIEWED{Recent interactive pangenome graph browsers are reference-centric~\citep{Beyer2019, Yokoyama2019}, have a limited predefined coordinate system \citep{Durant2021}}, or focus primarily on 2D~\citep{Wick_2015, Gonnella2018}.
 Our graph sorting and layout algorithms can provide the foundation for future tools of this type.
 We plan to focus on using these learned models to detect structural variation and assembly errors.
 %In ODGI, we provide a graph layout algorithm that can become a backbone of such tools, as is already the case for \textit{gfaestus}~\citep{gfaestus} %\footnote{\url{https://github.com/chfi/gfaestus}},
