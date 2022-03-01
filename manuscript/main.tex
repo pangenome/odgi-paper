@@ -122,7 +122,7 @@ The Human Pangenome Reference Consortium (HPRC) and Telomere-to-Telomere (T2T) c
 We anticipate that \textit{de novo} assemblies of similar quality will become common, leading to demand for methods to \REVIEWED{analyze} pangenomes.
 
 Although \REVIEWED{pangenome graphs} are data structures of utility to researchers~\citep{cpang2018,Garrison:2018,Baaijens_2019,Hickey:2020,Sibbesen_2021}, the scientific community still lacks a toolset \REVIEWED{capable of operating on gigabase-scale pangenome graphs constructed from whole-genome assemblies}.
-Such an effort began with the VG toolkit~\citep{Garrison:2018}\REVIEWED{, but its tools do not efficiently handle pangenome graphs presenting complex motifs that result from repetitive sequences (see Fig.~\ref{fig:1}).}
+Such an effort began with the VG toolkit~\citep{Garrison:2018}\REVIEWED{, but its tools do not efficiently handle pangenome graphs presenting complex motifs that result from repetitive sequences (see Fig.~\ref{fig:operations}).}
 Here we refocus the effort with the Optimized Dynamic Genome/Graph Implementation (ODGI) toolkit, a compatible, but independent pangenome graph interrogation and transformation system specifically implemented to handle the data scales encountered when working \REVIEWED{[1,10]with previously constructed pangenomes comprising hundreds of haplotype-resolved genomes.[1,10]}
 ODGI offers a set of standard operations on the variation graph data model, generalizing ``genome arithmetic'' concepts like those found in BEDTools~\citep{Quinlan_2010} to work on pangenome graphs,
 and providing a variety of operations, such as visualization, sorting, and liftover projections, all critical to understand and exploit pangenome graphs.
@@ -256,13 +256,13 @@ ODGI covers common operations that we have found to be essential when working wi
 \item~\textit{odgi viz} provides a linear visualization of the graph (\S\ref{sec:viz}).
 \item~\textit{odgi draw} renders a 2D image of the graph (\S\ref{sec:viz}).
 \item~\textit{odgi extract} excerpts subsets of the graph based on path ranges (\S\ref{sec:extract}).
-\item~\textit{odgi explode} breaks the graph into connected components (\S\ref{sec:extract}).
-\item~\textit{odgi squeeze} unifies disjoint graphs (\S\ref{sec:extract}).
-\item~\textit{odgi chop} breaks long nodes into shorter ones (\S\ref{sec:edit}).
-\item~\textit{odgi unchop} combines unitig nodes (\S\ref{sec:edit}).
-\item~\textit{odgi break} removes cycles in the graph (\S\ref{sec:edit}).
-\item~\textit{odgi prune} removes complex regions (\S\ref{sec:edit}).
-\item~\textit{odgi groom} resolves spurious inverting links (\S\ref{sec:edit}).
+\item~\textit{odgi explode} breaks the graph into connected components (\S\ref{sec:supp_edit}).
+\item~\textit{odgi squeeze} unifies disjoint graphs (\S\ref{sec:supp_edit}).
+\item~\textit{odgi chop} breaks long nodes into shorter ones (\S\ref{sec:supp_edit}).
+\item~\textit{odgi unchop} combines unitig nodes (\S\ref{sec:supp_edit}).
+\item~\textit{odgi break} removes cycles in the graph (\S\ref{sec:supp_edit}).
+\item~\textit{odgi prune} removes complex regions (\S\ref{sec:supp_edit}).
+\item~\textit{odgi groom} resolves spurious inverting links (\S\ref{sec:supp_edit}).
 \item~\textit{odgi position} lifts coordinates between path and graph positions (\S\ref{sec:untangle}).%
 %\item \textit{odgi server} provides a HTTP server to lift coordinates (\S\ref{sec:untangle}).
 \item~\textit{odgi untangle} deconvolutes paths relative to a reference (\S\ref{sec:untangle}).
@@ -368,28 +368,9 @@ Then, edges connecting all selected nodes are added in the subgraph under constr
 Finally, the portions of the paths (\textit{i.e.}, the subpaths) walking through the selected nodes are extracted and added to the new subgraph.
 Subpaths are searched in parallel, created serially, and extended in parallel again thanks to the parallelism enabled by the ODGI data structure (see \S\ref{sec:build}), making \textit{odgi extract} a scalable solution to extract also complex subregions presenting nodes with very high node depth.
 
+The results of other useful graph editing operations are not shown here, but described in detail in $\S$\ref{sec:supp_edit}.
+
 % If needed, we can have a figure showing extraction process---either schematic or ``real''.
-
-Pangenome graphs can embed multiple chromosomes as separated connected components (inter-chromosomal structural variants would join the components into bigger ones).
-\textit{odgi explode} separates the connected components in different ODGI format files, while \textit{odgi squeeze} allows merging multiple graphs into the same ODGI format file, preventing node ID collisions.
-
-
-\subsection{Editing the graph structure}
-\label{sec:edit}
-
-Pangenome graphs can be used in a variety of applications, ranging from read mapping to variant identification and genotyping~\citep{Eizenga_2020}.
-However, graphs presenting complex topology can increase the computational overhead of many downstream analyses.
-ODGI offers multiple commonly-needed basic operations on the topology of the graph and its nodes.
-
-For simplifying the graph structure, users can use \textit{odgi prune} to take away complex parts as defined by query criteria,
-while with \textit{odgi break} they can remove cycles in the graph, reducing the complexity of the graph topology.
-Furthermore, \textit{odgi groom} allows removing spurious inverting links by exploring the graph from the orientation supported by most paths\REVIEWED{;
-the process does not remove any genetic information, but only edits how the sequences are represented in the graph.}
-
-To enable efficient sequence alignment against the graph, long nodes can be divided into shorter nodes at a maximum requested size using \textit{odgi chop}.
-Partial order alignment, which consists of aligning sequences against a directed acyclic graph (DAG), is frequently used in pangenome building pipelines~\citep{pggb}, but the current implementations return DAGs with 1-bp long nodes.
-\textit{odgi unchop} allows joining nodes that can be merged without changing the graph topology, nor the embedded sequences, obtaining an equivalent, but more compact, representation of the graph.
-
 
 \subsection{Untangling and navigating the pangenome}
 \label{sec:untangle}
@@ -435,44 +416,47 @@ Moreover, to obtain base-level precise information on the relationships between 
 It could be that the reference visits the node several times. Therefore, for each contig range (a tip) \textit{odgi tips} takes a look at each possible reference window and finds the most similar one using the \textit{path jaccard} concept.
 The output is a BED file with the best reference hit and position for each of the contigs' ends.
 
-\subsection{Sorting the pangenome graph}
+\subsection{Latent graph structure reveals underlying biology}
 \label{sec:sort}
 
 Pangenome graphs can hide their underlying latent structures, introducing difficulties in the analysis and interpretation. % (Fig.~\ref{fig:sorting}\textbf{a}).
 Among the causes of this is the correct ordering of the graph nodes in a convenient number of dimensions.
 ODGI provides a variety of sorting algorithms to find the best graph node order in 1 or 2 dimensions, allowing us
-to understand the sparse structures typically found in pangenome graphs and the genetic variation they represent \REVIEWED{(Figure~\ref{fig:sorting})}.
+to understand the sparse structures typically found in pangenome graphs and the genetic variation they represent.
 
-To find the best order of graph nodes in 1D, \textit{odgi sort} provides multiple sorting algorithms which can be combined into a sorting pipeline to take advantage of the strength of each.
-Most notably, nodes can be sorted topologically, randomly, by breaking cycles in the graph (\S\ref{sec:edit}), by grooming (\S\ref{sec:edit}), and/or by using a novel path-guided (PG) stochastic gradient descent (SGD) algorithm: PG-SGD.
+\REVIEWED{We applied a variety of \textit{odgi sort}'s 1D algorithms to a 90-haplotype human pangenome MHC and a C4 graph(Fig.~\ref{fig:sorting}). 
+The randomly sorted MHC graph (Fig.~\ref{fig:mhc-random-node-order}) hides its linear graph structure, whereas our novel path-guided (PG) stochastic gradient descent (SGD) algorithm, PG-SGD, is able to produce a globally linear ordered graph revealing the C4 region (Fig.~\ref{fig:mhc-pgsdg-sorting}). 
 This exploits path information to order the graph nodes.
 %For understanding the large-scale organization of the graph, we benefit from an even simpler coordinate system.
 PG-SGD learns a 1D or 2D organization of the graph nodes that matches distances in graph paths.
 To scale to large graphs, we learn this projection in parallel via a HOGWILD! approach~\citep{niu2011hogwild}.
 Our approach can be seen as an adaptation of SGD-based drawing to pangenome graphs~\citep{zheng2018graph}.
 In parallel, each HOGWILD! thread updates node relative positions to best-match their nucleotide distance in the paths running through the graph.
-Following standard SGD approaches, a learning rate is reduced as the algorithm progresses, and execution continues until the adjustments to the model fall below a target threshold $\epsilon$.
+Following standard SGD approaches, a learning rate is reduced as the algorithm progresses, and execution continues until the adjustments to the model fall below a target threshold $\epsilon$.}
+
+\REVIEWED{A PG-SGD sorting of the C4 does not work well locally. It hides the underlying copy number variation status in the region (Fig.~\ref{fig:c4-pgsdg-sorting}). A topological sort order finally gives rise to the graph's latent structure, revealing the copy number characteristics of this C4 region (Fig.~\ref{fig:c4-topological-sorting}). }
+%
+\REVIEWED{To find the best order of graph nodes in 1D, \textit{odgi sort}'s multiple sorting algorithms can be combined into a sorting pipeline to take advantage of the strength of each (results not shown here).
 ODGI can project vector (in 1D) and matrix (2D) representations of the graph relative to these learned coordinate spaces.
 Based on this projection, we can trivially sort graph nodes in 1D.
-Moreover, we support the same concept in 2D in \textit{odgi layout} by providing a 2D implementation of the PG-SGD algorithm.
+Moreover, we support the same concept in 2D in \textit{odgi layout} by providing a 2D implementation of the PG-SGD algorithm (Figure~\ref{fig:odgi_layout}). A detailed description of the node ordering process can be found at $\S$\ref{sec:supp_sorting}. As we have shown above, the node order is crucial to understand the biological features of a pangenome graph.}
 %As the PG-SGD sorts graph nodes with respect to the paths which walk through them, we can also detect regions whose layout is distorted, which may represent structural variation or assembly error.
 
 
 \input{fig_metrics}
 
-\subsection{Obtaining metrics of the pangenome graph}
+\subsection{Graph features highlight complexity}
 \label{sec:metrics}
 
-Graphs statistics provide alternative ways to gain insight into pangenomes complexity revealing the overall structure, size, and features of a graph and its sequences.
+\REVIEWED{Graphs statistics provide alternative ways to gain insight into pangenomes complexity revealing the overall structure, size, and features of a graph and its sequences.}
 
-As a use case study (Fig.~\ref{fig:metrics}), we took a look at the metrics of a 90-haplotype human pangenome graph of the exon 1 huntingtin gene (\textit{HTTexon1}). In particular, we obtained the number of nodes, edges, paths, components, bases, the graph length, and the GC content with \textit{odgi stats}. The output pangenome statistics in YAML textual file format was given to
+\REVIEWED{As a use case study (Fig.~\ref{fig:metrics}), we took a look at the metrics of a 90-haplotype human pangenome graph of the exon 1 huntingtin gene (\textit{HTTexon1}). In particular, we obtained the number of nodes, edges, paths, components, bases, the graph length, and the GC content with \textit{odgi stats}. The output pangenome statistics in YAML textual file format was given to
 MultiQC's~\citep{Ewels_2016} newly added ODGI module. As can be seen in Figure~\ref{fig:metrics-multiqc}, we observe a very high GC content of 73.0\% in the \textit{HTTexon1} graph compared to the human genomic mean GC content of 40.9\% \citep{Piovesan2019}. This is in accordance with the literature~\citep{Neueder2017}. %\footnote{\url{https://multiqc.info/docs/\#odgi} (accessed Oct 2021)}
-Despite this discovery, the MultiQC module provides an interactive way to comparatively explore statistics of an arbitrary number of graphs.
+Despite this discovery, the MultiQC module provides an interactive way to comparatively explore statistics of an arbitrary number of graphs.}
 
-Investigating in detail which intricate regions in the \textit{HTTexon1} graph are responsible for the genetic variation and high GC content, we took a look at the per nucleotide node degree distribution (Fig.~\ref{fig:metrics-degree}), and node depth distribution (Fig.~\ref{fig:metrics-depth}) of CHM13 using \textit{odgi depth}'s, and \textit{odgi degree}'s BED output, respectively. The results indicate a highly polymorphic region around position 200 in the graph. Figure~\ref{fig:metrics-viz} supports this analysis. Zooming in on this region with \textit{vg viz}, we can clearly identify the typical \textit{HTTexon1} CAG variable repeat region (Fig.~\ref{fig:metrics-str}).
+\REVIEWED{Investigating in detail which intricate regions in the \textit{HTTexon1} graph are responsible for the genetic variation and high GC content, we took a look at the per nucleotide node degree distribution (Fig.~\ref{fig:metrics-degree}), and node depth distribution (Fig.~\ref{fig:metrics-depth}) of CHM13 using \textit{odgi depth}'s, and \textit{odgi degree}'s BED output, respectively. The results indicate a highly polymorphic region around position 200 in the graph. Figure~\ref{fig:metrics-viz} supports this analysis. Zooming in on this region with \textit{vg viz}, we can clearly identify the typical \textit{HTTexon1} CAG variable repeat region (Fig.~\ref{fig:metrics-str}).
 Figures~\ref{fig:metrics-degree}-\ref{fig:metrics-viz} highlight the variant region around position 200 of CHM13 showing the variable number of glutamine residues of the different individuals as reported by \citep{Nance1999}.
-In general, such complex motives can be the mirror of genetic variation, but also misassemblies or problems in the pangenome building, making the tools further useful for graph validation.
-%In Fig.~\ref{fig:metrics}, the characteristics of a 90 haplotypes human pangenome graph of the exon 1 huntingtin gene~\citep{Sathasivam2013,Neueder2017} (\textit{HTTexon1}) are shown.
+In general, such complex motives can be the mirror of genetic variation, but also misassemblies or problems in the pangenome building, making the tools further useful for graph validation. Additional graph metrics interrogation tools are detailed in $\S$\ref{sec:supp_metrics}.}
 
 \subsection{Evaluation}
 \label{Evaluation}
@@ -666,17 +650,36 @@ In the following an example which is based on the graph in Figure~\ref{fig:jacca
 \input{fig_jaccard}
 Let's assume, we want to translate the query path position \textit{query:3} to a path position in path \textit{target} with a context distance of 2 nucleotides per direction. Node \textit{2} is where \textit{query:3} is located. The node is traversed two times by \textit{target}. Therefore, we apply the \textit{path jaccard} concept to do a precise position translation. Starting from node \textit{2}, we collect nodes $\{1,2,4\}$ for path \textit{query}. For path \textit{target} we have two possible steps to start our collection from: The first or the second step in node \textit{2}. We obtain the node sets $T_1=\{1,2,2\}$ and $T_2=\{2,2,3\}$.
 \begin{multline}
-	J_1(T_1,Q)=\frac{|T_1\cap Q|}{|T_1\cup Q|}=\frac{|\{1,2,2\}\cap \{1,2,4\}|}{|\{1,2,2\}\cup \{1,2,4\}|}\\=\frac{|\{1,2\}|}{|\{1,2,2,4\}|}=\frac{3+4}{3+4+4+1}\approx0.58
+	J_1(T_1,Q)=\frac{|T_1\cap Q|}{|T_1\cup Q|}=\frac{|\{1,2,2\}\cap \{1,2,4\}|}{|\{1,2,2\}\cup \{1,2,4\}|}\\=\frac{|\{1,2\}|}{|\{1,2,2,4\}|}\widehat{=}\frac{3+4}{3+4+4+1}\approx0.58
 	\label{eq:jaccard_t1}
 \end{multline}
 \begin{multline}
-	J_2(T_2,Q)=\frac{|T_2\cap Q|}{|T_2\cup Q|}=\frac{|\{2,2,3\}\cap \{1,2,4\}|}{|\{2,2,3\}\cup \{1,2,4\}|}\\=\frac{|\{2\}|}{|\{1,2,2,3,4\}|}=\frac{4}{3+4+4+2+1}\approx0.29
+	J_2(T_2,Q)=\frac{|T_2\cap Q|}{|T_2\cup Q|}=\frac{|\{2,2,3\}\cap \{1,2,4\}|}{|\{2,2,3\}\cup \{1,2,4\}|}\\=\frac{|\{2\}|}{|\{1,2,2,3,4\}|}\widehat{=}\frac{4}{3+4+4+2+1}\approx0.29
 	\label{eq:jaccard_t2}
 \end{multline}
 We observe a \textit{path jaccard} of $0.58$ for $T_1/Q$ (Equ.~\ref{eq:jaccard_t1}) and $0.29$ for $T_2/Q$ (Equ.~\ref{eq:jaccard_t2}).
 Therefore, we translate query path position \textit{query:3} to the target path position \textit{target:3}.
 
+\subsection{Graph Editing}
+\label{sec:supp_edit}
+Pangenome graphs can embed multiple chromosomes as separated connected components (inter-chromosomal structural variants would join the components into bigger ones).
+\textit{odgi explode} separates the connected components in different ODGI format files, while \textit{odgi squeeze} allows merging multiple graphs into the same ODGI format file, preventing node ID collisions.
+
+Pangenome graphs can be used in a variety of applications, ranging from read mapping to variant identification and genotyping~\citep{Eizenga_2020}.
+However, graphs presenting complex topology can increase the computational overhead of many downstream analyses.
+ODGI offers multiple commonly-needed basic operations on the topology of the graph and its nodes.
+
+For simplifying the graph structure, users can use \textit{odgi prune} to take away complex parts as defined by query criteria,
+while with \textit{odgi break} they can remove cycles in the graph, reducing the complexity of the graph topology.
+Furthermore, \textit{odgi groom} allows removing spurious inverting links by exploring the graph from the orientation supported by most paths\REVIEWED{;
+	the process does not remove any genetic information, but only edits how the sequences are represented in the graph.}
+
+To enable efficient sequence alignment against the graph, long nodes can be divided into shorter nodes at a maximum requested size using \textit{odgi chop}.
+Partial order alignment, which consists of aligning sequences against a directed acyclic graph (DAG), is frequently used in pangenome building pipelines~\citep{pggb}, but the current implementations return DAGs with 1-bp long nodes.
+\textit{odgi unchop} allows joining nodes that can be merged without changing the graph topology, nor the embedded sequences, obtaining an equivalent, but more compact, representation of the graph.
+
 \subsection{Graph Sorting}
+\label{sec:supp_sorting}
 Most subcommands in ODGI require and verify that the input graph’s node identifiers (IDs) are optimized. If this assumption is violated, \textit{odgi sort} provides functionality to optimize the graph. This means that the first node identifier (ID) starts at 1 and the last node ID is the number of nodes. The graph is then updated in place: First, the node identifiers are normalized (from 1 to the number of nodes) including the adjustment of the edges. Second, path information, specifically each step of a path, is updated, too.
 
 When we sort a graph, we switch the node IDs of the nodes according to the result of the sorting algorithm. For example, if a random sort was applied, all existing node IDs would be replaced with new, random ones (the largest node ID would still correspond to the number of nodes on the graph). We would update the edge and path information as described in the paragraph above. The reordering of nodes has a great influence on how the pangenome looks like (Fig.~\ref{fig:sorting}).
