@@ -122,10 +122,10 @@ The Human Pangenome Reference Consortium (HPRC) and Telomere-to-Telomere (T2T) c
 We anticipate that \textit{de novo} assemblies of similar quality will become common, leading to demand for methods to \REVIEWED{analyze} pangenomes.
 
 Although \REVIEWED{pangenome graphs} are data structures of utility to researchers~\citep{cpang2018,Garrison:2018,Baaijens_2019,Hickey:2020,Sibbesen_2021}, the scientific community still lacks a toolset \REVIEWED{capable of operating on gigabase-scale pangenome graphs constructed from whole-genome assemblies}.
-Such an effort began with the VG toolkit~\citep{Garrison:2018}\REVIEWED{, but its tools do not efficiently handle pangenome graphs presenting complex motifs that result from repetitive sequences (see Fig.~\ref{fig:operations}).}
+Such an effort began with the VG toolkit~\citep{Garrison:2018}\REVIEWED{, but its tools do not efficiently handle pangenome graphs presenting complex motifs that result from repetitive sequences.}
 Here we refocus the effort with the Optimized Dynamic Genome/Graph Implementation (ODGI) toolkit, a compatible, but independent pangenome graph interrogation and transformation system specifically implemented to handle the data scales encountered when working \REVIEWED{[1,10]with previously constructed pangenomes comprising hundreds of haplotype-resolved genomes.[1,10]}
-ODGI offers a set of standard operations on the variation graph data model, generalizing ``genome arithmetic'' concepts like those found in BEDTools~\citep{Quinlan_2010} to work on pangenome graphs,
-and providing a variety of operations, such as visualization, sorting, and liftover projections, all critical to understand and exploit pangenome graphs.
+ODGI offers a set of standard operations on the variation graph data model (Fig.~\ref{fig:operations}) , generalizing ``genome arithmetic'' concepts, like those found in BEDTools~\citep{Quinlan_2010}, to work on pangenome graphs.
+Furthermore, it provides a variety of tools for graph visualization, sorting, and liftover projections, all critical to understand and exploit pangenome graphs.
 
 %Tools in ODGI operate on an efficient dynamic HandleGraph model \citep{Eizenga_2020_BX}.
 %Algorithms written against this abstract API can be applied to the graph.% applies algorithms based on the HandleGraph API.
@@ -368,7 +368,7 @@ Then, edges connecting all selected nodes are added in the subgraph under constr
 Finally, the portions of the paths (\textit{i.e.}, the subpaths) walking through the selected nodes are extracted and added to the new subgraph.
 Subpaths are searched in parallel, created serially, and extended in parallel again thanks to the parallelism enabled by the ODGI data structure (see \S\ref{sec:build}), making \textit{odgi extract} a scalable solution to extract also complex subregions presenting nodes with very high node depth.
 
-The results of other useful graph editing operations are not shown here, but described in detail in $\S$\ref{sec:supp_edit}.
+The results of other useful graph editing operations are described in $\S$\ref{sec:supp_edit}.
 
 % If needed, we can have a figure showing extraction process---either schematic or ``real''.
 
@@ -416,6 +416,8 @@ Moreover, to obtain base-level precise information on the relationships between 
 It could be that the reference visits the node several times. Therefore, for each contig range (a tip) \textit{odgi tips} takes a look at each possible reference window and finds the most similar one using the \textit{path jaccard} concept.
 The output is a BED file with the best reference hit and position for each of the contigs' ends.
 
+\input{fig_extract_viz_draw_position_untangle}
+
 \subsection{Latent graph structure reveals underlying biology}
 \label{sec:sort}
 
@@ -424,11 +426,11 @@ Among the causes of this is the correct ordering of the graph nodes in a conveni
 ODGI provides a variety of sorting algorithms to find the best graph node order in 1 or 2 dimensions, allowing us
 to understand the sparse structures typically found in pangenome graphs and the genetic variation they represent.
 
-\REVIEWED{We applied a variety of \textit{odgi sort}'s 1D algorithms to a 90-haplotype human pangenome MHC and a C4 graph(Fig.~\ref{fig:sorting}). 
+\REVIEWED{We applied a variety of \textit{odgi sort}'s 1D algorithms to a 90-haplotype human pangenome MHC and a C4 graph (Fig.~\ref{fig:sorting}).
 The randomly sorted MHC graph (Fig.~\ref{fig:mhc-random-node-order}) hides its linear graph structure, whereas our novel path-guided (PG) stochastic gradient descent (SGD) algorithm, PG-SGD, is able to produce a globally linear ordered graph revealing the C4 region (Fig.~\ref{fig:mhc-pgsdg-sorting}). 
 This exploits path information to order the graph nodes.
 %For understanding the large-scale organization of the graph, we benefit from an even simpler coordinate system.
-PG-SGD learns a 1D or 2D organization of the graph nodes that matches distances in graph paths.
+PG-SGD learns a 1D or 2D organization of the graph nodes that matches nucleotide distances in graph paths (i.e., the sequences embedded in the graph).
 To scale to large graphs, we learn this projection in parallel via a HOGWILD! approach~\citep{niu2011hogwild}.
 Our approach can be seen as an adaptation of SGD-based drawing to pangenome graphs~\citep{zheng2018graph}.
 In parallel, each HOGWILD! thread updates node relative positions to best-match their nucleotide distance in the paths running through the graph.
@@ -436,12 +438,11 @@ Following standard SGD approaches, a learning rate is reduced as the algorithm p
 
 \REVIEWED{A PG-SGD sorting of the C4 does not work well locally. It hides the underlying copy number variation status in the region (Fig.~\ref{fig:c4-pgsdg-sorting}). A topological sort order finally gives rise to the graph's latent structure, revealing the copy number characteristics of this C4 region (Fig.~\ref{fig:c4-topological-sorting}). }
 %
-\REVIEWED{To find the best order of graph nodes in 1D, \textit{odgi sort}'s multiple sorting algorithms can be combined into a sorting pipeline to take advantage of the strength of each (results not shown here).
+\REVIEWED{To find the best order of graph nodes in 1D, \textit{odgi sort}'s multiple sorting algorithms can be combined into a sorting pipeline to take advantage of the strength of each (results not shown).
 ODGI can project vector (in 1D) and matrix (2D) representations of the graph relative to these learned coordinate spaces.
 Based on this projection, we can trivially sort graph nodes in 1D.
 Moreover, we support the same concept in 2D in \textit{odgi layout} by providing a 2D implementation of the PG-SGD algorithm (Figure~\ref{fig:odgi_layout}). A detailed description of the node ordering process can be found at $\S$\ref{sec:supp_sorting}. As we have shown above, the node order is crucial to understand the biological features of a pangenome graph.}
 %As the PG-SGD sorts graph nodes with respect to the paths which walk through them, we can also detect regions whose layout is distorted, which may represent structural variation or assembly error.
-
 
 \input{fig_metrics}
 
@@ -480,7 +481,6 @@ The presented results are from a 90 haplotypes chromosome 6 human pangenome grap
 
 \REVIEWED{We also measured the disk space usage of GFAv1, ODGI's, and VG's binary format (Tab. \ref{tab:disk_space}). While VG's XG occupies less disk space for smaller graphs, ODGI requires less space for graphs having 32 haplotypes or more. With increasing number of haplotypes the centromeric sequence in the pangenome graph also increases which can be better compressed by ODGI's id delta encoding schema. }
 
-\input{fig_extract_viz_draw_position_untangle}
 
 \input{fig_evaluation}
 
