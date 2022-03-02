@@ -386,17 +386,17 @@ Other graph editing operations are described in $\S$\ref{sec:supp_edit}.
 %We find that, to understanding relationships between sequences and positions in pangenome graphs, we must use context mapping to ``untangle'' complex regions found in VNTRs, segmental duplications, and centromeric repeats.
 %This approach lets use pangenome graphs as a foundation for universal liftover between any two sets of sequences in the graph.
 
-The key data in a pangenome graph is a representation of the alignment or the homology relationships between the sequences represented.
-Navigating and understanding the graph requires coordinate systems that we can use to link other data into the graph model, and thus to the \REVIEWED{[1,2] genomic sequences [1,2]} in the pangenome.
-ODGI's tools use the embedded sequences to provide a universal coordinate space that is graph-independent, thereby remaining stable across different graphs built with the same genomes. Such a a universal coordinate system allows us to support several kinds of ``lift-over'' of coordinates between different genomes in the same or different graphs.
+The key data in a pangenome graph is a representation of the alignment (i.e., the homology relationships) between \REVIEWED{[1,2] genomic sequences [1,2]}.
+Navigating and understanding the graph requires coordinate systems to link other data to the sequences represented in the graph model.
+ODGI's tools use the embedded sequences to provide a universal coordinate space that is graph-independent, thereby remaining stable across different graphs built with the same sequences.
+Such a a universal coordinate system allows us to support several kinds of ``lift-over'' of coordinates between different sequences in the same or different graphs.
 %Our for positional conversion (\textit{odgi position}), annotation liftover (\textit{odgi untangle}), breakpoint identification (\textit{odgi tips}), subgraph extraction (\textit{odgi extract}), visualization (\textit{odgi viz}), path depth (\textit{odgi depth}), and graph complexity measurement (\textit{odgi degree}) can all operate on coordinates of paths in the graph.
-
-\REVIEWED{As a demonstration of this universality, we took the C4 graph and added gene annotation from GRCH38 to its nodes from a GFF file using \textit{odgi position} ($\S$\ref{sec:supp_gff}). The resulting TSV contains pairs of node and color. Taking the graph and the TSV into Bandage~\citep{Wick_2015}, the actual C4 gene region is highlighted (Fig.~\ref{fig:viz_extract_untangle-C4-bandage}). Zooming to the nucleotide level, the annotation shows the single nucleotide differences of the \textit{C4A} and the \textit{C4B} genes (Fig.~\ref{fig:viz_extract_untangle-C4-bandage-zoom}).}
+\REVIEWED{As a demonstration, we took the C4 pangenome graph and added to its nodes gene annotation from GRCH38 (in GFF format file) using \textit{odgi position} ($\S$\ref{sec:supp_gff}). The resulting TSV contains pairs of node and color. Taking the graph and the TSV into Bandage~\citep{Wick_2015}, the actual C4 genes are highlighted (Fig.~\ref{fig:viz_extract_untangle-C4-bandage}). Zooming to the nucleotide level, the annotation shows the single nucleotide differences of the \textit{C4A} and the \textit{C4B} genes (Fig.~\ref{fig:viz_extract_untangle-C4-bandage-zoom}).}
 
 \textit{odgi position} can also translate graph and path positions between or within graphs, emitting the liftovers in BED format.
 For a precise translation process when conversing a query position to a reference position in a repeat region, we apply the \textit{path jaccard} context mapping concept.
 It could be that the found reference node is visited several times by the reference.
-To ensure a precise translation, we select the reference position whose context (the multiset of $Node.id$s reached within a distance of e.g. 10kbp) has the best jaccard metric when compared to the query context. \REVIEWED{For a more detailed explanation of the \textit{path jaccard} concept please see $\S$\ref{sec:supp_path_jaccard}.}
+To ensure a precise translation, we select the reference position whose context (the multiset of $Node.id$s reached within a distance of e.g. 10kbp) has the best jaccard metric when compared to the query context. \REVIEWED{For a more detailed explanation of the \textit{path jaccard} concept see $\S$\ref{sec:supp_path_jaccard}.}
 %the best jaccard for the query step and each reference candidate step is calculated by looking at a context range (e.g. 10kbp) around the locus.
 
 % untangle (this follows on the jaccard graph mapping concepts in the previous section}
