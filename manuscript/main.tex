@@ -268,7 +268,7 @@ ODGI covers common operations that we have found to be essential when working wi
 \item~\textit{odgi position} lifts coordinates between path and graph positions (\S\ref{sec:untangle}).%
 %\item \textit{odgi server} provides a HTTP server to lift coordinates (\S\ref{sec:untangle}).
 \item~\textit{odgi untangle} deconvolutes paths relative to a reference (\S\ref{sec:untangle}).
-\item~\textit{odgi tips} finds path end points relative to a reference (\S\ref{sec:untangle}).
+\item~\textit{odgi tips} finds path end points relative to a reference (\S\ref{sec:supp_navigation}).
 \item~\textit{odgi sort} orders the graph nodes (\S\ref{sec:sort}).
 \item~\textit{odgi layout} establishes a 2D layout (\S\ref{sec:sort}).
 \item~\textit{odgi matrix} derives the pangenome matrix (\S\ref{sec:supp_metrics}).
@@ -345,7 +345,7 @@ To overcome such a limitation, \textit{odgi viz} supports multiple visualization
 Graph node order can affect downstream analyses on pangenome graphs.
 With \textit{odgi viz} we can color the paths by path position (Fig.~\ref{fig:viz_extract_untangle-C4-gradient}), with light grey indicating where paths begin and dark grey where they end.
 This visualization is suitable for understanding graph node order, as smooth color gradients indicate that the graph order respects the linear paths' coordinate systems.
-Pangenome graphs can represent both strands \REVIEWED{[1,2] of the genomic sequences of the DNA[1,2]}.
+Pangenome graphs can represent both strands \REVIEWED{[1,2] of the genomic sequences of the DNA[1,2]}.~
 \textit{odgi viz} supports also coloring the paths by orientation, with paths colored where their sequence is reverse-complemented (red) or in direct orientation (black) with respect to the sequences of the graph nodes (Fig.~\ref{fig:viz_extract_untangle-C4-strandness}).
 Eukaryotic genomes experience gains and losses of genetic material, resulting in copy number variation (CNV) across the population.
 With \textit{odgi viz}, we can use multiple color palettes to color the paths \REVIEWED{by how many times they traverse a node, the so-called node depth,} highlighting the different copy number statuses in the \REVIEWED{[1,2] genomic sequences [1,2]} represented in the pangenome graph (Fig.~\ref{fig:viz_extract_untangle-C4-coverage}).
@@ -385,32 +385,24 @@ Navigating and understanding the graph requires coordinate systems that we can u
 ODGI's tools use the embedded sequences to provide a universal coordinate space that is graph-independent, thereby remaining stable across different graphs built with the same genomes. Such a a universal coordinate system allows us to support several kinds of ``lift-over'' of coordinates between different genomes in the same or different graphs.
 %Our for positional conversion (\textit{odgi position}), annotation liftover (\textit{odgi untangle}), breakpoint identification (\textit{odgi tips}), subgraph extraction (\textit{odgi extract}), visualization (\textit{odgi viz}), path depth (\textit{odgi depth}), and graph complexity measurement (\textit{odgi degree}) can all operate on coordinates of paths in the graph.
 
-As a demonstration of this universality, we 
+\REVIEWED{As a demonstration of this universality, we took the C4 graph and added gene annotation from GRCH38 to its nodes from a GFF file using \textit{odgi position} ($\S$\ref{sec:supp_gff}). The resulting TSV contains pairs of node and color. Taking the graph and the TSV into Bandage~\citep{Wick_2015}, the actual C4 gene region is highlighted (Fig.~\ref{fig:viz_extract_untangle-C4-bandage}). Zooming to the nucleotide level, the annotation shows the single nucleotide differences of the \textit{C4A} and the \textit{C4B} genes (Fig.~\ref{fig:viz_extract_untangle-C4-bandage-zoom}).}
 
-\textit{odgi position} translates graph and path positions between or within graphs, emitting the liftovers in BED format.
-Coordinates can be specified in BED format, but users can even specify a GFF/GTF file to project the annotations into the pangenome graph (Fig.~\labelcref{fig:viz_extract_untangle-C4-bandage,fig:viz_extract_untangle-C4-bandage-zoom}).
+\textit{odgi position} can also translate graph and path positions between or within graphs, emitting the liftovers in BED format.
 For a precise translation process when conversing a query position to a reference position in a repeat region, we apply the \textit{path jaccard} context mapping concept.
 It could be that the found reference node is visited several times by the reference.
-To ensure a precise translation, we select the reference position whose context (the multiset of $Node.id$s reached within a distance of e.g. 10kbp) has the best jaccard metric when compared to the query context.
+To ensure a precise translation, we select the reference position whose context (the multiset of $Node.id$s reached within a distance of e.g. 10kbp) has the best jaccard metric when compared to the query context. \REVIEWED{For a more detailed explanation of the \textit{path jaccard} concept please see $\S$\ref{sec:supp_path_jaccard}.}
 %the best jaccard for the query step and each reference candidate step is calculated by looking at a context range (e.g. 10kbp) around the locus.
 
 % untangle (this follows on the jaccard graph mapping concepts in the previous section}
 %We can use coordinates in any genome to refer to it, but this requires a few basic operations ...
 %Obtaining unambiguous mappings between different genomes requires the use of a new kind of graph based mapping (path graph jaccard).
 
-Pangenome graphs \REVIEWED{can} model alignments of many genomes.
-With \textit{odgi untangle}, users can extract pairwise alignment information between a given set of ``query'' sequences and a given set of ``target'' sequences (used as references).
-While pangenome graphs may contain looping structures that imply many-to-many alignments between the pangenome sequences, these untangled alignments map each segment of the queries to a single segment in the set of targets.
+\REVIEWED{To obtain a more precise overview of the \textit{locus} in Fig.~\labelcref{fig:viz_extract_untangle-C4-default,fig:viz_extract_untangle-C4-gradient,fig:viz_extract_untangle-C4-strandness,fig:viz_extract_untangle-C4-coverage},
+we applied \textit{odgi untangle} with GRCH38 as a reference. \textit{odgi untangle} segments paths into linear segments by breaking these segments where the paths loop back on themselves.
+In this way, we obtain information on the position and copy number status of the sequences in the collapsed \textit{locus} (Fig.~\ref{fig:viz_extract_untangle-C4-untangle}). The shape of the line indicates if the copy number is in forward or in reverse orientation compared to GRCH38. \textit{odgi untangle} demonstrates that it is able to work with any sets of reference sequences converting the graph to lift-over maps compatible with standard software for projecting annotations and alignments from one genome to another.  An explanation of the untangling process is given in $\S$\ref{sec:supp_navigation}.}
 %This lets us decompose both homology and paralogy relationships by also untangling looping motifs in the graph, and obtaining linearized pairs of regions in BEDPE or PAF format.
-Being able to work with any sets of reference sequences lets us convert the graph to lift-over maps compatible with standard software for projecting annotations and alignments from one genome to another.
-As an example, by untangling the graph we can study the variation that lies in regions collapsed due to ambiguous alignments over sequence repeats (as shown in Fig.~\ref{fig:viz_extract_untangle-C4-bandage}).
-Indeed, to obtain a more precise overview of the \textit{locus} in Fig.~\labelcref{fig:viz_extract_untangle-C4-default,fig:viz_extract_untangle-C4-gradient,fig:viz_extract_untangle-C4-strandness,fig:viz_extract_untangle-C4-coverage},
-we can apply \textit{odgi untangle} to segment paths into linear segments by breaking these segments where the paths loop back on themselves.
-We first discover segment boundaries using standard approaches for detecting repeats in sequence graphs \citep{Pevzner_2004}.
-We finally ``untangle'' by finding the target segment that best match each query segment using the \textit{path jaccard} context mapping model.
-%The \textit{path jaccard} concept ensures that the breaking is nucleotide-precise.
-In this way, we obtain information on the position and copy number status of the sequences in the collapsed \textit{locus} (Fig.~\ref{fig:viz_extract_untangle-C4-untangle}).
-Moreover, to obtain base-level precise information on the relationships between the repeated sequences, we can align them by using the pairs of regions that came from the untangling to guide the alignment~\citep{wfmash}.
+%As an example, by untangling the graph we can study the variation that lies in regions collapsed due to ambiguous alignments over sequence repeats (as shown in Fig.~\ref{fig:viz_extract_untangle-C4-bandage}).
+
 
 %Having built a pangenome graph from assembly contigs, we can ask questions like: Where do our contigs' ends match the reference(s)? An answer to this question can highlight regions that are tricky to assemble (Fig. ~\ref{fig:tips}).
 
@@ -621,13 +613,29 @@ Code and links to data resources used to build this manuscript and its figures, 
 the black line ends to the left or right of node B if this node is traversed in forward or reverse, respectively, by path X.
 Consequently, if two consecutive nodes are linked both in forward, no edge is shown (it would be 0 pixels long, as it would start from the right of the first node and ends to the left of the second one).}
 
-\subsection{Graph navigation}
+\subsection{Graph navigation and untangling}
+\label{sec:supp_navigation}
+Pangenome graphs \REVIEWED{can} model alignments of many genomes.
+With \textit{odgi untangle}, users can extract pairwise alignment information between a given set of ``query'' sequences and a given set of ``target'' sequences (used as references).
+While pangenome graphs may contain looping structures that imply many-to-many alignments between the pangenome sequences, these untangled alignments map each segment of the queries to a single segment in the set of targets.
+\textit{odgi untangle} first discovers segment boundaries using standard approaches for detecting repeats in sequence graphs \citep{Pevzner_2004}.
+We finally ``untangle'' by finding the target segment that best match each query segment using the \textit{path jaccard} context mapping model.
+%The \textit{path jaccard} concept ensures that the breaking is nucleotide-precise.
+Moreover, to obtain base-level precise information on the relationships between the repeated sequences, we can align them by using the pairs of regions that came from the untangling to guide the alignment~\citep{wfmash}.
+
 \textit{odgi tips} can identify the break point positions of the contigs relative to the reference(s) in the graph by walking from the ends of each contig until a reference node is found.
 It could be that the reference visits the node several times. Therefore, for each contig range (a tip) \textit{odgi tips} takes a look at each possible reference window and finds the most similar one using the \textit{path jaccard} concept.
 The output is a BED file with the best reference hit and position for each of the contigs' ends.
 
+\subsubsection{The GFF liftover}
+\label{sec:supp_gff}
+A GFF file contains annotations for one or more paths in the graph. For each annotation, we know the start and end within that path. So we can annotate all nodes that are visited by such a path range with the information from the attribute field. If there are overlapping features, we append the annotation for each node. Using the same coloring schema as in \textit{odgi viz} we generate a color for each annotated node by its collected annotation.
+
+If a subgraph was as a result from e.g. \textit{odgi extract}, the path names are usually in the form of name:start-end. \textit{odgi position} is able to automatically detect this and adjust the positions given in the GFF on the fly to the new positions given in the subgraph. For each GFF entry, it just subtracts the “missing” number of nucleotides from the start and end field. That’s how we adjust for the subgraph annotation.
+
 \subsubsection{Path Jaccard concept}
-\textit{odgi tips}, \textit{odgi untangle}, and \textit{odgi position} all translate a query path position to a target path position. In a repeat region, it could be that the node of the query path position ($N_q$) is visited several times by the target path. We use the graph \textit{path jaccard} concept to infer the best target position for a given query path position. For the query position we look at each possible target window and find the most-similar one:
+\label{sec:supp_path_jaccard}
+\textit{odgi tips}, \textit{odgi untangle}, and \textit{odgi position} all translate a query path position to a target path position. In a repeat region, it could be that the node of the query path position ($N_q$) is visited several times by the target path. We use the graph \textit{path jaccard} concept to infer the best target position for a given query path position. For the query position we look at each possible target window and find the most-similar one: 
 \begin{enumerate}
 	\item~Starting from $N_q$ and we follow the steps of one target path position a certain nucleotide distance to the left and a certain nucleotide distance to the right, also called context. The ODGI default distance is 10kbp for each direction.
 	\item~We collect all node identifiers that are visited this way in a multi-set.
