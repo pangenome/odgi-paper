@@ -380,13 +380,13 @@ Other graph editing operations are described in $\S$\ref{sec:supp_edit}.
 %We find that, to understanding relationships between sequences and positions in pangenome graphs, we must use context mapping to ``untangle'' complex regions found in VNTRs, segmental duplications, and centromeric repeats.
 %This approach lets use pangenome graphs as a foundation for universal liftover between any two sets of sequences in the graph.
 
-The key data in a pangenome graph is a representation of the alignment (or homology) relationships between the sequences represented.
+The key data in a pangenome graph is a representation of the alignment or the homology relationships between the sequences represented.
 Navigating and understanding the graph requires coordinate systems that we can use to link other data into the graph model, and thus to the \REVIEWED{[1,2] genomic sequences [1,2]} in the pangenome.
-ODGI's tools use the embedded sequences to provide a universal coordinate space that is graph-independent, thereby remaining stable across different graphs built with the same genomes.
+ODGI's tools use the embedded sequences to provide a universal coordinate space that is graph-independent, thereby remaining stable across different graphs built with the same genomes. Such a a universal coordinate system allows us to support several kinds of ``lift-over'' of coordinates between different genomes in the same or different graphs.
 %Our for positional conversion (\textit{odgi position}), annotation liftover (\textit{odgi untangle}), breakpoint identification (\textit{odgi tips}), subgraph extraction (\textit{odgi extract}), visualization (\textit{odgi viz}), path depth (\textit{odgi depth}), and graph complexity measurement (\textit{odgi degree}) can all operate on coordinates of paths in the graph.
 
-A universal coordinate system allows us to support several kinds of ``lift-over'' of coordinates between different genomes in the same or different graphs.
-%For basic liftover operations, \textit{odgi server} provides a basic HTTP server that can translate very efficiently a path position to a pangenomic position within the same graph.
+As a demonstration of this universality, we 
+
 \textit{odgi position} translates graph and path positions between or within graphs, emitting the liftovers in BED format.
 Coordinates can be specified in BED format, but users can even specify a GFF/GTF file to project the annotations into the pangenome graph (Fig.~\labelcref{fig:viz_extract_untangle-C4-bandage,fig:viz_extract_untangle-C4-bandage-zoom}).
 For a precise translation process when conversing a query position to a reference position in a repeat region, we apply the \textit{path jaccard} context mapping concept.
@@ -413,9 +413,6 @@ In this way, we obtain information on the position and copy number status of the
 Moreover, to obtain base-level precise information on the relationships between the repeated sequences, we can align them by using the pairs of regions that came from the untangling to guide the alignment~\citep{wfmash}.
 
 %Having built a pangenome graph from assembly contigs, we can ask questions like: Where do our contigs' ends match the reference(s)? An answer to this question can highlight regions that are tricky to assemble (Fig. ~\ref{fig:tips}).
-\textit{odgi tips} can identify the break point positions of the contigs relative to the reference(s) in the graph by walking from the ends of each contig until a reference node is found.
-It could be that the reference visits the node several times. Therefore, for each contig range (a tip) \textit{odgi tips} takes a look at each possible reference window and finds the most similar one using the \textit{path jaccard} concept.
-The output is a BED file with the best reference hit and position for each of the contigs' ends.
 
 \subsection{Latent graph structure reveals underlying biology}
 \label{sec:sort}
@@ -620,23 +617,16 @@ Code and links to data resources used to build this manuscript and its figures, 
 
 \subsection{Graph topology visualization}
 \label{sec:supp_visualization}
-\REVIEWED{In \textit{odgi viz} visualization, given a path X traversing two nodes A and B, the corresponding edge is represented by a black line starting from the left or right of node A if this node is traversed in reverse or forward, respectively, by path X;
+\REVIEWED{In a \textit{odgi viz} visualization, given a path X traversing two nodes A and B, the corresponding edge is represented by a black line starting from the left or right of node A if this node is traversed in reverse or forward, respectively, by path X;
 the black line ends to the left or right of node B if this node is traversed in forward or reverse, respectively, by path X.
 Consequently, if two consecutive nodes are linked both in forward, no edge is shown (it would be 0 pixels long, as it would start from the right of the first node and ends to the left of the second one).}
 
+\subsection{Graph navigation}
+\textit{odgi tips} can identify the break point positions of the contigs relative to the reference(s) in the graph by walking from the ends of each contig until a reference node is found.
+It could be that the reference visits the node several times. Therefore, for each contig range (a tip) \textit{odgi tips} takes a look at each possible reference window and finds the most similar one using the \textit{path jaccard} concept.
+The output is a BED file with the best reference hit and position for each of the contigs' ends.
 
-\subsection{Evaluation}
-\input{table_build}
-\clearpage
-\input{table_extract}
-\clearpage
-\input{table_viz}
-\clearpage
-\input{table_position}
-\clearpage
-\input{table_disk_space}
-
-\subsection{Path Jaccard Concept}
+\subsubsection{Path Jaccard concept}
 \textit{odgi tips}, \textit{odgi untangle}, and \textit{odgi position} all translate a query path position to a target path position. In a repeat region, it could be that the node of the query path position ($N_q$) is visited several times by the target path. We use the graph \textit{path jaccard} concept to infer the best target position for a given query path position. For the query position we look at each possible target window and find the most-similar one:
 \begin{enumerate}
 	\item~Starting from $N_q$ and we follow the steps of one target path position a certain nucleotide distance to the left and a certain nucleotide distance to the right, also called context. The ODGI default distance is 10kbp for each direction.
@@ -700,6 +690,18 @@ To investigate on the \REVIEWED{[1,2] genomic sequences [1,2]} encoded in the gr
 ODGI also offers more advanced tools for the interrogation of the graphs.
 To study very large pangenomes, users can use \textit{odgi bin} to summarize the path information into bins of a specified size, generating a summarized view of gigabase scale graphs in TSV or JSON file formats.
 This concept found its way into the pangenome graph ontology \citep{Yokoyama2020}. %maybe we want to save this up for the discussion
+
+\clearpage
+\subsection{Evaluation}
+\input{table_build}
+\clearpage
+\input{table_extract}
+\clearpage
+\input{table_viz}
+\clearpage
+\input{table_position}
+\clearpage
+\input{table_disk_space}
 
 
 \end{document}
