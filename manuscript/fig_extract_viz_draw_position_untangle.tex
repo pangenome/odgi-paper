@@ -6,6 +6,7 @@
             \centering
             \caption{\label{fig:odgi_layout}}
             \includegraphics[width=\linewidth, trim=0cm 18cm -20cm 0.5cm]{fig/extract_viz_draw_position_untangle/chr6_pan_fa_a2fb268_4030258_6a1ecc2_smooth_mhc_H1000w120}
+            \label{fig:viz_extract_untangle-MHC}
         \end{subfigure} \\
         \begin{tabular}{c}% if you add [t], then sub images are pushed down
             %\smallskip
@@ -13,21 +14,25 @@
                 \centering
                 \caption{}
                 \includegraphics[width=\linewidth, trim=0 1.9cm 0cm 0cm]{fig/extract_viz_draw_position_untangle/chr6_pan_fa_a2fb268_4030258_6a1ecc2_smooth_C4_sorted}
+                \label{fig:viz_extract_untangle-C4-default}
             \end{subfigure} \\
             \begin{subfigure}[t]{0.5\textwidth}
                 \centering
                 \caption{}
                 \includegraphics[width=\linewidth, trim=0 +1.9cm 0cm 0cm]{fig/extract_viz_draw_position_untangle/chr6_pan_fa_a2fb268_4030258_6a1ecc2_smooth_C4_sorted_du}
+                \label{fig:viz_extract_untangle-C4-gradient}
             \end{subfigure} \\
             \begin{subfigure}[t]{0.5\textwidth}
                 \centering
                 \caption{}
                 \includegraphics[width=\linewidth, trim=0 +1.9cm 0cm 0cm]{fig/extract_viz_draw_position_untangle/chr6_pan_fa_a2fb268_4030258_6a1ecc2_smooth_C4_sorted_z}
+                \label{fig:viz_extract_untangle-C4-strandness}
             \end{subfigure} \\
             \begin{subfigure}[t]{0.5\textwidth}
                 \centering
                 \caption{}
                 \includegraphics[width=\linewidth, trim=0 +1.9cm 0cm 0cm]{fig/extract_viz_draw_position_untangle/chr6_pan_fa_a2fb268_4030258_6a1ecc2_smooth_C4_sorted_m}
+                \label{fig:viz_extract_untangle-C4-coverage}
             \end{subfigure}
         \end{tabular}
         %&
@@ -38,12 +43,14 @@
                 \centering
                 \includegraphics[width=0.65\linewidth, trim=0 +2cm 0 0.5cm]{fig/extract_viz_draw_position_untangle/chr6_pan_fa_a2fb268_4030258_d9f1245_smooth_gfa_C4_sorted_bandage}
                 \caption{}
+                \label{fig:viz_extract_untangle-C4-bandage}
             \end{subfigure}
             \\\\
             \begin{subfigure}[t]{0.5\textwidth}
                 \centering
                 \includegraphics[width=0.65\linewidth, trim=0 +8cm 0 0.5cm]{fig/extract_viz_draw_position_untangle/chr6_pan_fa_a2fb268_4030258_d9f1245_smooth_gfa_C4_sorted_bandage_zoom_in}
                 \caption{}
+                \label{fig:viz_extract_untangle-C4-bandage-zoom}
             \end{subfigure}
         \end{tabular}\\
         \begin{subfigure}[t]{1.0\textwidth}
@@ -51,19 +58,17 @@
             \caption{}
             \begin{center}
                 \includegraphics[width=\linewidth, trim=0cm 0.9cm -2.5cm 0.5cm]{fig/extract_viz_draw_position_untangle/chr6_pan_fa_a2fb268_4030258_6a1ecc2_smooth_C4_sorted_untangle_bed}
+                \label{fig:viz_extract_untangle-C4-untangle}
             \end{center}
         \end{subfigure} \\
         %\hline
     \end{tabular}
     \caption{
         Visualizing the \REVIEWED{major histocompatibility complex (MHC) and complement component 4 (C4)} pangenome graphs. \textbf{(a)} \textit{odgi draw} layout of the MHC pangenome graph extracted from a whole human pangenome graph of 90 haplotypes.
-        \REVIEWED{The MHC locus is located on the human chromosome 6 and it encodes molecules involved in antigen presentation, inflammation regulation, the complement system, and the innate and adaptive immune responses~\citep{Shiina2009}.}
-        The red rectangle highlights the C4 region\REVIEWED{, which encodes proteins involved in the complement system.}
-        \textbf{(b-e)} \textit{odgi viz} visualizations of the C4 pangenome graph, where 8 paths are displayed: 2 reference genomes (chm13 and grch38 on the top) and 6 haplotypes of 3 individuals.
+        The red rectangle highlights the C4 region.
+        \textbf{(b-e)} \textit{odgi viz} visualizations of the C4 pangenome graph, where 8 paths are displayed: 2 reference genomes (\REVIEWED{CHM13} and \REVIEWED{GRCH38} on the top) and 6 haplotypes of 3 diploid individuals.
         \textbf{(b)} \textit{odgi viz} default modality: the image shows a quite linear graph.
-        The longer links at the bottom indicate the presence of a structural variant (long link) with another structural variant nested inside it (short link on the left).
-        Indeed, human C4 exists as 2 functionally distinct genes, \textit{C4A} and \textit{C4B}, which both vary in structure and copy number~\citep{Sekar_2016}. The longer link indicates that the copy number status varies across the haplotypes represented in the pangenome.
-        Moreover, \textit{C4A} and \textit{C4B} genes segregate in both long and short genomic forms, distinguished by the presence or absence of a human endogenous retroviral (HERV) sequence, as also highlighted by the short nested link on the left.
+        The links at the bottom indicate the presence of a structural variant (long link) with another structural variant nested inside it (short link on the left).
         \textbf{(c)} Color by path position. %: the color gradients are smooth, highlighting that its node are well sorted in 1 dimension.
         The top two reference genomes and 2 haplotypes (HG01952\#2) go from left to right, while 5 haplotypes go in the opposite direction, as indicated by the black color on their left.
         \textbf{(d)} \textit{odgi viz} color by strandness: the red paths indicate the haplotypes that were assembled in reverse with respect to the 2 reference genomes.
@@ -74,7 +79,7 @@
         In HG01952\#1, the HERV sequence is absent.
         \textbf{(f)} \REVIEWED{Layout of the C4 pangenome graph made with the \textit{Bandage} tool~\citep{Wick_2015} and} annotated by using \textit{odgi position}. Green nodes indicate the C4 genes (in red). The red rectangle highlights the regions where \textit{C4A} and \textit{C4B} genes differ.
         \textbf{(g)} Annotated \textit{Bandage} layout of the C4 region where \textit{C4A} and \textit{C4B} genes differ due to single nucleotide variants leading to changes in the encoded protein sequences. Node labels were annoted by using \textit{odgi position}.
-        \textbf{(h)} Visualization of \textit{odgi untangle} output in the C4 pangenome graph: the plots show the copy number status of the sequences in the C4 region with respect to the grch38 reference sequence, making clear, for example, that in HG00438\#2, the \textit{C4A} gene is missing (white in the middle of the red). \vspace{-1em}
+        \textbf{(h)} Visualization of \textit{odgi untangle} output in the C4 pangenome graph: the plots show the copy number status of the sequences in the C4 region with respect to the \REVIEWED{GRCH38} reference sequence, making clear, for example, that in HG00438\#2, the \textit{C4A} gene is missing (white in the middle of the red). \vspace{-1em}
     }
     \label{fig:odgi_viz}
 \end{figure*}

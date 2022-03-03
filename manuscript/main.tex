@@ -19,6 +19,8 @@
 
 \usepackage{amsmath}
 
+\usepackage{cleveref}
+
 % table stuff
 \usepackage{amsfonts}
 \usepackage{booktabs}
@@ -122,10 +124,10 @@ The Human Pangenome Reference Consortium (HPRC) and Telomere-to-Telomere (T2T) c
 We anticipate that \textit{de novo} assemblies of similar quality will become common, leading to demand for methods to \REVIEWED{analyze} pangenomes.
 
 Although \REVIEWED{pangenome graphs} are data structures of utility to researchers~\citep{cpang2018,Garrison:2018,Baaijens_2019,Hickey:2020,Sibbesen_2021}, the scientific community still lacks a toolset \REVIEWED{capable of operating on gigabase-scale pangenome graphs constructed from whole-genome assemblies}.
-Such an effort began with the VG toolkit~\citep{Garrison:2018}\REVIEWED{, but its tools do not efficiently handle pangenome graphs presenting complex motifs that result from repetitive sequences (see Fig.~\ref{fig:1}).}
+Such an effort began with the VG toolkit~\citep{Garrison:2018}\REVIEWED{, but its tools do not efficiently handle pangenome graphs presenting complex motifs that result from repetitive sequences.}
 Here we refocus the effort with the Optimized Dynamic Genome/Graph Implementation (ODGI) toolkit, a compatible, but independent pangenome graph interrogation and transformation system specifically implemented to handle the data scales encountered when working \REVIEWED{[1,10]with previously constructed pangenomes comprising hundreds of haplotype-resolved genomes.[1,10]}
-ODGI offers a set of standard operations on the variation graph data model, generalizing ``genome arithmetic'' concepts like those found in BEDTools~\citep{Quinlan_2010} to work on pangenome graphs,
-and providing a variety of operations, such as visualization, sorting, and liftover projections, all critical to understand and exploit pangenome graphs.
+ODGI offers a set of standard operations on the variation graph data model (Fig.~\ref{fig:operations}) , generalizing ``genome arithmetic'' concepts, like those found in BEDTools~\citep{Quinlan_2010}, to work on pangenome graphs.
+Furthermore, it provides a variety of tools for graph visualization, sorting, and liftover projections, all critical to understand and exploit pangenome graphs.
 
 %Tools in ODGI operate on an efficient dynamic HandleGraph model \citep{Eizenga_2020_BX}.
 %Algorithms written against this abstract API can be applied to the graph.% applies algorithms based on the HandleGraph API.
@@ -249,30 +251,31 @@ ODGI's tools are practical and able to work with high levels of graph complexity
 
 ODGI covers common operations that we have found to be essential when working with complex pangenome graphs:
 
+\FIXME{Update the references to the sections.}
 \begin{itemize}
 \item~\textit{odgi build} constructs the ODGI data model from GFA file (\S\ref{sec:build}).
 \item~\textit{odgi view} converts the ODGI data model into GFA file (\S\ref{sec:build}).
 \item~\textit{odgi viz} provides a linear visualization of the graph (\S\ref{sec:viz}).
 \item~\textit{odgi draw} renders a 2D image of the graph (\S\ref{sec:viz}).
-\item~\textit{odgi extract} excerpts subsets of the graph based on path ranges (\S\ref{sec:extract}).
-\item~\textit{odgi explode} breaks the graph into connected components (\S\ref{sec:extract}).
-\item~\textit{odgi squeeze} unifies disjoint graphs (\S\ref{sec:extract}).
-\item~\textit{odgi chop} breaks long nodes into shorter ones (\S\ref{sec:edit}).
-\item~\textit{odgi unchop} combines unitig nodes (\S\ref{sec:edit}).
-\item~\textit{odgi break} removes cycles in the graph (\S\ref{sec:edit}).
-\item~\textit{odgi prune} removes complex regions (\S\ref{sec:edit}).
-\item~\textit{odgi groom} resolves spurious inverting links (\S\ref{sec:edit}).
+\item~\textit{odgi extract} excerpts subsets of the graph based on path ranges (\S\ref{sec:supp_edit}).
+\item~\textit{odgi explode} breaks the graph into connected components (\S\ref{sec:supp_edit}).
+\item~\textit{odgi squeeze} unifies disjoint graphs (\S\ref{sec:supp_edit}).
+\item~\textit{odgi chop} breaks long nodes into shorter ones (\S\ref{sec:supp_edit}).
+\item~\textit{odgi unchop} combines unitig nodes (\S\ref{sec:supp_edit}).
+\item~\textit{odgi break} removes cycles in the graph (\S\ref{sec:supp_edit}).
+\item~\textit{odgi prune} removes complex regions (\S\ref{sec:supp_edit}).
+\item~\textit{odgi groom} resolves spurious inverting links (\S\ref{sec:supp_edit}).
 \item~\textit{odgi position} lifts coordinates between path and graph positions (\S\ref{sec:untangle}).%
 %\item \textit{odgi server} provides a HTTP server to lift coordinates (\S\ref{sec:untangle}).
 \item~\textit{odgi untangle} deconvolutes paths relative to a reference (\S\ref{sec:untangle}).
-\item~\textit{odgi tips} finds path end points relative to a reference (\S\ref{sec:untangle}).
+\item~\textit{odgi tips} finds path end points relative to a reference (\S\ref{sec:supp_navigation}).
 \item~\textit{odgi sort} orders the graph nodes (\S\ref{sec:sort}).
 \item~\textit{odgi layout} establishes a 2D layout (\S\ref{sec:sort}).
-\item~\textit{odgi matrix} derives the pangenome matrix (\S\ref{sec:metrics}).
-\item~\textit{odgi paths} lists and extracts paths in FASTA (\S\ref{sec:metrics}).
-\item~\textit{odgi flatten} converts the graph to FASTA and BED (\S\ref{sec:metrics}).
+\item~\textit{odgi matrix} derives the pangenome matrix (\S\ref{sec:supp_metrics}).
+\item~\textit{odgi paths} lists and extracts paths in FASTA (\S\ref{sec:supp_metrics}).
+\item~\textit{odgi flatten} converts the graph to FASTA and BED (\S\ref{sec:supp_metrics}).
 \item~\textit{odgi stats} provides numerical properties of the graph (\S\ref{sec:metrics}).
-\item~\textit{odgi bin} generates a summarized view of the graph (\S\ref{sec:metrics}).
+\item~\textit{odgi bin} generates a summarized view of the graph (\S\ref{sec:supp_metrics}).
 \item~\textit{odgi depth} describes node depth over graph and path positions (\S\ref{sec:metrics}).
 \item~\textit{odgi degree} describes node degree over graph and path positions (\S\ref{sec:metrics}).
 \end{itemize}
@@ -307,14 +310,21 @@ The ODGI data structure (Algorithm~\ref{alg:structs}) allows algorithms that bui
 In \textit{odgi build}, we initially construct the node vector in a serial operation that scans across the input GFA file.
 Then, we serially add edges in the $Node.edges$ vectors of pairs of nodes.
 Finally, we create paths in serial, and extend them in parallel by obtaining the mutex $Node.lock$ for pairs of nodes and by adding the path step in their $Node.path\_steps$ vectors.
-This parallelism speeds ODGI model construction by many-fold when testing against graphs made from assemblies produced by the HPRC (\autoref{Evaluation}).
+This parallelism speeds ODGI model construction by many-fold when testing against graphs made from assemblies produced by the HPRC (Fig.~\ref{fig:evaluation}).
 
 To support interchange with other pangenome tools or text-based processing, \textit{odgi view} converts a graph in ODGI binary format to GFAv1.
+
+As the GFA format itself does not store metadata information, ODGI follows the PanSN-spec~\citep{pansn-spec} convention for dealing with heterozygosity and polyploidy in the sequence name. This harmonizes the biosample information present in FASTA, VCF, BED, and GFF/GTF formats.
 %ODGI uses the ``S'' and ``L'' records to describe the graph topology, and ``P'' records to describe paths.
 
 \section{Results}
 
 \REVIEWED{Understanding pangenome graphs is not trivial. In the following, we highlight how ODGI's tools can assist in exploring the biological features of any pangenome graph.}
+
+\REVIEWED{Pangenome graphs built from hundreds of haplotype-resolved \textit{de novo} genome assemblies are very large, but it is often necessary to work with only a small portion of the genomes represented,
+such as a specific \textit{locus} (Fig.~\ref{fig:viz_extract_untangle-MHC}) or a smaller region (Fig.~\labelcref{fig:viz_extract_untangle-C4-default,fig:viz_extract_untangle-C4-gradient,fig:viz_extract_untangle-C4-strandness,fig:viz_extract_untangle-C4-coverage,fig:viz_extract_untangle-C4-bandage,fig:viz_extract_untangle-C4-bandage-zoom}), or even a single gene (Fig.~\ref{fig:metrics}).
+This simplifies the downstream analyses and reduces the resources to work only with the extracted graphs. More on graph extraction and edit operations can be found at $\S$\ref{sec:supp_edit}.}
+%Subsetting operations allow us to zoom in on particular genes or regions of interest for more precise examination.
 
 \subsection{Visualizing pangenome graphs}
 \label{sec:viz}
@@ -322,73 +332,42 @@ To support interchange with other pangenome tools or text-based processing, \tex
 % interesting that we don't go base-level at all... we use vg for that, or STM
 
 \REVIEWED{Pangenome graph visualization is one of the first steps to gain insight into the mutual relationship between the sequences in the graph and their variation, understanding the higher-level biology of a graph.}
-We pursue a novel approach to visualization with \textit{odgi viz} and \textit{odgi draw}, two tools which provide scalable ways of generating \REVIEWED{static} pictures of the high-level structure of large pangenome graphs.
+We pursue a novel approach to visualization with \textit{odgi draw} and \textit{odgi viz}, two tools that provide scalable ways of generating \REVIEWED{static} pictures of the high-level structure of even large pangenome graphs (Fig.~\ref{fig:odgi_viz}).
 
-\textit{odgi viz} supports a binned, linearized rendering in 1 dimension (1D) (that is, all graph nodes lie on the same axis).
-This visualization is computed in linear-time and offers a human-interpretable format suitable for understanding the topology and genome relationships in the pangenome graph (Fig.~\ref{fig:odgi_viz}).
-Graph nodes are arranged on a single axis, from left to right, with the colored bar indicating the paths and the nodes they cross.
+\REVIEWED{Using \textit{odgi extract}, we extracted the the major histocompatibility complex (MHC) locus from a 90 haplotypes human pangenome chromosome 6 graph form the HPRC. Specifically the graph contains the human references GRCH38, CHM13, and the contigs of 44 individuals that encode all possible variation including telomeres and centromeres. The MHC genes are involved in antigen presentation, inflammation regulation, the complement system, and the innate and adaptive immune responses~\citep{Shiina2009}.
+MHC genes are highly polymorphic, i.e., there are multiple different alleles across individuals in a population.
+Such variability becomes evident when we apply \textit{odgi draw} to visualize the graph layout of a human MHC pangenome graph (Fig.~\ref{fig:viz_extract_untangle-MHC}).
+The visualization displays the graph topology in 2 dimensions (2D) and how the paths traverse the graph, with the regions of variations that appear as bubbles in the layout.
+The layout was built by \textit{odgi layout} (see \S\ref{sec:sort}).} Of note, a 2D rendering can be costly to compute, but we provide an implementation that scales linearly with pangenome sequence size, allowing us to apply it to large pangenome graphs.
+%\REVIEWED{For example, \textit{odgi draw} took 6 minutes and 21 seconds in total to produce the 2D layout of the MHC locus (Fig.~\ref{fig:odgi_layout}).}
+
+\REVIEWED{The MHC locus includes the complement component 4 (C4) region, which encodes proteins involved in the complement system.
+In Fig.~\ref{fig:viz_extract_untangle-MHC}, such a region corresponds to the little bubble highlighted by the red rectangle.
+As an example use case, we took a closer look, at the C4 region of the MHC by extracting it from the full MHC pangenome graph with \textit{odgi extract}.
+Then, we visualized such a subgraph by applying} \textit{odgi viz}, which produces binned, linearized renderings in 1 dimension (1D) (i.e., \REVIEWED{each path lies} on a single axis) (Fig.~\labelcref{fig:viz_extract_untangle-C4-default,fig:viz_extract_untangle-C4-gradient,fig:viz_extract_untangle-C4-strandness,fig:viz_extract_untangle-C4-coverage}).
+For each path, graph nodes are arranged from left to right, with the colored bars indicating the paths and the nodes they cross.
 White spaces indicate where paths do not traverse the nodes.
 \REVIEWED{Directly consecutive nodes are displayed with no white space between the two.}
 The meaning of the colors depends on how \textit{odgi viz} is executed.
-By default, path colors are derived from the path names (Fig.~\ref{fig:odgi_viz}\textbf{b}).
-Path names are displayed on the left of the paths.
-The black lines on the bottom indicate the edges connecting the nodes and, therefore, represent the graph topology.
-\REVIEWED{Given a path X traversing two nodes A and B, the corresponding edge is represented by a black line starting from the left or right of node A if this node is traversed in reverse or forward, respectively, by path X;
-the black line ends to the left or right of node B if this node is traversed in forward or reverse, respectively, by path X.
-Consequently, if two consecutive nodes are linked both in forward, no edge is shown (it would be 0 pixels long, as it would start from the right of the first node and ends to the left of the second one).}
+By default, path colors are derived from the path names (Fig.~\ref{fig:viz_extract_untangle-C4-default}), which are displayed on the left of the paths.
+The black lines on the bottom indicate the edges connecting the nodes and, therefore, represent the graph topology (see \S\ref{sec:supp_visualization} for a more detailed explanation).
+This visualization is computed in linear-time and offers a human-interpretable format suitable for understanding the topology and genome relationships in the pangenome graph.
+\REVIEWED{In humans, the C4 gene exists as 2 functionally distinct genes, \textit{C4A} and \textit{C4B}, which both vary in structure and copy number~\citep{Sekar_2016}.
+Indeed, the longer link at the bottom of Fig.~\labelcref{fig:viz_extract_untangle-C4-default,fig:viz_extract_untangle-C4-gradient,fig:viz_extract_untangle-C4-strandness,fig:viz_extract_untangle-C4-coverage} indicates that the copy number status of these genes varies across the haplotypes represented in the pangenome.
+Moreover, the short nested link on the left highlights that \textit{C4A} and \textit{C4B} genes segregate in both long and short genomic forms, distinguished by the presence or absence of a human endogenous retroviral (HERV) sequence.}
 
-Nevertheless, complex, nonlinear graph structures are difficult to display and interpret in a low number of dimensions.
-To overcome such a limitation, \textit{odgi viz} supports multiple visualization modalities (Fig.~\ref{fig:odgi_viz}\textbf{c-e}), making it easy to grasp the properties and shape of the graph.
-Graph node order can affect downstream analyses on pangenome graphs.
-With \textit{odgi viz} we can color the paths by path position (Fig.~\ref{fig:odgi_viz}\textbf{c}), with light grey indicating where paths begin and dark grey where they end.
-This visualization is suitable for understanding graph node order, as smooth color gradients indicate that the graph order respects the linear paths' coordinate systems.
-Pangenome graphs can represent both strands \REVIEWED{[1,2] of the genomic sequences of the DNA[1,2]}.~
-\textit{odgi viz} supports also coloring the paths by orientation, with paths colored where their sequence is reverse-complemented (red) or in direct orientation (black) with respect to the sequences of the graph nodes (Fig.~\ref{fig:odgi_viz}\textbf{d}).
-Eukaryotic genomes experience gains and losses of genetic material, resulting in copy number variation (CNV) across the population.
-With \textit{odgi viz}, we can use multiple color palettes to color the paths \REVIEWED{by how many times they traverse a node, the so-called node depth,} highlighting the different copy number statuses in the \REVIEWED{[1,2] genomic sequences [1,2]} represented in the pangenome graph (Fig.~\ref{fig:odgi_viz}\textbf{e}).
+Nevertheless, complex, nonlinear graph structures are difficult to interpret in a low number of dimensions.
+To overcome such a limitation, \textit{odgi viz} supports multiple visualization modalities (Fig.~\labelcref{fig:viz_extract_untangle-C4-gradient,fig:viz_extract_untangle-C4-strandness,fig:viz_extract_untangle-C4-coverage}), making it easy to grasp the properties and shape of the graph.
+%Graph node order can affect downstream analyses on pangenome graphs.
+For example, we can color the paths by path position (Fig.~\ref{fig:viz_extract_untangle-C4-gradient}), with light grey indicating where paths begin and dark grey where they end.
+This visualization is suitable for understanding graph node order, as smooth color gradients indicate that the node order respects the linear paths' coordinate systems.
+Pangenome graphs can represent both strands \REVIEWED{[1,2] of the genomic sequences of the DNA[1,2]}.
+We can display such information by coloring the paths by orientation, with paths colored where their sequence is reverse-complemented (red) or in direct orientation (black) with respect to the sequences of the graph nodes (Fig.~\ref{fig:viz_extract_untangle-C4-strandness}).
+%Eukaryotic genomes experience gains and losses of genetic material, resulting in copy number variation (CNV) across the population.
+Furthermore, we can use multiple color palettes to color the paths \REVIEWED{by how many times they traverse a node, the so-called node depth.}
+\REVIEWED{This highlights that in the C4 pangenome graph, the haplotypes present different number of copies of the C4 genes (Fig.~\ref{fig:viz_extract_untangle-C4-coverage}).}
 
-\textit{odgi draw} extends the visualization in 2 dimensions (2D)  (Fig.~\ref{fig:odgi_viz}\textbf{a}) by rendering the layout built by \textit{odgi layout} (\S\ref{sec:sort}). \REVIEWED{It took \textit{odgi layout} and \textit{odgi draw} 6 minutes and 21 seconds in total to produce the 2D layout of the MHC locus (Fig.~\ref{fig:odgi_layout}).}
-A 2D rendering is more costly to compute, but we similarly provide an implementation that scales linearly with pangenome sequence size, allowing us to apply it to large pangenome graphs.
-
-
-\subsection{Extracting or joining regions of interest}
-\label{sec:extract}
-
-Pangenome graphs built from hundreds of haplotype-resolved \textit{de novo} genome assemblies are very large, but it is often necessary to work with only a small portion of the genomes represented,
-such as a specific \textit{locus} (Fig.~\ref{fig:odgi_viz}\textbf{a}) or a smaller region (Fig.~\ref{fig:odgi_viz}\textbf{b-g}), or even a single gene (Fig.~\ref{fig:metrics}).
-This simplifies the downstream analyses and reduces the resources to work only with the extracted graphs.
-%Subsetting operations allow us to zoom in on particular genes or regions of interest for more precise examination.
-Graph portions can be extracted by using the paths in the graph as coordinate systems to guide the process. For such operation, \textit{odgi extract} allows users to extract specific regions of the graph as defined by query criteria.
-Regions of interest can be specified by graph nodes or path range(s), also in BED format. Furthermore, it is possible to indicate a list of paths to be preserved completely in the extracted graph.
-
-In \textit{odgi extract}, we begin by collecting all graph nodes that fall within the ranges to extract (and the paths to preserve, if requested).
-Users can specify the number of steps or nucleotides to expand the selection and include neighboring nodes.
-Then, edges connecting all selected nodes are added in the subgraph under construction.
-Finally, the portions of the paths (\textit{i.e.}, the subpaths) walking through the selected nodes are extracted and added to the new subgraph.
-Subpaths are searched in parallel, created serially, and extended in parallel again thanks to the parallelism enabled by the ODGI data structure (see \S\ref{sec:build}), making \textit{odgi extract} a scalable solution to extract also complex subregions presenting nodes with very high node depth.
-
-% If needed, we can have a figure showing extraction process---either schematic or ``real''.
-
-Pangenome graphs can embed multiple chromosomes as separated connected components (inter-chromosomal structural variants would join the components into bigger ones).
-\textit{odgi explode} separates the connected components in different ODGI format files, while \textit{odgi squeeze} allows merging multiple graphs into the same ODGI format file, preventing node ID collisions.
-
-
-\subsection{Editing the graph structure}
-\label{sec:edit}
-
-Pangenome graphs can be used in a variety of applications, ranging from read mapping to variant identification and genotyping~\citep{Eizenga_2020}.
-However, graphs presenting complex topology can increase the computational overhead of many downstream analyses.
-ODGI offers multiple commonly-needed basic operations on the topology of the graph and its nodes.
-
-For simplifying the graph structure, users can use \textit{odgi prune} to take away complex parts as defined by query criteria,
-while with \textit{odgi break} they can remove cycles in the graph, reducing the complexity of the graph topology.
-Furthermore, \textit{odgi groom} allows removing spurious inverting links by exploring the graph from the orientation supported by most paths\REVIEWED{;
-the process does not remove any genetic information, but only edits how the sequences are represented in the graph.}
-
-To enable efficient sequence alignment against the graph, long nodes can be divided into shorter nodes at a maximum requested size using \textit{odgi chop}.
-Partial order alignment, which consists of aligning sequences against a directed acyclic graph (DAG), is frequently used in pangenome building pipelines~\citep{pggb}, but the current implementations return DAGs with 1-bp long nodes.
-\textit{odgi unchop} allows joining nodes that can be merged without changing the graph topology, nor the embedded sequences, obtaining an equivalent, but more compact, representation of the graph.
-
+\input{fig_extract_viz_draw_position_untangle}
 
 \subsection{Untangling and navigating the pangenome}
 \label{sec:untangle}
@@ -396,91 +375,75 @@ Partial order alignment, which consists of aligning sequences against a directed
 %We find that, to understanding relationships between sequences and positions in pangenome graphs, we must use context mapping to ``untangle'' complex regions found in VNTRs, segmental duplications, and centromeric repeats.
 %This approach lets use pangenome graphs as a foundation for universal liftover between any two sets of sequences in the graph.
 
-The key data in a pangenome graph is a representation of the alignment (or homology) relationships between the sequences represented.
-Navigating and understanding the graph requires coordinate systems that we can use to link other data into the graph model, and thus to the \REVIEWED{[1,2] genomic sequences [1,2]} in the pangenome.
-ODGI's tools use the embedded sequences to provide a universal coordinate space that is graph-independent, thereby remaining stable across different graphs built with the same genomes.
+The key data in a pangenome graph is a representation of the alignment (i.e., the homology relationships) between \REVIEWED{[1,2] genomic sequences [1,2]}.
+Navigating and understanding the graph requires coordinate systems to link other data to the sequences represented in the graph model.
+ODGI's tools use the embedded sequences to provide a universal coordinate space that is graph-independent, thereby remaining stable across different graphs built with the same sequences.
+Such a a universal coordinate system allows us to support several kinds of ``lift-over'' of coordinates between different sequences in the same or different graphs.
 %Our for positional conversion (\textit{odgi position}), annotation liftover (\textit{odgi untangle}), breakpoint identification (\textit{odgi tips}), subgraph extraction (\textit{odgi extract}), visualization (\textit{odgi viz}), path depth (\textit{odgi depth}), and graph complexity measurement (\textit{odgi degree}) can all operate on coordinates of paths in the graph.
+\REVIEWED{As a demonstration, we took the C4 pangenome graph and added to its nodes gene annotation from GRCH38 (in GFF format file) using \textit{odgi position} ($\S$\ref{sec:supp_gff}). The resulting TSV contains pairs of node and color. Taking the graph and the TSV into Bandage~\citep{Wick_2015}, the actual C4 genes are highlighted (Fig.~\ref{fig:viz_extract_untangle-C4-bandage}). Zooming to the nucleotide level, the annotation shows the single nucleotide differences of the \textit{C4A} and the \textit{C4B} genes (Fig.~\ref{fig:viz_extract_untangle-C4-bandage-zoom}).}
 
-A universal coordinate system allows us to support several kinds of ``lift-over'' of coordinates between different genomes in the same or different graphs.
-%For basic liftover operations, \textit{odgi server} provides a basic HTTP server that can translate very efficiently a path position to a pangenomic position within the same graph.
-\textit{odgi position} translates graph and path positions between or within graphs, emitting the liftovers in BED format.
-Coordinates can be specified in BED format, but users can even specify a GFF/GTF file to project the annotations into the pangenome graph (Fig.~\ref{fig:odgi_viz}\textbf{f-g}).
-
+\textit{odgi position} can also translate graph and path positions between or within graphs, emitting the liftovers in BED format.
 For a precise translation process when conversing a query position to a reference position in a repeat region, we apply the \textit{path jaccard} context mapping concept.
 It could be that the found reference node is visited several times by the reference.
-To ensure a precise translation, we select the reference position whose context (the multiset of $Node.id$s reached within a distance of e.g. 10kbp) has the best jaccard metric when compared to the query context.
+To ensure a precise translation, we select the reference position whose context (the multiset of $Node.id$s reached within a distance of e.g. 10kbp) has the best jaccard metric when compared to the query context. \REVIEWED{For a more detailed explanation of the \textit{path jaccard} concept see $\S$\ref{sec:supp_path_jaccard}.}
 %the best jaccard for the query step and each reference candidate step is calculated by looking at a context range (e.g. 10kbp) around the locus.
 
 % untangle (this follows on the jaccard graph mapping concepts in the previous section}
 %We can use coordinates in any genome to refer to it, but this requires a few basic operations ...
 %Obtaining unambiguous mappings between different genomes requires the use of a new kind of graph based mapping (path graph jaccard).
 
-Pangenome graphs \REVIEWED{can} model alignments of many genomes.
-With \textit{odgi untangle}, users can extract pairwise alignment information between a given set of ``query'' sequences and a given set of ``target'' sequences (used as references).
-While pangenome graphs may contain looping structures that imply many-to-many alignments between the pangenome sequences, these untangled alignments map each segment of the queries to a single segment in the set of targets.
+\REVIEWED{To obtain a more precise overview of the \textit{locus} in Fig.~\labelcref{fig:viz_extract_untangle-C4-default,fig:viz_extract_untangle-C4-gradient,fig:viz_extract_untangle-C4-strandness,fig:viz_extract_untangle-C4-coverage},
+we applied \textit{odgi untangle} with GRCH38 as a reference. \textit{odgi untangle} segments paths into linear segments by breaking these segments where the paths loop back on themselves.
+In this way, we obtain information on the position and copy number status of the sequences in the collapsed \textit{locus} (Fig.~\ref{fig:viz_extract_untangle-C4-untangle}). The shape of the line indicates if the copy number is in forward or in reverse orientation compared to GRCH38. \textit{odgi untangle} demonstrates that it is able to work with any sets of reference sequences converting the graph to lift-over maps compatible with standard software for projecting annotations and alignments from one genome to another.  An explanation of the untangling process is given in $\S$\ref{sec:supp_navigation}.}
 %This lets us decompose both homology and paralogy relationships by also untangling looping motifs in the graph, and obtaining linearized pairs of regions in BEDPE or PAF format.
-Being able to work with any sets of reference sequences lets us convert the graph to lift-over maps compatible with standard software for projecting annotations and alignments from one genome to another.
-As an example, by untangling the graph we can study the variation that lies in regions collapsed due to ambiguous alignments over sequence repeats (as shown in Fig.~\ref{fig:odgi_viz}\textbf{f}).
-Indeed, to obtain a more precise overview of the \textit{locus} in Fig.~\ref{fig:odgi_viz}\textbf{b-e},
-we can apply \textit{odgi untangle} to segment paths into linear segments by breaking these segments where the paths loop back on themselves.
-We first discover segment boundaries using standard approaches for detecting repeats in sequence graphs \citep{Pevzner_2004}.
-We finally ``untangle'' by finding the target segment that best match each query segment using the \textit{path jaccard} context mapping model.
-%The \textit{path jaccard} concept ensures that the breaking is nucleotide-precise.
-In this way, we obtain information on the position and copy number status of the sequences in the collapsed \textit{locus} (Fig.~\ref{fig:odgi_viz}\textbf{h}).
-Moreover, to obtain base-level precise information on the relationships between the repeated sequences, we can align them by using the pairs of regions that came from the untangling to guide the alignment~\citep{wfmash}.
+%As an example, by untangling the graph we can study the variation that lies in regions collapsed due to ambiguous alignments over sequence repeats (as shown in Fig.~\ref{fig:viz_extract_untangle-C4-bandage}).
+
 
 %Having built a pangenome graph from assembly contigs, we can ask questions like: Where do our contigs' ends match the reference(s)? An answer to this question can highlight regions that are tricky to assemble (Fig. ~\ref{fig:tips}).
-\textit{odgi tips} can identify the break point positions of the contigs relative to the reference(s) in the graph by walking from the ends of each contig until a reference node is found.
-It could be that the reference visits the node several times. Therefore, for each contig range (a tip) \textit{odgi tips} takes a look at each possible reference window and finds the most similar one using the \textit{path jaccard} concept.
-The output is a BED file with the best reference hit and position for each of the contigs' ends.
 
-\subsection{Sorting the pangenome graph}
+\subsection{Latent graph structure reveals underlying biology}
 \label{sec:sort}
 
 Pangenome graphs can hide their underlying latent structures, introducing difficulties in the analysis and interpretation. % (Fig.~\ref{fig:sorting}\textbf{a}).
 Among the causes of this is the correct ordering of the graph nodes in a convenient number of dimensions.
 ODGI provides a variety of sorting algorithms to find the best graph node order in 1 or 2 dimensions, allowing us
-to understand the sparse structures typically found in pangenome graphs and the genetic variation they represent \REVIEWED{(Figure~\ref{fig:sorting})}.
+to understand the sparse structures typically found in pangenome graphs and the genetic variation they represent.
 
-To find the best order of graph nodes in 1D, \textit{odgi sort} provides multiple sorting algorithms which can be combined into a sorting pipeline to take advantage of the strength of each.
-Most notably, nodes can be sorted topologically, randomly, by breaking cycles in the graph (\S\ref{sec:edit}), by grooming (\S\ref{sec:edit}), and/or by using a novel path-guided (PG) stochastic gradient descent (SGD) algorithm: PG-SGD.
+\REVIEWED{We applied a variety of \textit{odgi sort}'s 1D algorithms to a 90-haplotype human pangenome MHC and a C4 graph (Fig.~\ref{fig:sorting}).
+The randomly sorted MHC graph (Fig.~\ref{fig:mhc-random-node-order}) hides its linear graph structure, whereas our novel path-guided (PG) stochastic gradient descent (SGD) algorithm, PG-SGD, is able to produce a globally linear ordered graph revealing the C4 region (Fig.~\ref{fig:mhc-pgsdg-sorting}).
 This exploits path information to order the graph nodes.
 %For understanding the large-scale organization of the graph, we benefit from an even simpler coordinate system.
-PG-SGD learns a 1D or 2D organization of the graph nodes that matches distances in graph paths.
+PG-SGD learns a 1D or 2D organization of the graph nodes that matches nucleotide distances in graph paths (i.e., the sequences embedded in the graph).
 To scale to large graphs, we learn this projection in parallel via a HOGWILD! approach~\citep{niu2011hogwild}.
 Our approach can be seen as an adaptation of SGD-based drawing to pangenome graphs~\citep{zheng2018graph}.
 In parallel, each HOGWILD! thread updates node relative positions to best-match their nucleotide distance in the paths running through the graph.
-Following standard SGD approaches, a learning rate is reduced as the algorithm progresses, and execution continues until the adjustments to the model fall below a target threshold $\epsilon$.
+Following standard SGD approaches, a learning rate is reduced as the algorithm progresses, and execution continues until the adjustments to the model fall below a target threshold $\epsilon$.}
+
+\REVIEWED{A PG-SGD sorting of the C4 does not work well locally. It hides the underlying copy number variation status in the region (Fig.~\ref{fig:c4-pgsdg-sorting}). A topological sort order finally gives rise to the graph's latent structure, revealing the copy number characteristics of this C4 region (Fig.~\ref{fig:c4-topological-sorting}). }
+%
+\REVIEWED{To find the best order of graph nodes in 1D, \textit{odgi sort}'s multiple sorting algorithms can be combined into a sorting pipeline to take advantage of the strength of each (results not shown).
 ODGI can project vector (in 1D) and matrix (2D) representations of the graph relative to these learned coordinate spaces.
 Based on this projection, we can trivially sort graph nodes in 1D.
-Moreover, we support the same concept in 2D in \textit{odgi layout} by providing a 2D implementation of the PG-SGD algorithm.
+Moreover, we support the same concept in 2D in \textit{odgi layout} by providing a 2D implementation of the PG-SGD algorithm (Figure~\ref{fig:odgi_layout}). A detailed description of the node ordering process can be found at $\S$\ref{sec:supp_sorting}. As we have shown above, the node order is crucial to understand the biological features of a pangenome graph.}
 %As the PG-SGD sorts graph nodes with respect to the paths which walk through them, we can also detect regions whose layout is distorted, which may represent structural variation or assembly error.
 
 
 \input{fig_metrics}
 
-\subsection{Obtaining metrics of the pangenome graph}
+\subsection{Graph features highlight variation}
 \label{sec:metrics}
 
-Graphs statistics provide alternative ways to gain insight into pangenomes complexity revealing the overall structure, size, and features of a graph and its sequences.
+\REVIEWED{Graphs statistics provide alternative ways to gain insight into pangenomes complexity revealing the overall structure, size, and features of a graph and its sequences.}
 
-Pangenome graph topology can be derived by applying \textit{odgi matrix}, obtaining information on graph nodes connections in textual sparse matrix format.
-To investigate on the \REVIEWED{[1,2] genomic sequences [1,2]} encoded in the graph, \textit{odgi paths} allows users to calculate pairwise overlap statistics of groupings of paths and emit all path sequences in FASTA format, and it also allows the generation of a ``pangenome matrix'' that reports the copy number (presence/absence) of each path over each node.
-\textit{odgi flatten} generates a linearization of the graph by emitting the pangenome sequence (the concatenation of all node sequences) in FASTA format, and the projection of all paths on the linearized sequence in BED format.
+\REVIEWED{As a use case study (Fig.~\ref{fig:metrics}), we took a look at the metrics of a 90-haplotype human pangenome graph of the exon 1 huntingtin gene (\textit{HTTexon1}). In particular, we obtained the number of nodes, edges, paths, components, bases, the graph length, and the GC content with \textit{odgi stats}. The output pangenome statistics in YAML textual file format was given to
+MultiQC's~\citep{Ewels_2016} newly added ODGI module. As can be seen in Figure~\ref{fig:metrics-multiqc}, we observe a very high GC content of 73.0\% in the \textit{HTTexon1} graph compared to the human genomic mean GC content of 40.9\% \citep{Piovesan2019}. This is in accordance with the literature~\citep{Neueder2017}. %\footnote{\url{https://multiqc.info/docs/\#odgi} (accessed Oct 2021)}
+Despite this discovery, the MultiQC module provides an interactive way to comparatively explore statistics of an arbitrary number of graphs.}
 
-Applying \textit{odgi stats}, users can retrieve metrics describing the graph properties, such as the number of nodes, edges, paths, and graph length.
-It outputs pangenome statistics in tab-separated values (TSV) or YAML textual file formats.
-MultiQC's~\citep{Ewels_2016} ODGI module %\footnote{\url{https://multiqc.info/docs/\#odgi} (accessed Oct 2021)}
-provides an interactive way to comparatively explore such statistics of an arbitrary number of graphs.
+\REVIEWED{Investigating in detail which intricate regions in the \textit{HTTexon1} graph are responsible for the genetic variation and high GC content, we took a look at the per nucleotide node degree distribution (Fig.~\ref{fig:metrics-degree}), and node depth distribution (Fig.~\ref{fig:metrics-depth}) of CHM13 using \textit{odgi depth}'s, and \textit{odgi degree}'s BED output, respectively. The results indicate a highly polymorphic region around position 200 in the graph. Figure~\ref{fig:metrics-viz} supports this analysis. Zooming in on this region with \textit{vg viz}, we can clearly identify the typical \textit{HTTexon1} CAG variable repeat region (Fig.~\ref{fig:metrics-str}).
+Figures~\ref{fig:metrics-degree}-\ref{fig:metrics-viz} highlight the variant region around position 200 of CHM13 showing the variable number of glutamine residues of the different individuals as reported by \citep{Nance1999}.
+In general, such complex motives can be the mirror of genetic variation, but also misassemblies or problems in the pangenome building, making the tools further useful for graph validation. Additional graph metrics interrogation tools are detailed in $\S$\ref{sec:supp_metrics}.}
 
-ODGI also offers more advanced tools for the interrogation of the graphs.
-To study very large pangenomes, users can use \textit{odgi bin} to summarize the path information into bins of a specified size, generating a summarized view of gigabase scale graphs in TSV or JSON file formats.
-%This concept found its way into the pangenome graph ontology \cite{Yokoyama2020}. %maybe we want to save this up for the discussion
-
-Genomes presenting sequences with highly identical repeats result in pangenome graphs with complex motifs that can be detected by \textit{odgi depth} and \textit{odgi degree}, which return the node depth and node degree, respectively, as defined by query criteria.
-Both tools emit the output in BED format, allowing users to assess the complexity of the graph and detect intricate regions.
-Indeed, high depth/degree nodes can be the mirror of genetic variation (Fig.~\ref{fig:metrics}), but also misassemblies or problems in the pangenome building, making the tools further useful for graph validation.
-%In Fig.~\ref{fig:metrics}, the characteristics of a 90 haplotypes human pangenome graph of the exon 1 huntingtin gene~\citep{Sathasivam2013,Neueder2017} (\textit{HTTexon1}) are shown.
+\vspace{0.22cm}
 
 \subsection{Evaluation}
 \label{Evaluation}
@@ -504,7 +467,6 @@ The presented results are from a 90 haplotypes chromosome 6 human pangenome grap
 
 \REVIEWED{We also measured the disk space usage of GFAv1, ODGI's, and VG's binary format (Tab. \ref{tab:disk_space}). While VG's XG occupies less disk space for smaller graphs, ODGI requires less space for graphs having 32 haplotypes or more. With increasing number of haplotypes the centromeric sequence in the pangenome graph also increases which can be better compressed by ODGI's id delta encoding schema. }
 
-\input{fig_extract_viz_draw_position_untangle}
 
 \input{fig_evaluation}
 
@@ -642,19 +604,35 @@ Code and links to data resources used to build this manuscript and its figures, 
 
 \section{Supplementary}
 
-\subsection{Evaluation}
-\input{table_build}
-\clearpage
-\input{table_extract}
-\clearpage
-\input{table_viz}
-\clearpage
-\input{table_position}
-\clearpage
-\input{table_disk_space}
+\subsection{Graph topology visualization}
+\label{sec:supp_visualization}
+\REVIEWED{In a \textit{odgi viz} visualization, given a path X traversing two nodes A and B, the corresponding edge is represented by a black line starting from the left or right of node A if this node is traversed in reverse or forward, respectively, by path X;
+the black line ends to the left or right of node B if this node is traversed in forward or reverse, respectively, by path X.
+Consequently, if two consecutive nodes are linked both in forward, no edge is shown (it would be 0 pixels long, as it would start from the right of the first node and ends to the left of the second one).}
 
-\subsection{Path Jaccard Concept}
-\textit{odgi tips}, \textit{odgi untangle}, and \textit{odgi position} all translate a query path position to a target path position. In a repeat region, it could be that the node of the query path position ($N_q$) is visited several times by the target path. We use the graph \textit{path jaccard} concept to infer the best target position for a given query path position. For the query position we look at each possible target window and find the most-similar one:
+\subsection{Graph navigation and untangling}
+\label{sec:supp_navigation}
+Pangenome graphs \REVIEWED{can} model alignments of many genomes.
+With \textit{odgi untangle}, users can extract pairwise alignment information between a given set of ``query'' sequences and a given set of ``target'' sequences (used as references).
+While pangenome graphs may contain looping structures that imply many-to-many alignments between the pangenome sequences, these untangled alignments map each segment of the queries to a single segment in the set of targets.
+\textit{odgi untangle} first discovers segment boundaries using standard approaches for detecting repeats in sequence graphs \citep{Pevzner_2004}.
+We finally ``untangle'' by finding the target segment that best match each query segment using the \textit{path jaccard} context mapping model.
+%The \textit{path jaccard} concept ensures that the breaking is nucleotide-precise.
+Moreover, to obtain base-level precise information on the relationships between the repeated sequences, we can align them by using the pairs of regions that came from the untangling to guide the alignment~\citep{wfmash}.
+
+\textit{odgi tips} can identify the break point positions of the contigs relative to the reference(s) in the graph by walking from the ends of each contig until a reference node is found.
+It could be that the reference visits the node several times. Therefore, for each contig range (a tip) \textit{odgi tips} takes a look at each possible reference window and finds the most similar one using the \textit{path jaccard} concept.
+The output is a BED file with the best reference hit and position for each of the contigs' ends.
+
+\subsubsection{The GFF liftover}
+\label{sec:supp_gff}
+A GFF file contains annotations for one or more paths in the graph. For each annotation, we know the start and end within that path. So we can annotate all nodes that are visited by such a path range with the information from the attribute field. If there are overlapping features, we append the annotation for each node. Using the same coloring schema as in \textit{odgi viz} we generate a color for each annotated node by its collected annotation.
+
+If a subgraph was as a result from e.g. \textit{odgi extract}, the path names are usually in the form of name:start-end. \textit{odgi position} is able to automatically detect this and adjust the positions given in the GFF on the fly to the new positions given in the subgraph. For each GFF entry, it just subtracts the “missing” number of nucleotides from the start and end field. That’s how we adjust for the subgraph annotation.
+
+\subsubsection{Path Jaccard concept}
+\label{sec:supp_path_jaccard}
+\textit{odgi tips}, \textit{odgi untangle}, and \textit{odgi position} all translate a query path position to a target path position. In a repeat region, it could be that the node of the query path position ($N_q$) is visited several times by the target path. We use the graph \textit{path jaccard} concept to infer the best target position for a given query path position. For the query position we look at each possible target window and find the most-similar one: 
 \begin{enumerate}
 	\item~Starting from $N_q$ and we follow the steps of one target path position a certain nucleotide distance to the left and a certain nucleotide distance to the right, also called context. The ODGI default distance is 10kbp for each direction.
 	\item~We collect all node identifiers that are visited this way in a multi-set.
@@ -674,20 +652,69 @@ In the following an example which is based on the graph in Figure~\ref{fig:jacca
 \input{fig_jaccard}
 Let's assume, we want to translate the query path position \textit{query:3} to a path position in path \textit{target} with a context distance of 2 nucleotides per direction. Node \textit{2} is where \textit{query:3} is located. The node is traversed two times by \textit{target}. Therefore, we apply the \textit{path jaccard} concept to do a precise position translation. Starting from node \textit{2}, we collect nodes $\{1,2,4\}$ for path \textit{query}. For path \textit{target} we have two possible steps to start our collection from: The first or the second step in node \textit{2}. We obtain the node sets $T_1=\{1,2,2\}$ and $T_2=\{2,2,3\}$.
 \begin{multline}
-	J_1(T_1,Q)=\frac{|T_1\cap Q|}{|T_1\cup Q|}=\frac{|\{1,2,2\}\cap \{1,2,4\}|}{|\{1,2,2\}\cup \{1,2,4\}|}\\=\frac{|\{1,2\}|}{|\{1,2,2,4\}|}=\frac{3+4}{3+4+4+1}\approx0.58
+	J_1(T_1,Q)=\frac{|T_1\cap Q|}{|T_1\cup Q|}=\frac{|\{1,2,2\}\cap \{1,2,4\}|}{|\{1,2,2\}\cup \{1,2,4\}|}\\=\frac{|\{1,2\}|}{|\{1,2,2,4\}|}\widehat{=}\frac{3+4}{3+4+4+1}\approx0.58
 	\label{eq:jaccard_t1}
 \end{multline}
 \begin{multline}
-	J_2(T_2,Q)=\frac{|T_2\cap Q|}{|T_2\cup Q|}=\frac{|\{2,2,3\}\cap \{1,2,4\}|}{|\{2,2,3\}\cup \{1,2,4\}|}\\=\frac{|\{2\}|}{|\{1,2,2,3,4\}|}=\frac{4}{3+4+4+2+1}\approx0.29
+	J_2(T_2,Q)=\frac{|T_2\cap Q|}{|T_2\cup Q|}=\frac{|\{2,2,3\}\cap \{1,2,4\}|}{|\{2,2,3\}\cup \{1,2,4\}|}\\=\frac{|\{2\}|}{|\{1,2,2,3,4\}|}\widehat{=}\frac{4}{3+4+4+2+1}\approx0.29
 	\label{eq:jaccard_t2}
 \end{multline}
 We observe a \textit{path jaccard} of $0.58$ for $T_1/Q$ (Equ.~\ref{eq:jaccard_t1}) and $0.29$ for $T_2/Q$ (Equ.~\ref{eq:jaccard_t2}).
 Therefore, we translate query path position \textit{query:3} to the target path position \textit{target:3}.
 
+\subsection{Graph Editing}
+\label{sec:supp_edit}
+Graph portions can be extracted by using the paths in the graph as coordinate systems to guide the process. For such operation, \textit{odgi extract} allows users to extract specific regions of the graph as defined by query criteria.
+Regions of interest can be specified by graph nodes or path range(s), also in BED format. Furthermore, it is possible to indicate a list of paths to be preserved completely in the extracted graph.
+We begin by collecting all graph nodes that fall within the ranges to extract (and the paths to preserve, if requested).
+Users can specify the number of steps or nucleotides to expand the selection and include neighboring nodes.
+Then, edges connecting all selected nodes are added in the subgraph under construction.
+Finally, the portions of the paths (i.e., the subpaths) walking through the selected nodes are extracted and added to the new subgraph.
+Subpaths are searched in parallel, created serially, and extended in parallel again thanks to the parallelism enabled by the ODGI data structure (see \S\ref{sec:build}), making \textit{odgi extract} a scalable solution to extract also complex subregions presenting nodes with very high node depth.
+
+Pangenome graphs can embed multiple chromosomes as separated connected components (inter-chromosomal structural variants would join the components into bigger ones).
+\textit{odgi explode} separates the connected components in different ODGI format files, while \textit{odgi squeeze} allows merging multiple graphs into the same ODGI format file, preventing node ID collisions.
+
+Pangenome graphs can be used in a variety of applications, ranging from read mapping to variant identification and genotyping~\citep{Eizenga_2020}.
+However, graphs presenting complex topology can increase the computational overhead of many downstream analyses.
+ODGI offers multiple commonly-needed basic operations on the topology of the graph and its nodes.
+
+For simplifying the graph structure, users can use \textit{odgi prune} to take away complex parts as defined by query criteria,
+while with \textit{odgi break} they can remove cycles in the graph, reducing the complexity of the graph topology.
+Furthermore, \textit{odgi groom} allows removing spurious inverting links by exploring the graph from the orientation supported by most paths\REVIEWED{;
+	the process does not remove any genetic information, but only edits how the sequences are represented in the graph.}
+
+To enable efficient sequence alignment against the graph, long nodes can be divided into shorter nodes at a maximum requested size using \textit{odgi chop}.
+Partial order alignment, which consists of aligning sequences against a directed acyclic graph (DAG), is frequently used in pangenome building pipelines~\citep{pggb}, but the current implementations return DAGs with 1-bp long nodes.
+\textit{odgi unchop} allows joining nodes that can be merged without changing the graph topology, nor the embedded sequences, obtaining an equivalent, but more compact, representation of the graph.
+
 \subsection{Graph Sorting}
+\label{sec:supp_sorting}
 Most subcommands in ODGI require and verify that the input graph’s node identifiers (IDs) are optimized. If this assumption is violated, \textit{odgi sort} provides functionality to optimize the graph. This means that the first node identifier (ID) starts at 1 and the last node ID is the number of nodes. The graph is then updated in place: First, the node identifiers are normalized (from 1 to the number of nodes) including the adjustment of the edges. Second, path information, specifically each step of a path, is updated, too.
 
 When we sort a graph, we switch the node IDs of the nodes according to the result of the sorting algorithm. For example, if a random sort was applied, all existing node IDs would be replaced with new, random ones (the largest node ID would still correspond to the number of nodes on the graph). We would update the edge and path information as described in the paragraph above. The reordering of nodes has a great influence on how the pangenome looks like (Fig.~\ref{fig:sorting}).
 \input{fig_sorting}
+
+\subsection{Graph Metrics}
+\label{sec:supp_metrics}
+Pangenome graph topology can be derived by applying \textit{odgi matrix}, obtaining information on graph nodes connections in textual sparse matrix format.
+To investigate on the \REVIEWED{[1,2] genomic sequences [1,2]} encoded in the graph, \textit{odgi paths} allows users to calculate pairwise overlap statistics of groupings of paths and emit all path sequences in FASTA format, and it also allows the generation of a ``pangenome matrix'' that reports the copy number (presence/absence) of each path over each node.
+\textit{odgi flatten} generates a linearization of the graph by emitting the pangenome sequence (the concatenation of all node sequences) in FASTA format, and the projection of all paths on the linearized sequence in BED format.
+ODGI also offers more advanced tools for the interrogation of the graphs.
+To study very large pangenomes, users can use \textit{odgi bin} to summarize the path information into bins of a specified size, generating a summarized view of gigabase scale graphs in TSV or JSON file formats.
+This concept found its way into the pangenome graph ontology \citep{Yokoyama2020}. %maybe we want to save this up for the discussion
+
+\clearpage
+\subsection{Evaluation}
+\input{table_build}
+\clearpage
+\input{table_extract}
+\clearpage
+\input{table_viz}
+\clearpage
+\input{table_position}
+\clearpage
+\input{table_disk_space}
+
 
 \end{document}
