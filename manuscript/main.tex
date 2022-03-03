@@ -321,6 +321,11 @@ As the GFA format itself does not store metadata information, ODGI follows the P
 
 \REVIEWED{Understanding pangenome graphs is not trivial. In the following, we highlight how ODGI's tools can assist in exploring the biological features of any pangenome graph.}
 
+\REVIEWED{Pangenome graphs built from hundreds of haplotype-resolved \textit{de novo} genome assemblies are very large, but it is often necessary to work with only a small portion of the genomes represented,
+such as a specific \textit{locus} (Fig.~\ref{fig:viz_extract_untangle-MHC}) or a smaller region (Fig.~\labelcref{fig:viz_extract_untangle-C4-default,fig:viz_extract_untangle-C4-gradient,fig:viz_extract_untangle-C4-strandness,fig:viz_extract_untangle-C4-coverage,fig:viz_extract_untangle-C4-bandage,fig:viz_extract_untangle-C4-bandage-zoom}), or even a single gene (Fig.~\ref{fig:metrics}).
+This simplifies the downstream analyses and reduces the resources to work only with the extracted graphs. More on graph extraction and edit operations can be found at $\S$\ref{sec:supp_edit}.}
+%Subsetting operations allow us to zoom in on particular genes or regions of interest for more precise examination.
+
 \subsection{Visualizing pangenome graphs}
 \label{sec:viz}
 
@@ -329,7 +334,7 @@ As the GFA format itself does not store metadata information, ODGI follows the P
 \REVIEWED{Pangenome graph visualization is one of the first steps to gain insight into the mutual relationship between the sequences in the graph and their variation, understanding the higher-level biology of a graph.}
 We pursue a novel approach to visualization with \textit{odgi draw} and \textit{odgi viz}, two tools that provide scalable ways of generating \REVIEWED{static} pictures of the high-level structure of even large pangenome graphs (Fig.~\ref{fig:odgi_viz}).
 
-\REVIEWED{The the major histocompatibility complex (MHC) locus is located on the human chromosome 6 and it encodes molecules involved in antigen presentation, inflammation regulation, the complement system, and the innate and adaptive immune responses~\citep{Shiina2009}.
+\REVIEWED{Using \textit{odgi extract}, we extracted the the major histocompatibility complex (MHC) locus from a 90 haplotypes human pangenome chromosome 6 graph form the HPRC. Specifically the graph contains the human references GRCH38, CHM13, and the contigs of 44 individuals that encode all possible variation including telomeres and centromeres. The MHC genes are involved in antigen presentation, inflammation regulation, the complement system, and the innate and adaptive immune responses~\citep{Shiina2009}.
 MHC genes are highly polymorphic, i.e., there are multiple different alleles across individuals in a population.
 Such variability becomes evident when we apply \textit{odgi draw} to visualize the graph layout of a human MHC pangenome graph (Fig.~\ref{fig:viz_extract_untangle-MHC}).
 The visualization displays the graph topology in 2 dimensions (2D) and how the paths traverse the graph, with the regions of variations that appear as bubbles in the layout.
@@ -338,7 +343,7 @@ The layout was built by \textit{odgi layout} (see \S\ref{sec:sort}).} Of note, a
 
 \REVIEWED{The MHC locus includes the complement component 4 (C4) region, which encodes proteins involved in the complement system.
 In Fig.~\ref{fig:viz_extract_untangle-MHC}, such a region corresponds to the little bubble highlighted by the red rectangle.
-To take a closer look, we obtained a C4 pangenome graph by extracting the C4 region from the full MHC pangenome graph (see \S\ref{sec:extract}).
+As an example use case, we took a closer look, at the C4 region of the MHC by extracting it from the full MHC pangenome graph with \textit{odgi extract}.
 Then, we visualized such a subgraph by applying} \textit{odgi viz}, which produces binned, linearized renderings in 1 dimension (1D) (i.e., \REVIEWED{each path lies} on a single axis) (Fig.~\labelcref{fig:viz_extract_untangle-C4-default,fig:viz_extract_untangle-C4-gradient,fig:viz_extract_untangle-C4-strandness,fig:viz_extract_untangle-C4-coverage}).
 For each path, graph nodes are arranged from left to right, with the colored bars indicating the paths and the nodes they cross.
 White spaces indicate where paths do not traverse the nodes.
@@ -347,7 +352,7 @@ The meaning of the colors depends on how \textit{odgi viz} is executed.
 By default, path colors are derived from the path names (Fig.~\ref{fig:viz_extract_untangle-C4-default}), which are displayed on the left of the paths.
 The black lines on the bottom indicate the edges connecting the nodes and, therefore, represent the graph topology (see \S\ref{sec:supp_visualization} for a more detailed explanation).
 This visualization is computed in linear-time and offers a human-interpretable format suitable for understanding the topology and genome relationships in the pangenome graph.
-\REVIEWED{In humans, it exists as 2 functionally distinct genes, \textit{C4A} and \textit{C4B}, which both vary in structure and copy number~\citep{Sekar_2016}.
+\REVIEWED{In humans, the C4 gene exists as 2 functionally distinct genes, \textit{C4A} and \textit{C4B}, which both vary in structure and copy number~\citep{Sekar_2016}.
 Indeed, the longer link at the bottom of Fig.~\labelcref{fig:viz_extract_untangle-C4-default,fig:viz_extract_untangle-C4-gradient,fig:viz_extract_untangle-C4-strandness,fig:viz_extract_untangle-C4-coverage} indicates that the copy number status of these genes varies across the haplotypes represented in the pangenome.
 Moreover, the short nested link on the left highlights that \textit{C4A} and \textit{C4B} genes segregate in both long and short genomic forms, distinguished by the presence or absence of a human endogenous retroviral (HERV) sequence.}
 
@@ -359,28 +364,10 @@ This visualization is suitable for understanding graph node order, as smooth col
 Pangenome graphs can represent both strands \REVIEWED{[1,2] of the genomic sequences of the DNA[1,2]}.
 We can display such information by coloring the paths by orientation, with paths colored where their sequence is reverse-complemented (red) or in direct orientation (black) with respect to the sequences of the graph nodes (Fig.~\ref{fig:viz_extract_untangle-C4-strandness}).
 %Eukaryotic genomes experience gains and losses of genetic material, resulting in copy number variation (CNV) across the population.
-Furthermore, we can use multiple color palettes to color the paths \REVIEWED{by how many times they traverse a node, the so-called node depth.}.
+Furthermore, we can use multiple color palettes to color the paths \REVIEWED{by how many times they traverse a node, the so-called node depth.}
 \REVIEWED{This highlights that in the C4 pangenome graph, the haplotypes present different number of copies of the C4 genes (Fig.~\ref{fig:viz_extract_untangle-C4-coverage}).}
 
 \input{fig_extract_viz_draw_position_untangle}
-
-\subsection{Extracting or joining regions of interest}
-\label{sec:extract}
-
-Pangenome graphs built from hundreds of haplotype-resolved \textit{de novo} genome assemblies are very large, but it is often necessary to work with only a small portion of the genomes represented,
-such as a specific \textit{locus} (Fig.~\ref{fig:viz_extract_untangle-MHC}) or a smaller region (Fig.~\labelcref{fig:viz_extract_untangle-C4-default,fig:viz_extract_untangle-C4-gradient,fig:viz_extract_untangle-C4-strandness,fig:viz_extract_untangle-C4-coverage,fig:viz_extract_untangle-C4-bandage,fig:viz_extract_untangle-C4-bandage-zoom}), or even a single gene (Fig.~\ref{fig:metrics}).
-This simplifies the downstream analyses and reduces the resources to work only with the extracted graphs.
-%Subsetting operations allow us to zoom in on particular genes or regions of interest for more precise examination.
-
-Graph portions can be extracted by using the paths in the graph as coordinate systems to guide the process. For such operation, \textit{odgi extract} allows users to extract specific regions of the graph as defined by query criteria.
-Regions of interest can be specified by graph nodes or path range(s), also in BED format. Furthermore, it is possible to indicate a list of paths to be preserved completely in the extracted graph.
-We begin by collecting all graph nodes that fall within the ranges to extract (and the paths to preserve, if requested).
-Users can specify the number of steps or nucleotides to expand the selection and include neighboring nodes.
-Then, edges connecting all selected nodes are added in the subgraph under construction.
-Finally, the portions of the paths (i.e., the subpaths) walking through the selected nodes are extracted and added to the new subgraph.
-Subpaths are searched in parallel, created serially, and extended in parallel again thanks to the parallelism enabled by the ODGI data structure (see \S\ref{sec:build}), making \textit{odgi extract} a scalable solution to extract also complex subregions presenting nodes with very high node depth.
-
-Other graph editing operations are described in $\S$\ref{sec:supp_edit}.
 
 \subsection{Untangling and navigating the pangenome}
 \label{sec:untangle}
@@ -675,6 +662,14 @@ Therefore, we translate query path position \textit{query:3} to the target path 
 
 \subsection{Graph Editing}
 \label{sec:supp_edit}
+Graph portions can be extracted by using the paths in the graph as coordinate systems to guide the process. For such operation, \textit{odgi extract} allows users to extract specific regions of the graph as defined by query criteria.
+Regions of interest can be specified by graph nodes or path range(s), also in BED format. Furthermore, it is possible to indicate a list of paths to be preserved completely in the extracted graph.
+We begin by collecting all graph nodes that fall within the ranges to extract (and the paths to preserve, if requested).
+Users can specify the number of steps or nucleotides to expand the selection and include neighboring nodes.
+Then, edges connecting all selected nodes are added in the subgraph under construction.
+Finally, the portions of the paths (i.e., the subpaths) walking through the selected nodes are extracted and added to the new subgraph.
+Subpaths are searched in parallel, created serially, and extended in parallel again thanks to the parallelism enabled by the ODGI data structure (see \S\ref{sec:build}), making \textit{odgi extract} a scalable solution to extract also complex subregions presenting nodes with very high node depth.
+
 Pangenome graphs can embed multiple chromosomes as separated connected components (inter-chromosomal structural variants would join the components into bigger ones).
 \textit{odgi explode} separates the connected components in different ODGI format files, while \textit{odgi squeeze} allows merging multiple graphs into the same ODGI format file, preventing node ID collisions.
 
