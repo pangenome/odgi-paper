@@ -313,6 +313,8 @@ Finally, we create paths in serial, and extend them in parallel by obtaining the
 This parallelism speeds ODGI model construction by many-fold when testing against graphs made from assemblies produced by the HPRC (Fig.~\ref{fig:evaluation}).
 
 To support interchange with other pangenome tools or text-based processing, \textit{odgi view} converts a graph in ODGI binary format to GFAv1.
+
+As the GFA format itself does not store metadata information, ODGI follows the PanSN-spec~\citep{pansn-spec} convention for dealing with heterozygosity and polyploidy in the sequence name. This harmonizes the biosample information present in FASTA, VCF, BED, and GFF/GTF formats.
 %ODGI uses the ``S'' and ``L'' records to describe the graph topology, and ``P'' records to describe paths.
 
 \section{Results}
