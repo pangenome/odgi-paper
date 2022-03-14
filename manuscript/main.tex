@@ -354,17 +354,17 @@ This simplifies the downstream analyses and reduces the resources to work only w
 We find visualization essential to understanding pangenome variation graphs.}
 We pursue a novel approach to visualization with \textit{odgi draw} and \textit{odgi viz}, two tools that provide scalable ways of generating \REVIEWED{static} pictures of the high-level structure of even large pangenome graphs (Fig.~\ref{fig:odgi_viz}).
 
-\REVIEWED{Using \textit{odgi extract}, we extracted the the major histocompatibility complex (MHC) locus from a 90 haplotypes human pangenome chromosome 6 graph form the HPRC. Specifically the graph contains the human references GRCH38, CHM13, and the contigs of 44 individuals that encode all possible variation including telomeres and centromeres. The MHC genes are involved in antigen presentation, inflammation regulation, the complement system, and the innate and adaptive immune responses~\citep{Shiina2009}.
+\REVIEWED{Using \textit{odgi extract}, we extracted the the major histocompatibility complex (MHC) locus from a 90-haplotype human pangenome chromosome 6 graph form the HPRC. Specifically the graph contains the human references GRCH38, CHM13, and the contigs of 44 individuals that encode all possible variation including telomeres and centromeres. The MHC genes are involved in antigen presentation, inflammation regulation, the complement system, and the innate and adaptive immune responses~\citep{Shiina2009}.
 MHC genes are highly polymorphic, i.e., there are multiple different alleles across individuals in a population.
-Such variability becomes evident when we apply \textit{odgi draw} to visualize the graph layout of a human MHC pangenome graph (Fig.~\ref{fig:viz_extract_untangle-MHC}), using \textit{odgi layout} to generate the 2D projection (see \S\ref{sec:sort}).
+Such variability becomes evident when we apply \textit{odgi draw} to visualize the graph layout of a human MHC pangenome graph (Fig.~\ref{fig:viz_extract_untangle-MHC}) (\textit{odgi layout} first generates the drawn projection, see \S\ref{sec:sort}).
 The visualization displays the graph topology in 2 dimensions (2D), with structural variation that appears as bubbles in the layout.}
 A 2D rendering can be costly to compute, but we provide an implementation that scales linearly with pangenome sequence size, allowing us to apply it to large pangenome graphs.
 %\REVIEWED{For example, \textit{odgi draw} took 6 minutes and 21 seconds in total to produce the 2D layout of the MHC locus (Fig.~\ref{fig:odgi_layout}).}
 
 \REVIEWED{The MHC locus includes the complement component 4 (C4) region, which encodes proteins involved in the complement system.
-In Fig.~\ref{fig:viz_extract_untangle-MHC}, such a region corresponds to the little bubble highlighted by the red rectangle.
-As an example use case, we took a closer look, at the C4 region of the MHC by extracting it from the full MHC pangenome graph with \textit{odgi extract}.
-Then, we visualized such a subgraph by applying} \textit{odgi viz}, which produces binned, linearized renderings in 1 dimension (1D) (i.e., \REVIEWED{each path lies} on a single axis) (Fig.~\labelcref{fig:viz_extract_untangle-C4-default,fig:viz_extract_untangle-C4-gradient,fig:viz_extract_untangle-C4-strandness,fig:viz_extract_untangle-C4-coverage}).
+In Fig.~\ref{fig:viz_extract_untangle-MHC}, C4 corresponds to the small bubble highlighted by the red rectangle.
+As an example use case, we took a closer look at the C4 region of the MHC by extracting it from the full MHC pangenome graph with \textit{odgi extract}.
+Then, we visualized this subgraph by applying} \textit{odgi viz}, which produces binned, linearized renderings in 1 dimension (1D) (\REVIEWED{the graph is ordered in 1D across the horizontal axis, with each path represented by a row of the vertical axis}) (Fig.~\labelcref{fig:viz_extract_untangle-C4-default,fig:viz_extract_untangle-C4-gradient,fig:viz_extract_untangle-C4-strandness,fig:viz_extract_untangle-C4-coverage}).
 For each path, graph nodes are arranged from left to right, with the colored bars indicating the paths and the nodes they cross.
 White spaces indicate where paths do not traverse the nodes.
 \REVIEWED{Directly consecutive nodes are displayed with no white space between the two.}
@@ -477,7 +477,7 @@ In general, such complex motives can be the mirror of genetic variation, but als
 \end{inparaenum}
 \REVIEWED{These graph operations are key when it comes to the understanding of pangenome graphs. We ran these operations for a varying number of threads and haplotypes in the graph for a scaling analysis. We ran each evaluation configuration 10 times and report the mean of each run.
 All evaluations were performed on a VM in the German Network for Bioinformatics Infrastructure (deNBI) cloud. It came with 28 cores and 256GB of RAM.
-The presented results are from a 90 haplotypes chromosome 6 human pangenome graph from the HPRC. Specifically, the graph contains the human references GRCH38, CHM13, and the contigs of 44 individuals encoding all possible variation including telomeres and centromeres. }
+The presented results are from a 90-haplotype chromosome 6 human pangenome graph from the HPRC. Specifically, the graph contains the human references GRCH38, CHM13, and the contigs of 44 individuals encoding all possible variation including telomeres and centromeres. }
 
 \REVIEWED{When transforming a GFAv1 with VG, the static XG file format was used. All tools involved in the evaluation process require the XG format.}
 
