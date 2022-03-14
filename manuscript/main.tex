@@ -476,8 +476,11 @@ Figures~\ref{fig:metrics-degree}-\ref{fig:metrics-viz} highlight the variant reg
 \label{Evaluation}
 
 \REVIEWED{
-%Although many of the operations that ODGI provides are unique, in some we are able to build on a similar system, VG, and here we demonstrate the advantage of 
-We compared the efficiency of ODGI (v0.6.3-56-gebc493f "Pulizia") and VG (v1.37.0 "Monchio") for routine pangenome tasks. In particular, we measured the execution time and memory usage}
+Although many of the operations that ODGI provides are unique, some are common with the existing VG toolkit.
+We compare with these to highlight the practical performance implications of our graph data structure design.
+Our results highlight the efficient parallel algorithm implementations enabled by this design.}
+
+\REVIEWED{We compared the efficiency of ODGI (v0.6.3-56-gebc493f "Pulizia") and VG (v1.37.0 "Monchio") for routine pangenome tasks. In particular, we measured the execution time and memory usage}
 \begin{inparaenum}[(i)]
 	\item \REVIEWED{of transforming a GFAv1 into a tool's native format, }
 	\item \REVIEWED{the extraction of a subgraph,}
@@ -489,15 +492,20 @@ They are also a set of functions implemented in both toolkits.
 We ran these operations for a varying number of threads and haplotypes in the graph for a scaling analysis. We ran each evaluation configuration 10 times and report the mean of each run.
 All evaluations were performed on a VM in the German Network for Bioinformatics Infrastructure (deNBI) cloud with 28 cores and 256GB of RAM.
 The presented results are from a 90-haplotype chromosome 6 human pangenome graph built with data from the HPRC.
-Specifically, the graph contains the human references GRCH38, CHM13, and the contigs of 44 individuals encoding all possible variation including telomeres and centromeres. }
+Specifically, the graph contains the human references GRCH38, CHM13, and the contigs of 44 individuals encoding all possible variation including telomeres and centromeres.
+When transforming a GFAv1 with VG, the static XG file format was used.
+The tools involved in the evaluation process require the XG format.}
 
-\REVIEWED{When transforming a GFAv1 with VG, the static XG file format was used. The tools involved in the evaluation process require the XG format.}
+\REVIEWED{In general, we find that ODGI makes comparatively better use of multithreading and requires much less memory (Fig.~\ref{fig:evaluation}, Tab.~\ref{tab:position}) across all operations.
+ODGI scales much butter than VG when working with complex regions of the graph.
+For example, extracting a difficult centromeric subgraph (Fig.~\ref{fig:eval-extract}), ODGI is up to 40 times faster and requires 8 times less memory than VG.}
 
-\REVIEWED{Our general findings are that ODGI makes comparatively better use of multithreading and requires much less memory (Fig.~\ref{fig:evaluation}, Tab.~\ref{tab:position}) across all operations. With raising number of haplotypes in the graph, ODGI scales much butter than VG. For example, extracting a subgraph (Fig.~\ref{fig:eval-extract}), ODGI is up to 40 times faster and requires 8 times less memory than VG.
-}
 \REVIEWED{Both visualization tools can only make use of a single thread. For a 1 haplotype graph \textit{vg viz} produces a 816MB SVG which can't be opened by any program. For example, GIMP2 fails with "cannot load more than 1000000 XML elements". For larger graphs, \textit{vg viz} runs through and produces SVGs with only the XML header. This makes it unusable for larger graphs.}
 
-\REVIEWED{We also measured the disk space usage of GFAv1, ODGI's, and VG's binary format (Tab. \ref{tab:disk_space}). While VG's XG occupies less disk space for smaller graphs, ODGI requires less space for graphs having 32 haplotypes or more. With increasing number of haplotypes the centromeric sequence in the pangenome graph also increases which can be better compressed by ODGI's id delta encoding schema. }
+\REVIEWED{We also measured the disk space usage of GFAv1, ODGI's, and VG's binary format (Tab. \ref{tab:disk_space}).
+While VG's XG occupies less disk space for smaller graphs, ODGI requires less space for graphs having 32 haplotypes or more.
+We hypothesize that this represents lower marginal cost for additional haplotypes when using ODGI's id delta encoding scheme. }
+%We note that the With increasing number of haplotypes the centromeric sequence in the pangenome graph also increases which can be better compressed by 
 
 
 \input{fig_evaluation}
@@ -512,13 +520,16 @@ Specifically, the graph contains the human references GRCH38, CHM13, and the con
 Pangenome graphs stand to become a ubiquitous model in genomics thanks to their capability to represent any genetic variant without being affected by reference bias~\citep{Eizenga_2020}.
 However, despite this great potential, their spread is impeded by the lack of tools capable of managing and analyzing pangenome graphs easily and efficiently.
 
-ODGI is a state-of-the-art tool suite that enables users to explore and discover the underlying biology in pangenomes graphs, filling the gap that made pangenomic analyses difficult.
+\REVIEWED{By providing a set of standard analysis ``verbs'' to interact with pangenome graphs, ODGI enables users to explore and discover important biological features captured in this flexible, inclusive model.}
 It provides tools to easily transform, analyze, simplify, validate, and visualize pangenome graphs at large scale.
 In particular, lifting over annotations and linearizing nested graph structures place the suite as the bridge between traditional linear reference genome analysis and pangenome graphs.
 With the increased adoption of long read sequencing we expect pangenomic tools to become increasingly common in \REVIEWED{the genomic studies at different taxonomic levels and} in biomedical research.
-Particularly for targets that involve complex variation, such as cancer\REVIEWED{~\citep{CompPan2016}}, plant pangenomics\REVIEWED{~\citep{Bayer2020, Liu2020, Qin2021, Li2022, Bayer2022}}, and metagenomics\REVIEWED{~\citep{Zhong2021}}. \REVIEWED{Also, when studying animals like bovines~\citep{Leonard2021, Talenti2022, BPC}.}
+This progression is already afoot, particularly for targets that involve complex variation, such as cancer\REVIEWED{~\citep{CompPan2016}}, plant pangenomics\REVIEWED{~\citep{Bayer2020, Liu2020, Qin2021, Li2022, Bayer2022}}, and metagenomics\REVIEWED{~\citep{Zhong2021}}. \REVIEWED{Also, when studying animals like bovines~\citep{Leonard2021, Talenti2022, BPC}.}
 
-\REVIEWED{Currently, bacterial pangenomes are best handled by specialized tools like PPanGGolin~\citep{Gautreau2020}, PanGraph~\citep{Noll2022} or PanX~\citep{Wei2017}. The latter one doesn't build a graphical representation of  a pangenome. But, it already has a very developed eco-system, which allows a detailed analysis of bacterial pangenomes using an interactive GUI. ODGI does not come with such sophisticated tooling, but it can serve as a strong basis to explore viral and bacterial pangenomes on a very large scale.
+\REVIEWED{Currently, bacterial pangenomes are best handled by specialized tools like PPanGGolin~\citep{Gautreau2020}, PanGraph~\citep{Noll2022} or PanX~\citep{Wei2017}. The latter one doesn't build a graphical representation of  a pangenome. But, it already has a very developed eco-system, which allows a detailed analysis of bacterial pangenomes using an interactive GUI.
+Unlike these approaches, which provide a monolithic, integrated solution to understanding pangenomes, ODGI is designed as a low-level toolkit that can work on a generic pangenome graph model frequently used by other existing methods.
+We hope that this design renders it useful to pangenome analysis pipeline authors.
+%but it can serve as a strong basis to explore viral and bacterial pangenomes on a very large scale.
 Other pangenome analysis platforms, like PanTools~\citep{Sheikhizadeh_2016} provide access to pangenome analyses at the scales we demonstrate with ODGI, but use specialized de Bruijn graph models to achieve this---in contrast ODGI supports the highly generic variation graph model, which has greater representational power than de Bruijn graphs.}
 
 ODGI will facilitate disentangling,
@@ -526,9 +537,13 @@ describing and analyzing a much larger set of variation than previously was poss
 Furthermore, users can even consider ODGI as a framework, taking advantage of its algorithms to develop new and more advanced tools that work on pangenome graphs,
 thus expanding the type of possible pangenomic analyses available to the scientific community.
 
-\REVIEWED{The performance analysis shows that ODGI clearly outperforms VG when handling large, complex pangenome graphs. This is a major achievement, because VG's XG data structure is static, compared to ODGI's dynamic graph implementation. Across the evaluation of key graph operations, ODGI's memory peak was 10GB. This makes it perfectly suited to be run interactively on a recent laptop. VG has limitations here. We expect that ODGI will be able to handle the next phase of the HPRC, constructing a pangenome graph from 300 individuals, without any problems.}
+\REVIEWED{The performance analysis shows that ODGI outperforms VG when handling large, complex pangenome graphs.
+%This is a major achievement, because VG's XG data structure is static, compared to ODGI's dynamic graph implementation.
+Across the evaluation of key graph operations, ODGI's memory peak was 10GB. This makes it perfectly suited to be run interactively on a recent laptop.
+%VG has limitations here.
+We expect that ODGI will be able to handle the next phase of the HPRC, constructing a pangenome graph from 300 individuals, without any problems.}
 
-\REVIEWED{[1,10]While ODGI does not construct graphs from scratch nor is is capable of extending them, ODGI[1,10]} is already the backbone of the Pangenome Graph Builder pipeline~\citep{pggb}.
+\REVIEWED{[1,10]While ODGI does not construct graphs from scratch nor is is capable of extending them, it[1,10]} is already the backbone of the Pangenome Graph Builder pipeline~\citep{pggb}.
 Its static, large-scale 1D and 2D visualizations of the pangenome graphs allow an unprecedented high-level perspective on variation in pangenomes, and have also been critical in the development of pangenome graph building methods.  %the underlying structure and any problems in graph construction.
 However, an interactive solution that combines the 1D and 2D layout of a graph with annotation and read mapping information across different zoom levels is still missing.
 \REVIEWED{Recent interactive pangenome graph browsers are reference-centric~\citep{Beyer2019, Yokoyama2019}, have a limited predefined coordinate system \citep{Durant2021}}, or focus primarily on 2D~\citep{Wick_2015, Gonnella2018}.
@@ -639,7 +654,7 @@ Code and links to data resources used to build this manuscript and its figures, 
 
 \subsection{Graph topology visualization}
 \label{sec:supp_visualization}
-\REVIEWED{In a \textit{odgi viz} visualization, given a path X traversing two nodes A and B, the corresponding edge is represented by a black line starting from the left or right of node A if this node is traversed in reverse or forward, respectively, by path X;
+\REVIEWED{In an \textit{odgi viz} visualization, given a path X traversing two nodes A and B, the corresponding edge is represented by a black line starting from the left or right of node A if this node is traversed in reverse or forward, respectively, by path X; 
 the black line ends to the left or right of node B if this node is traversed in forward or reverse, respectively, by path X.
 Consequently, if two consecutive nodes are linked both in forward, no edge is shown (it would be 0 pixels long, as it would start from the right of the first node and ends to the left of the second one).}
 
