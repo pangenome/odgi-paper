@@ -340,7 +340,8 @@ Here, we apply our methods to a series of analyses, highlighting how ODGI can as
 We follow typical analyses that we have found critical to interpreting whole genome alignments represented in the variation graph model.}
 
 \REVIEWED{To simplify our exposition, we will extract small graph regions that are easy to interpret and describe.
-Pangenome graphs built from hundreds of haplotype-resolved \textit{de novo} genome assemblies are very large, but it is often necessary to work with only a small portion of the genomes represented,
+We focus on a handful of difficult loci from the human pangenome, extracting them from a prototype human pangenome graph built with the Pangenome Graph Builder pipeline~\citep{pggb}.
+Pangenome graphs built from hundreds of haplotype-resolved \textit{de novo} genome assemblies are very large, but it is often only necessary to work with only a small portion of the genomes represented,
 such as a specific locus (Fig.~\ref{fig:viz_extract_untangle-MHC}) or a smaller region (Fig.~\labelcref{fig:viz_extract_untangle-C4-default,fig:viz_extract_untangle-C4-gradient,fig:viz_extract_untangle-C4-strandness,fig:viz_extract_untangle-C4-coverage,fig:viz_extract_untangle-C4-bandage,fig:viz_extract_untangle-C4-bandage-zoom}), or even a single gene (Fig.~\ref{fig:metrics}).
 This simplifies the downstream analyses and reduces the resources to work only with the extracted graphs. More on graph extraction and edit operations can be found at $\S$\ref{sec:supp_edit}.}
 %Subsetting operations allow us to zoom in on particular genes or regions of interest for more precise examination.
@@ -352,7 +353,7 @@ This simplifies the downstream analyses and reduces the resources to work only w
 
 \REVIEWED{Visualization methods help us quickly gain insight into otherwise opaque biological data.
 We find visualization essential to understanding pangenome variation graphs.}
-We pursue a novel approach to visualization with \textit{odgi draw} and \textit{odgi viz}, two tools that provide scalable ways of generating \REVIEWED{static} pictures of the high-level structure of even large pangenome graphs (Fig.~\ref{fig:odgi_viz}).
+We pursue a novel approach to visualization with \textit{odgi draw} and \textit{odgi viz}, two tools that provide scalable ways of generating \REVIEWED{raster images showing} the high-level structure of even large pangenome graphs (Fig.~\ref{fig:odgi_viz}).
 
 \REVIEWED{Using \textit{odgi extract}, we extracted the the major histocompatibility complex (MHC) locus from a 90-haplotype human pangenome chromosome 6 graph form the HPRC. Specifically the graph contains the human references GRCH38, CHM13, and the contigs of 44 individuals that encode all possible variation including telomeres and centromeres. The MHC genes are involved in antigen presentation, inflammation regulation, the complement system, and the innate and adaptive immune responses~\citep{Shiina2009}.
 MHC genes are highly polymorphic, i.e., there are multiple different alleles across individuals in a population.
@@ -373,18 +374,18 @@ By default, path colors are derived from the path names (Fig.~\ref{fig:viz_extra
 The black lines on the bottom indicate the edges connecting the nodes and, therefore, represent the graph topology (see \S\ref{sec:supp_visualization} for a more detailed explanation).
 This visualization is computed in linear-time and offers a human-interpretable format suitable for understanding the topology and genome relationships in the pangenome graph.
 \REVIEWED{In humans, the C4 gene exists as 2 functionally distinct genes, \textit{C4A} and \textit{C4B}, which both vary in structure and copy number~\citep{Sekar_2016}.
-Indeed, the longer link at the bottom of Fig.~\labelcref{fig:viz_extract_untangle-C4-default,fig:viz_extract_untangle-C4-gradient,fig:viz_extract_untangle-C4-strandness,fig:viz_extract_untangle-C4-coverage} indicates that the copy number status of these genes varies across the haplotypes represented in the pangenome.
-Moreover, the short nested link on the left highlights that \textit{C4A} and \textit{C4B} genes segregate in both long and short genomic forms, distinguished by the presence or absence of a human endogenous retroviral (HERV) sequence.}
+In combination with the observed changes in path self-coverage, which represents copy number of a given path relative to the graph (Fig.~\labelcref{fig:viz_extract_untangle-C4-coverage}), the longer link at the bottom of Fig.~\labelcref{fig:viz_extract_untangle-C4-default,fig:viz_extract_untangle-C4-gradient,fig:viz_extract_untangle-C4-strandness,fig:viz_extract_untangle-C4-coverage} indicates that the copy number status of these genes varies across the haplotypes represented in the pangenome.
+Moreover, the short nested variation on the left of the locus highlights that \textit{C4A} and \textit{C4B} genes segregate in both long and short genomic forms, distinguished by the presence or absence of a human endogenous retroviral (HERV) sequence.}
 
 Nevertheless, complex, nonlinear graph structures are difficult to interpret in a low number of dimensions.
-To overcome such a limitation, \textit{odgi viz} supports multiple visualization modalities (Fig.~\labelcref{fig:viz_extract_untangle-C4-gradient,fig:viz_extract_untangle-C4-strandness,fig:viz_extract_untangle-C4-coverage}), making it easy to grasp the properties and shape of the graph.
+To overcome this limitation, \textit{odgi viz} supports multiple visualization modalities (Fig.~\labelcref{fig:viz_extract_untangle-C4-gradient,fig:viz_extract_untangle-C4-strandness,fig:viz_extract_untangle-C4-coverage}), making it easy to grasp the properties and shape of the graph.
 %Graph node order can affect downstream analyses on pangenome graphs.
 For example, we can color the paths by path position (Fig.~\ref{fig:viz_extract_untangle-C4-gradient}), with light grey indicating where paths begin and dark grey where they end.
 This visualization is suitable for understanding graph node order, as smooth color gradients indicate that the node order respects the linear paths' coordinate systems.
 Pangenome graphs can represent both strands \REVIEWED{[1,2] of the genomic sequences of the DNA[1,2]}.
 We can display such information by coloring the paths by orientation, with paths colored where their sequence is reverse-complemented (red) or in direct orientation (black) with respect to the sequences of the graph nodes (Fig.~\ref{fig:viz_extract_untangle-C4-strandness}).
 %Eukaryotic genomes experience gains and losses of genetic material, resulting in copy number variation (CNV) across the population.
-Furthermore, we can use multiple color palettes to color the paths \REVIEWED{by how many times they traverse a node, the so-called node depth.}
+Furthermore, we can use multiple color palettes to color the paths \REVIEWED{by how many times they traverse a node, which can be referred to as the path's ``coverage'' of the node.}
 \REVIEWED{This highlights that in the C4 pangenome graph, the haplotypes present different number of copies of the C4 genes (Fig.~\ref{fig:viz_extract_untangle-C4-coverage}).}
 
 \input{fig_extract_viz_draw_position_untangle}
@@ -414,7 +415,10 @@ To ensure a precise translation, we select the reference position whose context 
 
 \REVIEWED{To obtain a more precise overview of the locus in Fig.~\labelcref{fig:viz_extract_untangle-C4-default,fig:viz_extract_untangle-C4-gradient,fig:viz_extract_untangle-C4-strandness,fig:viz_extract_untangle-C4-coverage},
 we applied \textit{odgi untangle} with GRCH38 as a reference. \textit{odgi untangle} segments paths into linear segments by breaking these segments where the paths loop back on themselves.
-In this way, we obtain information on the position and copy number status of the sequences in the collapsed locus (Fig.~\ref{fig:viz_extract_untangle-C4-untangle}). The shape of the line indicates if the copy number is in forward or in reverse orientation compared to GRCH38. \textit{odgi untangle} demonstrates that it is able to work with any sets of reference sequences converting the graph to lift-over maps compatible with standard software for projecting annotations and alignments from one genome to another.  An explanation of the untangling process is given in $\S$\ref{sec:supp_navigation}.}
+In this way, we obtain information on the position and copy number status of the sequences in the collapsed locus (Fig.~\ref{fig:viz_extract_untangle-C4-untangle}).
+The orientation of the line indicates if the copy number is in forward or in reverse orientation compared to GRCH38.
+\textit{odgi untangle} demonstrates that it is able to work with any sets of reference sequences converting the graph to lift-over maps compatible with standard software for projecting annotations and alignments from one genome to another.
+An explanation of the untangling process is given in $\S$\ref{sec:supp_navigation}.}
 %This lets us decompose both homology and paralogy relationships by also untangling looping motifs in the graph, and obtaining linearized pairs of regions in BEDPE or PAF format.
 %As an example, by untangling the graph we can study the variation that lies in regions collapsed due to ambiguous alignments over sequence repeats (as shown in Fig.~\ref{fig:viz_extract_untangle-C4-bandage}).
 
@@ -428,18 +432,21 @@ Pangenome graphs can hide their underlying latent structures, introducing diffic
 Among the causes of this is the correct ordering of the graph nodes in a convenient number of dimensions.
 ODGI provides a variety of sorting algorithms to find the best graph node order in 1 or 2 dimensions, allowing us
 to understand the sparse structures typically found in pangenome graphs and the genetic variation they represent.
+\REVIEWED{\textit{odgi sort} allows for the chaining of these sorting algorithms.
+As many of the algorithms are affected by the initial node order, this allows us to generate sorting pipelines that progressively refine the graph ordering.}
 
-\REVIEWED{We applied a variety of \textit{odgi sort}'s 1D algorithms to a 90-haplotype human pangenome MHC and a C4 graph (Fig.~\ref{fig:sorting}).
+\REVIEWED{We applied several of \textit{odgi sort}'s 1D algorithms to a 90-haplotype human pangenome MHC and a C4 subgraph (Fig.~\ref{fig:sorting}).
 The randomly sorted MHC graph (Fig.~\ref{fig:mhc-random-node-order}) hides its linear graph structure, whereas our novel path-guided (PG) stochastic gradient descent (SGD) algorithm, PG-SGD, is able to produce a globally linear ordered graph revealing the C4 region (Fig.~\ref{fig:mhc-pgsdg-sorting}).
 This exploits path information to order the graph nodes.
 %For understanding the large-scale organization of the graph, we benefit from an even simpler coordinate system.
 PG-SGD learns a 1D or 2D organization of the graph nodes that matches nucleotide distances in graph paths (i.e., the sequences embedded in the graph).
 To scale to large graphs, we learn this projection in parallel via a HOGWILD! approach~\citep{niu2011hogwild}.
-Our approach can be seen as an adaptation of SGD-based drawing to pangenome graphs~\citep{zheng2018graph}.
-In parallel, each HOGWILD! thread updates node relative positions to best-match their nucleotide distance in the paths running through the graph.
+PG-SGD can be seen as an adaptation of SGD-based drawing~\citep{zheng2018graph} to pangenome graphs.
+In parallel, each HOGWILD! thread updates the relative position of pairs of nodes so that their distance in the layout or order better-matches  their nucleotide distance in the paths running through the graph.
 Following standard SGD approaches, a learning rate is reduced as the algorithm progresses, and execution continues until the adjustments to the model fall below a target threshold $\epsilon$.}
 
-\REVIEWED{A PG-SGD sorting of the C4 does not work well locally. It hides the underlying copy number variation status in the region (Fig.~\ref{fig:c4-pgsdg-sorting}). A topological sort order finally gives rise to the graph's latent structure, revealing the copy number characteristics of this C4 region (Fig.~\ref{fig:c4-topological-sorting}). }
+\REVIEWED{A PG-SGD sort of C4 compresses both sides of the variant bubble into one dimension, leading to an interrupted pattern of nodes across the copy-number variable region (Fig.~\ref{fig:c4-pgsdg-sorting}).
+Subsequently applying a topological sort clarifies the graph's latent structure, simplifying interpretation (Fig.~\ref{fig:c4-topological-sorting}). }
 %
 \REVIEWED{To find the best order of graph nodes in 1D, \textit{odgi sort}'s multiple sorting algorithms can be combined into a sorting pipeline to take advantage of the strength of each (results not shown).
 ODGI can project vector (in 1D) and matrix (2D) representations of the graph relative to these learned coordinate spaces.
@@ -460,26 +467,31 @@ MultiQC's~\citep{Ewels_2016} newly added ODGI module. As can be seen in Figure~\
 Despite this discovery, the MultiQC module provides an interactive way to comparatively explore statistics of an arbitrary number of graphs.}
 
 \REVIEWED{Investigating in detail which intricate regions in the \textit{HTTexon1} graph are responsible for the genetic variation and high GC content, we took a look at the per nucleotide node degree distribution (Fig.~\ref{fig:metrics-degree}), and node depth distribution (Fig.~\ref{fig:metrics-depth}) of CHM13 using \textit{odgi depth}'s, and \textit{odgi degree}'s BED output, respectively. The results indicate a highly polymorphic region around position 200 in the graph. Figure~\ref{fig:metrics-viz} supports this analysis. Zooming in on this region with \textit{vg viz}, we can clearly identify the typical \textit{HTTexon1} CAG variable repeat region (Fig.~\ref{fig:metrics-str}).
-Figures~\ref{fig:metrics-degree}-\ref{fig:metrics-viz} highlight the variant region around position 200 of CHM13 showing the variable number of glutamine residues of the different individuals as reported by \citep{Nance1999}.
-In general, such complex motives can be the mirror of genetic variation, but also misassemblies or problems in the pangenome building, making the tools further useful for graph validation. Additional graph metrics interrogation tools are detailed in $\S$\ref{sec:supp_metrics}.}
+Figures~\ref{fig:metrics-degree}-\ref{fig:metrics-viz} highlight the variant region around position 200 of CHM13 showing the variable number of glutamine residues of the different individuals as reported by \citep{Nance1999}.}
+%In general, such complex motives can be the mirror of genetic variation, but also misassemblies or problems in the pangenome building, making the tools further useful for graph validation. Additional graph metrics interrogation tools are detailed in $\S$\ref{sec:supp_metrics}.}
 
 \vspace{0.22cm}
 
-\subsection{Evaluation}
+\subsection{Performance evaluation}
 \label{Evaluation}
 
-\REVIEWED{We compared the efficiency of ODGI (v0.6.3-56-gebc493f "Pulizia") and VG (v1.37.0 "Monchio") for routine pangenome tasks. In particular, we measured the execution time and memory usage}
+\REVIEWED{
+%Although many of the operations that ODGI provides are unique, in some we are able to build on a similar system, VG, and here we demonstrate the advantage of 
+We compared the efficiency of ODGI (v0.6.3-56-gebc493f "Pulizia") and VG (v1.37.0 "Monchio") for routine pangenome tasks. In particular, we measured the execution time and memory usage}
 \begin{inparaenum}[(i)]
 	\item \REVIEWED{of transforming a GFAv1 into a tool's native format, }
 	\item \REVIEWED{the extraction of a subgraph,}
 	\item \REVIEWED{the visualization of a pangenome graph, and}
 	\item \REVIEWED{the finding of path positions in a pangenome graph.}
 \end{inparaenum}
-\REVIEWED{These graph operations are key when it comes to the understanding of pangenome graphs. We ran these operations for a varying number of threads and haplotypes in the graph for a scaling analysis. We ran each evaluation configuration 10 times and report the mean of each run.
-All evaluations were performed on a VM in the German Network for Bioinformatics Infrastructure (deNBI) cloud. It came with 28 cores and 256GB of RAM.
-The presented results are from a 90-haplotype chromosome 6 human pangenome graph from the HPRC. Specifically, the graph contains the human references GRCH38, CHM13, and the contigs of 44 individuals encoding all possible variation including telomeres and centromeres. }
+\REVIEWED{These graph operations are key when it comes to the understanding of pangenome graphs.
+They are also a set of functions implemented in both toolkits.
+We ran these operations for a varying number of threads and haplotypes in the graph for a scaling analysis. We ran each evaluation configuration 10 times and report the mean of each run.
+All evaluations were performed on a VM in the German Network for Bioinformatics Infrastructure (deNBI) cloud with 28 cores and 256GB of RAM.
+The presented results are from a 90-haplotype chromosome 6 human pangenome graph built with data from the HPRC.
+Specifically, the graph contains the human references GRCH38, CHM13, and the contigs of 44 individuals encoding all possible variation including telomeres and centromeres. }
 
-\REVIEWED{When transforming a GFAv1 with VG, the static XG file format was used. All tools involved in the evaluation process require the XG format.}
+\REVIEWED{When transforming a GFAv1 with VG, the static XG file format was used. The tools involved in the evaluation process require the XG format.}
 
 \REVIEWED{Our general findings are that ODGI makes comparatively better use of multithreading and requires much less memory (Fig.~\ref{fig:evaluation}, Tab.~\ref{tab:position}) across all operations. With raising number of haplotypes in the graph, ODGI scales much butter than VG. For example, extracting a subgraph (Fig.~\ref{fig:eval-extract}), ODGI is up to 40 times faster and requires 8 times less memory than VG.
 }
