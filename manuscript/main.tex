@@ -405,7 +405,7 @@ Navigating and understanding the graph requires coordinate systems to link other
 ODGI's tools use the embedded sequences to provide a universal coordinate space that is graph-independent, thereby remaining stable across different graphs built with the same sequences.
 Such a a universal coordinate system allows us to support several kinds of ``lift-over'' of coordinates between different sequences in the same or different graphs.
 %Our for positional conversion (\textit{odgi position}), annotation liftover (\textit{odgi untangle}), breakpoint identification (\textit{odgi tips}), subgraph extraction (\textit{odgi extract}), visualization (\textit{odgi viz}), path depth (\textit{odgi depth}), and graph complexity measurement (\textit{odgi degree}) can all operate on coordinates of paths in the graph.
-\REVIEWED{As a demonstration, we took the C4 pangenome graph and added to its nodes gene annotation from GRCh38 (in GFF format file) using \textit{odgi position} ($\S$\ref{sec:supp_gff}). The resulting TSV contains pairs of node and colors. Taking the graph and the TSV into Bandage~\citep{Wick_2015}, the actual C4 genes are highlighted (Fig.~\ref{fig:viz_extract_untangle-C4-bandage}). Zooming to the nucleotide level, the annotation shows the single nucleotide differences of the \textit{C4A} and the \textit{C4B} genes (Fig.~\ref{fig:viz_extract_untangle-C4-bandage-zoom}).}
+\REVIEWED{As a demonstration, we took the C4 pangenome graph and added to its nodes gene annotation from GRCh38 (in GFF format file) using \textit{odgi position} ($\S$\ref{sec:supp_gff}). The resulting TSV contains pairs of nodes and a colors. Taking the graph and the TSV into Bandage~\citep{Wick_2015}, the actual C4 genes are highlighted (Fig.~\ref{fig:viz_extract_untangle-C4-bandage}). Zooming to the nucleotide level, the annotation shows the single nucleotide differences of the \textit{C4A} and the \textit{C4B} genes (Fig.~\ref{fig:viz_extract_untangle-C4-bandage-zoom}).}
 
 \textit{odgi position} can also translate graph and path positions between or within graphs, emitting the liftovers in BED format.
 For a precise translation process when conversing a query position to a reference position in a repeat region, we apply the \textit{path jaccard} context mapping concept.
@@ -503,12 +503,12 @@ Specifically, the graph contains the human references GRCh38, CHM13, and the con
 When transforming a GFAv1 file with VG, the static XG file format was used.
 The tools involved in the evaluation process require the XG format.}
 
-\REVIEWED{In general, we find that ODGI makes comparatively better use of multithreading and requires much less memory (Fig.~\ref{fig:evaluation}, Tab.~\ref{tab:position}) across all operations.
+\REVIEWED{In general, ODGI makes comparatively better use of multithreading and requires much less memory (Fig.~\ref{fig:evaluation}, Tab.~\ref{tab:position}) across all operations.
 ODGI scales much butter than VG when working with complex regions of the graph.
 For example, extracting a difficult centromeric subgraph (Fig.~\ref{fig:eval-extract}), ODGI is up to 40 times faster and requires 8 times less memory than VG.}
 
 \REVIEWED{Both visualization tools can only make use of a single thread.
-For a 1 haplotype, graph \textit{vg viz} produces a 816MB SVG which can't be opened by any program.
+For a 1 haplotype, graph \textit{vg viz} produces a 816MB SVG which can't be opened by the standard programs to date.
 %For example, GIMP2 fails with "cannot load more than 1000000 XML elements".
 For larger graphs, \textit{vg viz} runs through and produces SVGs with only the XML header. This makes it unusable for large graphs.}
 
