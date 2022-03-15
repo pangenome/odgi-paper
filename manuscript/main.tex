@@ -325,7 +325,7 @@ This parallelism speeds ODGI model construction by many-fold when testing agains
 
 To support interchange with other pangenome tools or text-based processing, \textit{odgi view} converts a graph in ODGI binary format to GFAv1.
 \REVIEWED{ODGI utilizes the PanSN~\citep{pansn-spec} specification to embed sample and haplotype information in the sequence name.
-This harmonizes the biosample information present in FASTA, GFA, PAF, VCF, BED, and GFF/GTF formats related to the graph and its embedded genome sequences.
+This harmonizes the biosample information present in FASTA, GFA, PAF, VCF, BED, BEDPE, SAM/BAM, and GFF/GTF formats related to the graph and its embedded genome sequences.
 %Although this convention may surprise
 %we believe that there is vastly greater value to harmonizing our work with existing systems than 
 By embedding all sequences into a single hierarchical namespace related to fundamental biological groupings in the input (e.g. biosample, individual, pooled group), PanSN allows us to utilize all assemblies in the pangenome as a combined reference coordinate model.
@@ -357,7 +357,7 @@ This simplifies the downstream analyses and reduces the resources to work only w
 We find visualization essential for understanding pangenome graphs.}
 We pursue a novel approach to visualization with \textit{odgi draw} and \textit{odgi viz}, two tools that provide scalable ways of generating \REVIEWED{raster images showing} the high-level structure of even large pangenome graphs (Fig.~\ref{fig:odgi_viz}).
 
-\REVIEWED{Using \textit{odgi extract}, we extracted the major histocompatibility complex (MHC) locus from a 90-haplotype human chromosome 6 pangenome graph form the HPRC.
+\REVIEWED{Using \textit{odgi extract}, we extracted the major histocompatibility complex (MHC) locus from a 90-haplotype human chromosome 6 pangenome graph from the HPRC.
 Specifically, the graph contains the human references GRCh38, CHM13, and the contigs of 44 diploid individuals that encode all possible variations including those in telomeres and centromeres.
 The MHC genes are involved in antigen presentation, inflammation regulation, the complement system, and the innate and adaptive immune responses~\citep{Shiina2009}.
 MHC genes are highly polymorphic, i.e., there are multiple different alleles across individuals in a population.
@@ -389,7 +389,7 @@ This visualization is suitable for understanding graph node order, as smooth col
 Pangenome graphs can represent both strands \REVIEWED{of the genomic sequences of the DNA}.
 We can display such information by coloring the paths by orientation, with paths colored where their sequence is reverse-complemented (red) or in direct orientation (black) with respect to the sequences of the graph nodes (Fig.~\ref{fig:viz_extract_untangle-C4-strandness}).
 %Eukaryotic genomes experience gains and losses of genetic material, resulting in copy number variation (CNV) across the population.
-Furthermore, we can use multiple color palettes to color the paths \REVIEWED{by how many times they traverse a node, which can be referred to as the path's depth or coverage of the node.}
+Furthermore, we can use multiple color palettes to color the paths \REVIEWED{by how many times they traverse a node, which can be referred to as the path's depth or coverage of the node, the node depth.}
 \REVIEWED{This highlights that in the C4 pangenome graph, the haplotypes present different number of copies of the C4 genes (Fig.~\ref{fig:viz_extract_untangle-C4-coverage}).}
 
 \input{fig_extract_viz_draw_position_untangle}
@@ -692,7 +692,7 @@ If a subgraph was as a result from e.g. \textit{odgi extract}, the path names ar
 \label{sec:supp_path_jaccard}
 \textit{odgi tips}, \textit{odgi untangle}, and \textit{odgi position} all translate a query path position to a target path position. In a repeat region, it could be that the node of the query path position ($N_q$) is visited several times by the target path. We use the graph \textit{path jaccard} concept to infer the best target position for a given query path position. For the query position we look at each possible target window and find the most-similar one: 
 \begin{enumerate}
-	\item~Starting from $N_q$ and we follow the steps of one target path position a certain nucleotide distance to the left and a certain nucleotide distance to the right, also called context. The ODGI default distance is 10kbp for each direction.
+	\item~Starting from $N_q$ we follow the steps of one target path position a certain nucleotide distance to the left and a certain nucleotide distance to the right, also called context. The ODGI default distance is 10kbp for each direction.
 	\item~We collect all node identifiers that are visited this way in a multi-set.
 	\item~Repeat the same process when following the query path position steps.
 \end{enumerate}
