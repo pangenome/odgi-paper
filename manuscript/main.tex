@@ -674,7 +674,7 @@ Pangenome graphs can model alignments of many genomes.
 With \textit{odgi untangle}, users can extract pairwise alignment information between a given set of ``query'' sequences and a given set of ``target'' sequences (used as references).
 While pangenome graphs may contain looping structures that imply many-to-many alignments between the pangenome sequences, these untangled alignments map each segment of the queries to a single segment in the set of targets.
 \textit{odgi untangle} first discovers segment boundaries using standard approaches for detecting repeats in sequence graphs~\citep{Pevzner_2004}.
-We finally ``untangle'' by finding the target segment that best match each query segment using the \textit{path jaccard} context mapping model.
+We finally ``untangle'' by finding the target segment that best matches each query segment using the \textit{path jaccard} context mapping model.
 %The \textit{path jaccard} concept ensures that the breaking is nucleotide-precise.
 Moreover, to obtain base-level precise information on the relationships between the repeated sequences, we can align them by using the pairs of regions that came from the untangling to guide the alignment~\citep{wfmash}.
 
@@ -722,7 +722,7 @@ Therefore, we translate query path position \textit{query:3} to the target path 
 
 \subsection{Graph Editing}
 \label{sec:supp_edit}
-Graph portions can be extracted by using the paths in the graph as coordinate systems to guide the process. For such operation, \textit{odgi extract} allows users to extract specific regions of the graph as defined by query criteria.
+Subgraphs can be extracted by using the paths in the graph as coordinate systems to guide the process. For such operation, \textit{odgi extract} allows users to extract specific regions of the graph as defined by query criteria.
 Regions of interest can be specified by graph nodes or path range(s), also in BED format. Furthermore, it is possible to indicate a list of paths to be preserved completely in the extracted graph.
 We begin by collecting all graph nodes that fall within the ranges to extract (and the paths to preserve, if requested).
 Users can specify the number of steps or nucleotides to expand the selection and include neighboring nodes.
@@ -748,13 +748,17 @@ Partial order alignment, which consists of aligning sequences against a directed
 
 \subsection{Graph Sorting}
 \label{sec:supp_sorting}
-Most subcommands in ODGI require and verify that the input graph’s node identifiers (IDs) are optimized.
-If this assumption is violated, \textit{odgi sort} provides functionality to optimize the graph.
-This means that the first node identifier (ID) starts at 1 and the last node ID is the number of nodes.
-The graph is then updated in place. First, the node identifiers are normalized (from 1 to the number of nodes) including the adjustment of the edges.
-Second, path information, specifically each step of a path, is updated, too.
+Most subcommands in ODGI require and verify that the input graph’s node identifiers (IDs) are optimized, that is compacted from 1 to N where N is the number of nodes in the graph. 
+If this assumption is violated, \textit{odgi sort} provides functionality to optimize the graph. 
+This means that the first node identifier (ID) starts at 1 and the last node ID is the number of nodes. 
+All sorting operations update the graph in place with an efficient ID rewriting algorithm.
+The graph is then updated in place. 
+First, the node identifiers are normalized (from 1 to number of nodes) including the adjustment of the edges. 
+Second, path information, including both path metadata that points into the start and end steps of the path, plus each step of every path, is updated, too. 
+We point out that changing the node order does not change our coordinate systems based on paths. 
+These will now refer to a new node ordering.
 
-When we sort a graph, we switch the node IDs of the nodes according to the result of the sorting algorithm.
+When we sort a graph, we switch the node IDs of the nodes according to the result of the sorting algorithm. 
 For example, if a random sort was applied, all existing node IDs would be replaced with new, random ones (the largest node ID would still correspond to the number of nodes on the graph).
 We would update the edge and path information as described in the paragraph above.
 The reordering of nodes has a great influence on how the pangenome looks like (Fig.~\ref{fig:sorting}).
