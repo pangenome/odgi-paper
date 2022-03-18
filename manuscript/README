@@ -1,3 +1,8 @@
+build using `make`
+
+
+environment setup on guix:
+
 guix environment -C --ad-hoc texlive make biber texlive-generic-pdftex coreutils vim
 cd manuscript
 make clean
