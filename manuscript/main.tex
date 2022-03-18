@@ -276,6 +276,7 @@ ODGI covers common operations that we have found to be essential when working wi
 \item~\textit{odgi matrix} derives the pangenome matrix (\S\ref{sec:supp_metrics}).
 \item~\textit{odgi paths} lists and extracts paths in FASTA (\S\ref{sec:supp_metrics}).
 \item~\textit{odgi flatten} converts the graph to FASTA and BED (\S\ref{sec:supp_metrics}).
+\REVIEWED{\item~\textit{odgi pav} generates a presence-abscence variation table (\S\ref{sec:supp_pav}).}
 \item~\textit{odgi stats} provides numerical properties of the graph (\S\ref{sec:metrics}).
 \item~\textit{odgi bin} generates a summarized view of the graph (\S\ref{sec:supp_metrics}).
 \item~\textit{odgi depth} describes node depth over graph and path positions (\S\ref{sec:metrics}).
@@ -660,7 +661,7 @@ Code and links to data resources used to build this manuscript and its figures, 
 \clearpage
 \beginsupplement
 
-\section{Supplementary}
+\section{Supplement}
 
 \subsection{Graph topology visualization}
 \label{sec:supp_visualization}
@@ -720,7 +721,7 @@ Let's assume, we want to translate the query path position \textit{query:3} to a
 We observe a \textit{path jaccard} of $0.58$ for $T_1/Q$ (Equ.~\ref{eq:jaccard_t1}) and $0.29$ for $T_2/Q$ (Equ.~\ref{eq:jaccard_t2}).
 Therefore, we translate query path position \textit{query:3} to the target path position \textit{target:3}.
 
-\subsection{Graph Editing}
+\subsection{Editing}
 \label{sec:supp_edit}
 Subgraphs can be extracted by using the paths in the graph as coordinate systems to guide the process. For such operation, \textit{odgi extract} allows users to extract specific regions of the graph as defined by query criteria.
 Regions of interest can be specified by graph nodes or path range(s), also in BED format. Furthermore, it is possible to indicate a list of paths to be preserved completely in the extracted graph.
@@ -746,7 +747,7 @@ To enable efficient sequence alignment against the graph, long nodes can be divi
 Partial order alignment, which consists of aligning sequences against a directed acyclic graph (DAG), is frequently used in pangenome building pipelines~\citep{pggb}, but the current implementations return DAGs with 1-bp long nodes.
 \textit{odgi unchop} allows joining nodes that can be merged without changing the graph topology, nor the embedded sequences, obtaining an equivalent, but more compact, representation of the graph.
 
-\subsection{Graph Sorting}
+\subsection{Sorting and node identifier compaction}
 \label{sec:supp_sorting}
 Most subcommands in ODGI require and verify that the input graph’s node identifiers (IDs) are optimized, that is compacted from 1 to N where N is the number of nodes in the graph. 
 If this assumption is violated, \textit{odgi sort} provides functionality to optimize the graph. 
@@ -765,14 +766,21 @@ The reordering of nodes has a great influence on how the pangenome looks like (F
 
 \input{fig_sorting}
 
-\subsection{Graph Metrics}
+\subsection{Linear projections}
 \label{sec:supp_metrics}
 Pangenome graph topology can be derived by applying \textit{odgi matrix}, obtaining information on graph nodes connections in textual sparse matrix format.
 To investigate on the genomic sequences encoded in the graph, \textit{odgi paths} allows users to calculate pairwise overlap statistics of groupings of paths and emit all path sequences in FASTA format, and it also allows the generation of a ``pangenome matrix'' that reports the copy number (presence/absence) of each path over each node.
-\textit{odgi flatten} generates a linearization of the graph by emitting the pangenome sequence (the concatenation of all node sequences) in FASTA format, and the projection of all paths on the linearized sequence in BED format.
-ODGI also offers more advanced tools for the interrogation of the graphs.
-To study very large pangenomes, users can use \textit{odgi bin} to summarize the path information into bins of a specified size, generating a summarized view of gigabase scale graphs in TSV or JSON file formats.
-This concept found its way into the pangenome graph ontology~\citep{Yokoyama2020}. %maybe we want to save this up for the discussion
+
+In standard practice, pangenome analysis examines presence-absence variations (PAVs), which correspond to loci that are present in some samples but not others.
+\textit{odgi pav} uses a set of genomic intervals (in BED expressed in the coordinate space of paths in the graph) to demarcate PAVs.
+It then describes the coverage of all paths relative to these PAVs, yielding matrix or tabular representation.
+The precise determination of PAVs based on graph topology remains an open problem, but practically any method capable of generating a BED file can be used here.
+This lets us define PAVs using repeat or gene annotations of the genomes represented as paths in the graph.
+A simple technique is to take the output of \textit{odgi flatten}, which generates a linearization of the graph by emitting the pangenome sequence (the concatenation of all node sequences) in FASTA format, and the projection of all paths on the linearized sequence in BED format relative to the graph's paths.
+
+ODGI also supports an experimental binned representation of graphs designed to support the study and visualization of pangenomes at different scales of resolution.
+\textit{odgi bin} summarizes graph path information into bins of a specified size, generating a summarized view of gigabase scale graphs in TSV or JSON file formats.
+We have further supported this binning approach in pangenome graph ontology model~\citep{Yokoyama2020}. %maybe we want to save this up for the discussion
 
 \clearpage
 \subsection{Evaluation}
